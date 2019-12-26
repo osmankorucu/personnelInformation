@@ -1,15 +1,197 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head></h:head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Yeni Kullanıcı Ekle</title>
+</h:head>
 <h:body>
-	<p:outputLabel value="#{controller.prsName}"></p:outputLabel>
-	<p:commandButton value="PrimeFaces"></p:commandButton>
-	<p:commandButton value="PrimeFaces 2"></p:commandButton>
+	<div style="margin-left: 25%">
+		<h:form style="padding:1%">
+			<h:panelGrid columns="1">
+				<p:panel style="width:100%;height:10%; background-color: #999999;">
+					<p:outputLabel value="Yeni Kullanıcı Ekle"
+						style="margin-left:40%; color:black"></p:outputLabel>
+				</p:panel>
+
+
+				<h:panelGrid columns="2">
+
+					<h:panelGrid columns="6">
+						<p:outputLabel for="nameInputText" value="Ad:"></p:outputLabel>
+						<p:inputText id="nameInputText" required="true"
+							requiredMessage="*" />
+						<h:message for="nameInputText" style="color: red" />
+
+						<p:outputLabel for="surnameInputText" value="Soyad:" />
+						<p:inputText id="surnameInputText" required="true"
+							requiredMessage="*" />
+						<h:message for="surnameInputText" style="color: red" />
+
+						<p:outputLabel for="@next" value="Cinsiyet:" />
+						<p:selectOneMenu style="width:195px" id="console"
+							value="#{selectOneMenuView.console}" required="true"
+							requiredMessage="*">
+							<f:selectItem itemLabel="Seçiniz" itemValue="" />
+							<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+							<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+							<f:facet name="footer">
+								<p:separator />
+								<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+							</f:facet>
+						</p:selectOneMenu>
+						<h:message for="console" style="color: red" />
+
+						<p:outputLabel for="dobButtonDate" value="Doğum Tarihi:" />
+						<p:calendar id="dobButtonDate" value="#{calendarView.date2}"
+							required="true" requiredMessage="*" />
+						<h:message for="dobButtonDate" style="color: red" />
+
+						<p:outputLabel for="@next" value="Medeni Durum:" />
+						<p:selectOneMenu style="width:195px" id="console2"
+							value="#{selectOneMenuView.console2}" required="true"
+							requiredMessage="*">
+							<f:selectItem itemLabel="Seçiniz" itemValue="" />
+							<f:selectItem itemLabel="Bekar" itemValue="Bekar" />
+							<f:selectItem itemLabel="Evli" itemValue="Evli" />
+							<f:facet name="footer2">
+								<p:separator />
+								<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+							</f:facet>
+						</p:selectOneMenu>
+						<h:message for="console2" style="color: red" />
+
+						<p:outputLabel for="@next" value="Çocuk Bilgisi:" />
+						<p:commandButton style="width:100%" value="Ekle" type="button"
+							onclick="PF('dlg2').show();" />
+						<br />
+
+						<p:outputLabel value="Telefon Numarası:" />
+						<p:inputText id="phoneInputText" validatorMessage="!"
+							required="true" requiredMessage="*">
+							<f:validateRegex pattern="^(\\+\\d\\d )?\\(\\d{2,3}\\) \\d{8}$"></f:validateRegex>
+						</p:inputText>
+						<h:message for="emailInputText" style="color: red" />
+
+						<p:outputLabel for="@next" value="Eğitim Bilgisi:" />
+						<p:commandButton style="width:100%" value="Ekle" />
+						<br></br>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<img alt="Personel Fotoğrafı" height="170" width="165"
+							src="https://trabzon.org.tr/wp-content/uploads/2018/05/Ercan-Vesikalik-1.jpg"></img>
+					</h:panelGrid>
+
+					<h:panelGrid columns="3">
+						<p:outputLabel value="E-Posta Adresi: "></p:outputLabel>
+						<p:inputText style="width:615px" id="emailInputText"
+							validatorMessage="Geçersiz E-Posta adresi!" required="true"
+							requiredMessage="Lütfen e-posta adresi giriniz!">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
+						</p:inputText>
+						<h:message for="emailInputText" style="color: red" />
+
+						<p:outputLabel value="Adres: "></p:outputLabel>
+						<p:inputTextarea style="width:615px" id="adresTextArea" rows="5"
+							cols="30" counter="display" maxlength="10"
+							counterTemplate="{0} karakter kaldı." required="true"
+							requiredMessage="*" />
+						<h:message for="adresTextArea" style="color: red" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<p:fileUpload value="#{fileUploadView.file}" mode="simple"
+							skinSimple="true" label="Fotoğraf Ekle" />
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-left:35%" columns="2">
+					<p:commandButton value="Kaydet" />
+					<p:commandButton value="Vazgeç" />
+				</h:panelGrid>
+
+			</h:panelGrid>
+			<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="250">
+				<h:form style="padding:10%">
+					<h:panelGrid columns="1">
+						<p:panel style="width:100%;height:10%; background-color: #999999;">
+							<p:outputLabel value="Çocuk Ekle"
+								style="margin-left:40%; color:black"></p:outputLabel>
+						</p:panel>
+
+							<h:panelGrid columns="6">
+								<p:outputLabel for="nameInputText" value="Ad:"></p:outputLabel>
+								<p:inputText id="nameInputText" required="true"
+									requiredMessage="*" />
+								<h:message for="nameInputText" style="color: red" />
+
+								<p:outputLabel for="surnameInputText" value="Soyad:" />
+								<p:inputText id="surnameInputText" required="true"
+									requiredMessage="*" />
+								<h:message for="surnameInputText" style="color: red" />
+
+								<p:outputLabel for="@next" value="Cinsiyet:" />
+								<p:selectOneMenu style="width:195px" id="console"
+									value="#{selectOneMenuView.console}" required="true"
+									requiredMessage="*">
+									<f:selectItem itemLabel="Seçiniz" itemValue="" />
+									<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+									<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+									<f:facet name="footer">
+										<p:separator />
+										<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+									</f:facet>
+								</p:selectOneMenu>
+								<h:message for="console" style="color: red" />
+
+								<p:outputLabel for="dobButtonDate" value="Doğum Tarihi:" />
+								<p:calendar id="dobButtonDate" value="#{calendarView.date2}"
+									required="true" requiredMessage="*" />
+								<h:message for="dobButtonDate" style="color: red" />
+
+								
+
+							</h:panelGrid>
+						
+
+						<h:panelGrid style="margin-left:35%" columns="2">
+							<p:commandButton value="Kaydet" />
+							<p:commandButton value="Vazgeç" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+					<p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true"
+						height="100">
+						<h:outputText value="This is a Modal Dialog." />
+					</p:dialog>
+					<p:dialog modal="true" resizable="false" header="Values"
+						widgetVar="dlg" showEffect="fold">
+						<p:panelGrid id="display" columns="4"
+							columnClasses="label,value,label,value">
+							<h:outputText value="Button:" />
+							<h:outputText value="#{calendarView.date7}">
+								<f:convertDateTime pattern="MM/dd/yyyy" />
+							</h:outputText>
+						</p:panelGrid>
+					</p:dialog>
+				</h:form>
+			</p:dialog>
+			<p:dialog modal="true" resizable="false" header="Values"
+				widgetVar="dlg" showEffect="fold">
+				<p:panelGrid id="display" columns="4"
+					columnClasses="label,value,label,value">
+					<h:outputText value="Button:" />
+					<h:outputText value="#{calendarView.date7}">
+						<f:convertDateTime pattern="MM/dd/yyyy" />
+					</h:outputText>
+				</p:panelGrid>
+			</p:dialog>
+		</h:form>
+	</div>
 </h:body>
 </html>

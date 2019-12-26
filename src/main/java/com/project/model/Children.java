@@ -15,16 +15,18 @@ public class Children {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int chdID;
 	private String chdName;
-	private boolean chdSex;	//"true" for male, "false" for female;
+	private String chdSurname;
+	private boolean chdSex; // "true" for male, "false" for female;
 	@Temporal(TemporalType.DATE)
 	private Date chdDateOfBirth;
 
 	public Children() {
 	}
 
-	public Children(String chdName, boolean chdSex, Date chdDateOfBirth) {
+	public Children(String chdName, String chdSurname, boolean chdSex, Date chdDateOfBirth) {
 		super();
 		this.chdName = chdName;
+		this.chdSurname = chdSurname;
 		this.chdSex = chdSex;
 		this.chdDateOfBirth = chdDateOfBirth;
 	}
@@ -59,6 +61,14 @@ public class Children {
 
 	public void setChdDateOfBirth(Date chdDateOfBirth) {
 		this.chdDateOfBirth = chdDateOfBirth;
+	}
+
+	public String getChdSurname() {
+		return chdSurname;
+	}
+
+	public void setChdSurname(String chdSurname) {
+		this.chdSurname = chdSurname;
 	}
 
 }
