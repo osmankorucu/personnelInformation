@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Personel Listesi</title>
+</h:head>
+<h:body>
+	<h:panelGrid columns="1">
+		<p:panel style="width:99%;height:10%; background-color: #999999;">
+			<p:outputLabel value="Yeni Personel Ekle" icon="ui-icon-signal"
+				style="margin-left:40%; margin-right:40%; color: black"></p:outputLabel>
+		</p:panel>
+		<h:form>
+			<h:panelGrid columns="3">
+				<p:commandButton value="İnfografik" icon="fa-pie-chart"
+					style="width:100%" ajax="false" action="#{bean.navigateToPage()}" />
+				<p:commandButton style="width:100%" value="Info Grafik"
+					type="button" />
+				<p:inputText></p:inputText>
+			</h:panelGrid>
+		</h:form>
+		<h:panelGrid columns="1">
+			<p:dataTable id="tbl" var="car" value="#{dataExporterView.cars}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+				paginator="true" rows="10" style="margin-bottom:20px">
+
+				<f:facet name="{Exporters}">
+					<div style="float: right; padding-top: 5px;">
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/excel.png" width="24" />
+							<p:dataExporter type="xls" target="tbl" fileName="cars" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tbl" fileName="cars" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tbl" fileName="cars" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tbl" fileName="cars" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage name="/demo/images/keyboardpencil.png" width="24" />
+							<p:dataExporter type="text" target="tbl" fileName="cars"
+								exporter="#{dataExporterView.textExporter}" />
+						</h:commandLink>
+					</div>
+				</f:facet>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{car.id}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Year" />
+					</f:facet>
+					<h:outputText value="#{car.year}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Brand" />
+					</f:facet>
+					<h:outputText value="#{car.brand}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Color" />
+					</f:facet>
+					<h:outputText value="#{car.color}" />
+				</p:column>
+			</p:dataTable>
+		</h:panelGrid>
+	</h:panelGrid>
+</h:body>
+</html>

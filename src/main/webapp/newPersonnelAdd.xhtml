@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Yeni Personel Ekle</title>
+</h:head>
+<h:body>
+	<style>
+.ui-fileupload-simple {
+	margin-top: -100px
+}
+
+.ui-button-text {
+	width: auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.outputLabelClass {
+	width: 200px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+</style>
+	<div style="margin-left: 15%; margin-right: 15%">
+		<h:form id="form">
+			<h:panelGrid columns="1">
+				<p:panel style="width:99%;height:10%; background-color: #999999;">
+					<p:outputLabel value="Yeni Personel Ekle"
+						style="margin-left:40%; margin-right:40%; color: black"></p:outputLabel>
+				</p:panel>
+
+				<h:panelGrid columns="2"
+					style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">
+
+					<h:panelGrid columns="6">
+						<p:outputLabel for="nameInputText" value="Ad:"></p:outputLabel>
+						<p:inputText id="nameInputText" required="true"
+							requiredMessage="*" />
+						<h:message for="nameInputText" style="color: red" />
+
+						<p:outputLabel for="surnameInputText" value="Soyad:" />
+						<p:inputText id="surnameInputText" required="true"
+							requiredMessage="*" />
+						<h:message for="surnameInputText" style="color: red" />
+
+						<p:outputLabel for="@next" value="Cinsiyet:" />
+						<p:selectOneMenu style="width:84%" id="console" required="true"
+							requiredMessage="*">
+							<f:selectItem itemLabel="Seçiniz" itemValue="" />
+							<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+							<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+							<f:facet name="footer">
+								<p:separator />
+								<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+							</f:facet>
+						</p:selectOneMenu>
+						<h:message for="console" style="color: red" />
+
+						<p:outputLabel class="outputLabelClass" for="dobButtonDate"
+							value="Doğum Tarihi:" />
+						<p:calendar id="dobButtonDate" required="true" requiredMessage="*" />
+						<h:message for="dobButtonDate" style="color: red" />
+
+						<p:outputLabel class="outputLabelClass" for="@next"
+							value="Medeni Durum:" />
+						<p:selectOneMenu style="width:84%" id="console2" required="true"
+							requiredMessage="*">
+							<f:selectItem itemLabel="Seçiniz" itemValue="" />
+							<f:selectItem itemLabel="Bekar" itemValue="Bekar" />
+							<f:selectItem itemLabel="Evli" itemValue="Evli" />
+							<f:facet name="footer2">
+								<p:separator />
+								<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+							</f:facet>
+						</p:selectOneMenu>
+						<h:message for="console2" style="color: red" />
+
+						<p:outputLabel for="@next" value="Çocuk Bilgisi:" />
+						<p:commandButton style="width:100%" value="Ekle" type="button"
+							onclick="PF('dlg2').show();" />
+						<br />
+
+						<p:outputLabel class="outputLabelClass" for="phoneInputText"
+							value="Telefon Numarası:" />
+						<p:inputMask id="phoneInputText" required="true"
+							requiredMessage="*" mask="(999) 999-9999" />
+						<h:message for="phoneInputText" style="color: red" />
+
+						<p:outputLabel for="@next" value="Eğitim Bilgisi:" />
+						<p:commandButton style="width:100%" value="Ekle" type="button"
+							onclick="PF('dlg3').show();" />
+						<br></br>
+
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<img alt="Personel Fotoğrafı" height="170" width="165"
+							src="https://trabzon.org.tr/wp-content/uploads/2018/05/Ercan-Vesikalik-1.jpg"></img>
+					</h:panelGrid>
+
+					<h:panelGrid columns="3">
+						<p:outputLabel class="outputLabelClass" for="emailInputText"
+							value="E-Posta Adresi: "></p:outputLabel>
+						<p:inputText style="width:615px" id="emailInputText"
+							validatorMessage="!" required="true" requiredMessage="*">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
+						</p:inputText>
+						<h:message for="emailInputText" style="color: red" />
+
+						<p:outputLabel class="outputLabelClass" for="adresTextArea"
+							value="Adres: "></p:outputLabel>
+						<p:inputTextarea style="width:615px" id="adresTextArea" rows="5"
+							cols="30" counter="display" maxlength="100"
+							counterTemplate="{0} karakter kaldı." required="true"
+							requiredMessage="*" />
+						<h:message for="adresTextArea" style="color: red" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<p:fileUpload mode="simple" skinSimple="true"
+							label="Fotoğraf Ekle" />
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+				<h:panelGrid style="margin-left:35%" columns="2">
+					<p:commandButton value="Kaydet" type="submit" update="form"
+						actionListener="#{bean.myActionMethod()}" />
+					<p:commandButton value="Vazgeç" />
+				</h:panelGrid>
+
+			</h:panelGrid>
+
+		</h:form>
+		<p:dialog header="Yeni Çocuk Ekle" widgetVar="dlg2" resizable="false"
+			modal="true" height="250">
+			<h:form id="cocukForm">
+				<h:panelGrid columns="1">
+					<p:panel style="width:99%;height:10%; background-color: #999999;">
+						<p:outputLabel value="Çocuk Ekle"
+							style="margin-left:40%; color:black"></p:outputLabel>
+					</p:panel>
+
+					<h:panelGrid columns="6">
+						<p:outputLabel for="childNameInputText" value="Ad:"></p:outputLabel>
+						<p:inputText id="childNameInputText" required="true"
+							requiredMessage="*" />
+						<h:message for="childNameInputText" style="color: red" />
+
+						<p:outputLabel for="childSurnameInputText" value="Soyad:" />
+						<p:inputText id="childSurnameInputText" required="true"
+							requiredMessage="*" />
+						<h:message for="childSurnameInputText" style="color: red" />
+
+						<p:outputLabel for="@next" value="Cinsiyet:" />
+						<p:selectOneMenu style="width:195px" id="console3" required="true"
+							requiredMessage="*">
+							<f:selectItem itemLabel="Seçiniz" itemValue="" />
+							<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+							<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+							<f:facet name="footer">
+								<p:separator />
+								<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+							</f:facet>
+						</p:selectOneMenu>
+						<h:message for="console3" style="color: red" />
+
+						<p:outputLabel class="outputLabelClass" for="childDobButtonDate"
+							value="Doğum Tarihi:" />
+						<p:calendar id="childDobButtonDate" required="true"
+							requiredMessage="*" />
+						<h:message for="childDobButtonDate" style="color: red" />
+
+					</h:panelGrid>
+
+					<h:panelGrid style="margin-left:35%" columns="2">
+						<p:commandButton value="Kaydet" type="submit" update="cocukForm"
+							actionListener="#{bean.myActionMethod()}" />
+						<p:commandButton value="Vazgeç" />
+					</h:panelGrid>
+
+				</h:panelGrid>
+				<p:dialog modal="true" resizable="false" header="Values"
+					widgetVar="dlg" showEffect="fold">
+					<p:panelGrid id="display" columns="4"
+						columnClasses="label,value,label,value">
+						<h:outputText value="Button:" />
+						<h:outputText>
+							<f:convertDateTime pattern="MM/dd/yyyy" />
+						</h:outputText>
+					</p:panelGrid>
+				</p:dialog>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Yeni Eğitim Bilgisi Ekle" widgetVar="dlg3"
+			resizable="false" modal="true" height="275">
+			<h:form id="egitimBilgisiForm">
+				<h:panelGrid columns="1">
+					<p:panel style="width:99%;height:10%; background-color: #999999;">
+						<p:outputLabel value="Eğitim Bilgisi Ekle"
+							style="margin-left:40%; color:black"></p:outputLabel>
+					</p:panel>
+					<h:panelGrid columns="1" style="padding:5px">
+						<h:panelGrid columns="3" style="padding:5px">
+							<p:outputLabel for="esNameInputText" value="Ad:"></p:outputLabel>
+							<p:inputText id="esNameInputText" required="true"
+								requiredMessage="*" style="margin-left:90px; width:600px" />
+							<h:message for="esNameInputText" style="color: red" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="6" style="padding:5px">
+
+
+							<p:outputLabel for="@next" value="Şehirler:" />
+							<p:selectOneMenu style="width:195px" id="console4"
+								required="true" requiredMessage="*">
+								<f:selectItem itemValue="0" itemLabel="Seçiniz" />
+								<f:selectItem itemValue="1" itemLabel="Adana" />
+								<f:selectItem itemValue="2" itemLabel="Adıyaman" />
+								<f:selectItem itemValue="3" itemLabel="Afyonkarahisar" />
+								<f:selectItem itemValue="4" itemLabel="Ağrı" />
+								<f:selectItem itemValue="5" itemLabel="Amasya" />
+								<f:selectItem itemValue="6" itemLabel="Ankara" />
+								<f:selectItem itemValue="7" itemLabel="Antalya" />
+								<f:selectItem itemValue="8" itemLabel="Artvin" />
+								<f:selectItem itemValue="9" itemLabel="Aydın" />
+								<f:selectItem itemValue="10" itemLabel="Balıkesir" />
+								<f:selectItem itemValue="11" itemLabel="Bilecik" />
+								<f:selectItem itemValue="12" itemLabel="Bingöl" />
+								<f:selectItem itemValue="13" itemLabel="Bitlis" />
+								<f:selectItem itemValue="14" itemLabel="Bolu" />
+								<f:selectItem itemValue="15" itemLabel="Burdur" />
+								<f:selectItem itemValue="16" itemLabel="Bursa" />
+								<f:selectItem itemValue="17" itemLabel="Çanakkale" />
+								<f:selectItem itemValue="18" itemLabel="Çankırı" />
+								<f:selectItem itemValue="19" itemLabel="Çorum" />
+								<f:selectItem itemValue="20" itemLabel="Denizli" />
+								<f:selectItem itemValue="21" itemLabel="Diyarbakır" />
+								<f:selectItem itemValue="22" itemLabel="Edirne" />
+								<f:selectItem itemValue="23" itemLabel="Elazığ" />
+								<f:selectItem itemValue="24" itemLabel="Erzincan" />
+								<f:selectItem itemValue="25" itemLabel="Erzurum" />
+								<f:selectItem itemValue="26" itemLabel="Eskişehir" />
+								<f:selectItem itemValue="27" itemLabel="Gaziantep" />
+								<f:selectItem itemValue="28" itemLabel="Giresun" />
+								<f:selectItem itemValue="29" itemLabel="Gümüşhane" />
+								<f:selectItem itemValue="30" itemLabel="Hakkâri" />
+								<f:selectItem itemValue="31" itemLabel="Hatay" />
+								<f:selectItem itemValue="32" itemLabel="Isparta" />
+								<f:selectItem itemValue="33" itemLabel="Mersin" />
+								<f:selectItem itemValue="34" itemLabel="İstanbul" />
+								<f:selectItem itemValue="35" itemLabel="İzmir" />
+								<f:selectItem itemValue="36" itemLabel="Kars" />
+								<f:selectItem itemValue="37" itemLabel="Kastamonu" />
+								<f:selectItem itemValue="38" itemLabel="Kayseri" />
+								<f:selectItem itemValue="39" itemLabel="Kırklareli" />
+								<f:selectItem itemValue="40" itemLabel="Kırşehir" />
+								<f:selectItem itemValue="41" itemLabel="Kocaeli" />
+								<f:selectItem itemValue="42" itemLabel="Konya" />
+								<f:selectItem itemValue="43" itemLabel="Kütahya" />
+								<f:selectItem itemValue="44" itemLabel="Malatya" />
+								<f:selectItem itemValue="45" itemLabel="Manisa" />
+								<f:selectItem itemValue="46" itemLabel="Kahramanmaraş" />
+								<f:selectItem itemValue="47" itemLabel="Mardin" />
+								<f:selectItem itemValue="48" itemLabel="Muğla" />
+								<f:selectItem itemValue="49" itemLabel="Muş" />
+								<f:selectItem itemValue="50" itemLabel="Nevşehir" />
+								<f:selectItem itemValue="51" itemLabel="Niğde" />
+								<f:selectItem itemValue="52" itemLabel="Ordu" />
+								<f:selectItem itemValue="53" itemLabel="Rize" />
+								<f:selectItem itemValue="54" itemLabel="Sakarya" />
+								<f:selectItem itemValue="55" itemLabel="Samsun" />
+								<f:selectItem itemValue="56" itemLabel="Siirt" />
+								<f:selectItem itemValue="57" itemLabel="Sinop" />
+								<f:selectItem itemValue="58" itemLabel="Sivas" />
+								<f:selectItem itemValue="59" itemLabel="Tekirdağ" />
+								<f:selectItem itemValue="60" itemLabel="Tokat" />
+								<f:selectItem itemValue="61" itemLabel="Trabzon" />
+								<f:selectItem itemValue="62" itemLabel="Tunceli" />
+								<f:selectItem itemValue="63" itemLabel="Şanlıurfa" />
+								<f:selectItem itemValue="64" itemLabel="Uşak" />
+								<f:selectItem itemValue="65" itemLabel="Van" />
+								<f:selectItem itemValue="66" itemLabel="Yozgat" />
+								<f:selectItem itemValue="67" itemLabel="Zonguldak" />
+								<f:selectItem itemValue="68" itemLabel="Aksaray" />
+								<f:selectItem itemValue="69" itemLabel="Bayburt" />
+								<f:selectItem itemValue="70" itemLabel="Karaman" />
+								<f:selectItem itemValue="71" itemLabel="Kırıkkale" />
+								<f:selectItem itemValue="72" itemLabel="Batman" />
+								<f:selectItem itemValue="73" itemLabel="Şırnak" />
+								<f:selectItem itemValue="74" itemLabel="Bartın" />
+								<f:selectItem itemValue="75" itemLabel="Ardahan" />
+								<f:selectItem itemValue="76" itemLabel="Iğdır" />
+								<f:selectItem itemValue="77" itemLabel="Yalova" />
+								<f:selectItem itemValue="78" itemLabel="Karabük" />
+								<f:selectItem itemValue="79" itemLabel="Kilis" />
+								<f:selectItem itemValue="80" itemLabel="Osmaniye" />
+								<f:selectItem itemValue="81" itemLabel="Düzce" />
+								<f:facet name="footer">
+									<p:separator />
+									<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+								</f:facet>
+							</p:selectOneMenu>
+							<h:message for="console4" style="color: red" />
+
+							<p:outputLabel for="@next" value="Tür:" />
+							<p:selectOneMenu style="width:195px" id="console5"
+								required="true" requiredMessage="*">
+								<f:selectItem itemLabel="Seçiniz" itemValue="" />
+								<f:selectItem itemLabel="Lise" itemValue="0" />
+								<f:selectItem itemLabel="Lisans" itemValue="1" />
+								<f:selectItem itemLabel="Yüksek Lisans" itemValue="2" />
+								<f:selectItem itemLabel="Doktora" itemValue="3" />
+								<f:facet name="footer">
+									<p:separator />
+									<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+								</f:facet>
+							</p:selectOneMenu>
+							<h:message for="console5" style="color: red" />
+
+							<p:outputLabel class="outputLabelClass" for="sdButtonDate"
+								value="Başlama Tarihi:" />
+							<p:calendar id="sdButtonDate" required="true" requiredMessage="*" />
+							<h:message for="sdButtonDate" style="color: red" />
+
+							<p:outputLabel class="outputLabelClass" for="gdButtonDate"
+								value="Bitirme Tarihi:" />
+							<p:calendar id="gdButtonDate" required="true" requiredMessage="*" />
+							<h:message for="gdButtonDate" style="color: red" />
+
+						</h:panelGrid>
+					</h:panelGrid>
+
+					<h:panelGrid style="margin-left:35%; padding:5px" columns="2">
+						<p:commandButton value="Kaydet" type="submit"
+							update="egitimBilgisiForm"
+							actionListener="#{bean.myActionMethod()}" />
+						<p:commandButton value="Vazgeç" />
+					</h:panelGrid>
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+		<p:dialog modal="true" resizable="false" header="Values"
+			widgetVar="dlg" showEffect="fold">
+			<p:panelGrid id="display" columns="4"
+				columnClasses="label,value,label,value">
+				<h:outputText value="Button:" />
+				<h:outputText>
+					<f:convertDateTime pattern="MM/dd/yyyy" />
+				</h:outputText>
+			</p:panelGrid>
+		</p:dialog>
+	</div>
+</h:body>
+</html>

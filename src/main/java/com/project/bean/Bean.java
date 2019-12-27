@@ -6,4 +6,7 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class Bean {
 	public void myActionMethod(){}
+	public String navigateToPage() {
+		return "newPersonnelAdd?faces-redirect=true";
+	}
 }

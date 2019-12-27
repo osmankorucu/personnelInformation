@@ -17,7 +17,7 @@ public class Test {
 		Personnel personnel = new Personnel("Osman", "KORUCU", true, createDate(11, 7, 1997), "osman25korucu@gmail.com",
 				"+905537045625", "Şükrüpaşa Mah. Şıhköyü Cad. Tugay Sitesi A Bl. Kat: 3 No: 10 Yakutiye/Erzurum", false,
 				null);
-		personnel.addChildren(new Children("Ali", true, createDate(25, 10, 2021)));
+		personnel.addChildren(new Children("Ali", "KORUCU", true, createDate(11, 11, 2011)));
 		personnel.addEducationStatus(new EducationStatus("Mehmet Akif Ersoy Anadolu Lisesi", "Erzurum",
 				createDate(15, 9, 2011), createDate(15, 6, 2015), EducationType.LISE));
 		repository.createPersonnel(personnel);
