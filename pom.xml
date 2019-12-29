@@ -22,6 +22,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>5.12.0</version>
+		</dependency>
+
 
 		<!-- Hibernate -->
 

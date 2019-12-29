@@ -7,84 +7,82 @@
 	<title>Personel Listesi</title>
 </h:head>
 <h:body>
-	<h:panelGrid columns="1">
-		<p:panel style="width:99%;height:10%; background-color: #999999;">
-			<p:outputLabel value="Yeni Personel Ekle" icon="ui-icon-signal"
-				style="margin-left:40%; margin-right:40%; color: black"></p:outputLabel>
-		</p:panel>
-		<h:form>
-			<h:panelGrid columns="3">
-				<p:commandButton value="İnfografik" icon="fa-pie-chart"
-					style="width:100%" ajax="false" action="#{bean.navigateToPage()}" />
-				<p:commandButton style="width:100%" value="Info Grafik"
-					type="button" />
-				<p:inputText></p:inputText>
-			</h:panelGrid>
-		</h:form>
+	<style>
+.ui-fileupload-simple {
+	margin-top: -100px
+}
+
+.ui-icon.fa {
+	height: 20px;
+}
+
+.ui-button-text {
+	width: auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.outputLabelClass {
+	width: 200px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+</style>
+	<script src="https://kit.fontawesome.com/59528223ba.js"
+		crossorigin="anonymous"></script>
+
+	<div style="margin-left: 15%; margin-right: 15%">
 		<h:panelGrid columns="1">
-			<p:dataTable id="tbl" var="car" value="#{dataExporterView.cars}"
-				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-				paginator="true" rows="10" style="margin-bottom:20px">
+			<p:panel style="width:99%;height:10%; background-color: #999999;">
+				<p:outputLabel value="Yeni Personel Ekle"
+					style="margin-left:40%; margin-right:40%; color: black"></p:outputLabel>
+			</p:panel>
 
-				<f:facet name="{Exporters}">
-					<div style="float: right; padding-top: 5px;">
-						<h:commandLink>
-							<p:graphicImage name="/demo/images/excel.png" width="24" />
-							<p:dataExporter type="xls" target="tbl" fileName="cars" />
-						</h:commandLink>
+			<h:panelGrid columns="2">
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Yeni Kullanıcı Ekle"
+							icon="fa fa-fw fa-users" style="width:100%" ajax="false"
+							action="#{bean.navigateToPage()}" />
+						<p:commandButton style="width:100%" value="İnfografik"
+							icon="fa fa-fw fa-pie-chart" type="button" />
+					</h:panelGrid>
+				</h:form>
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:inputText style="width:615px" id="search"
+							placeholder="Arama Yap..." />
 
-						<h:commandLink>
-							<p:graphicImage name="/demo/images/pdf.png" width="24" />
-							<p:dataExporter type="pdf" target="tbl" fileName="cars" />
-						</h:commandLink>
+						<p:commandButton style="width:100%" value="Ara"
+							onkeyup="PF('carsTable1').filter()" icon="fa fa-fw fa-search"
+							type="button" />
+					</h:panelGrid>
+				</h:form>
+			</h:panelGrid>
 
-						<h:commandLink>
-							<p:graphicImage name="/demo/images/csv.png" width="24" />
-							<p:dataExporter type="csv" target="tbl" fileName="cars" />
-						</h:commandLink>
+			<h:panelGrid columns="1">
+				<p:dataTable var="car" value="#{dtBasicView.cars}">
+					<p:column headerText="Id">
+						<h:outputText value="#{car.id}" />
+					</p:column>
 
-						<h:commandLink>
-							<p:graphicImage name="/demo/images/xml.png" width="24" />
-							<p:dataExporter type="xml" target="tbl" fileName="cars" />
-						</h:commandLink>
+					<p:column headerText="Year">
+						<h:outputText value="#{car.year}" />
+					</p:column>
 
-						<h:commandLink>
-							<p:graphicImage name="/demo/images/keyboardpencil.png" width="24" />
-							<p:dataExporter type="text" target="tbl" fileName="cars"
-								exporter="#{dataExporterView.textExporter}" />
-						</h:commandLink>
-					</div>
-				</f:facet>
+					<p:column headerText="Brand">
+						<h:outputText value="#{car.brand}" />
+					</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Id" />
-					</f:facet>
-					<h:outputText value="#{car.id}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Year" />
-					</f:facet>
-					<h:outputText value="#{car.year}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Brand" />
-					</f:facet>
-					<h:outputText value="#{car.brand}" />
-				</p:column>
-
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Color" />
-					</f:facet>
-					<h:outputText value="#{car.color}" />
-				</p:column>
-			</p:dataTable>
+					<p:column headerText="Color">
+						<h:outputText value="#{car.color}" />
+					</p:column>
+				</p:dataTable>
+			</h:panelGrid>
 		</h:panelGrid>
-	</h:panelGrid>
+
+	</div>
 </h:body>
 </html>
