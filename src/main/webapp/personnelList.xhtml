@@ -4,16 +4,14 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Personel Listesi</title>
+	<title>Personel Bilgi Sistemi | Personel Listesi</title>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{resource['images/favicon.ico']}" />
 </h:head>
 <h:body>
 	<style>
-.ui-fileupload-simple {
-	margin-top: -100px
-}
-
 .ui-icon.fa {
-	height: 20px;
+	height: 25px;
 }
 
 .ui-button-text {
@@ -33,7 +31,7 @@
 	<script src="https://kit.fontawesome.com/59528223ba.js"
 		crossorigin="anonymous"></script>
 
-	<div style="margin-left: 15%; margin-right: 15%">
+	<div style="margin: 1%">
 		<h:panelGrid columns="1">
 			<p:panel style="width:99%;height:10%; background-color: #999999;">
 				<p:outputLabel value="Yeni Personel Ekle"
@@ -43,9 +41,8 @@
 			<h:panelGrid columns="2">
 				<h:form>
 					<h:panelGrid columns="2">
-						<p:commandButton value="Yeni Kullanıcı Ekle"
-							icon="fa fa-fw fa-users" style="width:100%" ajax="false"
-							action="#{bean.navigateToPage()}" />
+						<p:commandButton value="Yeni Personel Ekle"
+							icon="fa fa-fw fa-users" style="width:100%" type="button" />
 						<p:commandButton style="width:100%" value="İnfografik"
 							icon="fa fa-fw fa-pie-chart" type="button" />
 					</h:panelGrid>
@@ -63,26 +60,365 @@
 			</h:panelGrid>
 
 			<h:panelGrid columns="1">
-				<p:dataTable var="car" value="#{dtBasicView.cars}">
-					<p:column headerText="Id">
-						<h:outputText value="#{car.id}" />
-					</p:column>
+				<h:form id="form">
+					<p:growl id="msgs" showDetail="true" />
+					<p:dataTable resizableColumns="true" liveResize="true" id="cars1"
+						scrollable="true" scrollWidth="190%" var="car" value=""
+						editable="true" style="width:1300px; margin-bottom:20px">
+						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+							update=":form:msgs" />
+						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
+							update=":form:msgs" />
+						<p:column headerText="ID">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Fotoğraf">
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:graphicImage></p:graphicImage>
+								</f:facet>
+								<f:facet name="input">
+									<p:fileUpload mode="simple" skinSimple="true"
+										label="Fotoğraf Ekle" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
 
-					<p:column headerText="Year">
-						<h:outputText value="#{car.year}" />
-					</p:column>
+						<p:column headerText="Ad">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
 
-					<p:column headerText="Brand">
-						<h:outputText value="#{car.brand}" />
-					</p:column>
+						<p:column headerText="Soyad">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Cinsiyet">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Doğum Tarihi">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
 
-					<p:column headerText="Color">
-						<h:outputText value="#{car.color}" />
-					</p:column>
-				</p:dataTable>
+						<p:column headerText="Medeni Durum">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Çocuğu var mı?">
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:commandLink value="Var" onclick="PF('dlg2').show();" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Eğitim Durumu">
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:commandLink value="Detay" onclick="PF('dlg3').show();" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="E-Posta">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Telefon">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Adres">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Sil">
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:menuButton></p:menuButton>
+								</f:facet>
+								<f:facet name="input">
+									<p:menuitem value="Delete" icon="fas fa-times" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:35px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</h:form>
 			</h:panelGrid>
 		</h:panelGrid>
+		<p:dialog header="Çocuk Bilgileri" widgetVar="dlg2" resizable="false"
+			modal="true" height="250">
+			<h:panelGrid columns="2">
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:inputText style="width:615px" id="search"
+							placeholder="Arama Yap..." />
 
+						<p:commandButton style="width:100%" value="Ara"
+							onkeyup="PF('carsTable1').filter()" icon="fa fa-fw fa-user-times"
+							type="button" />
+					</h:panelGrid>
+				</h:form>
+			</h:panelGrid>
+
+			<h:panelGrid columns="1">
+				<h:form id="form2">
+					<p:growl id="msgs2" showDetail="true" />
+					<p:dataTable resizableColumns="true" liveResize="true" id="cars12"
+						var="car" value="" editable="true" style="margin-bottom:20px">
+						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+							update=":form:msgs" />
+						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
+							update=":form:msgs" />
+						<p:column headerText="ID">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Ad">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Soyad">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Cinsiyet">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Doğum Tarihi">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Sil">
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:menuitem value="Delete" update="productID"
+										icon="ui-icon-close" />
+								</f:facet>
+								<f:facet name="input">
+									<p:menuitem value="Delete" update="productID"
+										icon="ui-icon-close" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:35px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</h:panelGrid>
+		</p:dialog>
+		<p:dialog header="Eğitim Bilgileri" widgetVar="dlg3" resizable="false"
+			modal="true" height="275">
+			<h:panelGrid columns="2">
+				<h:form>
+					<h:panelGrid columns="2">
+						<p:inputText style="width:615px" id="search"
+							placeholder="Arama Yap..." />
+
+						<p:commandButton style="width:100%" value="Ara"
+							onkeyup="PF('carsTable1').filter()" icon="fa fa-fw fa-search"
+							type="button" />
+					</h:panelGrid>
+				</h:form>
+			</h:panelGrid>
+
+			<h:panelGrid columns="1">
+				<h:form id="form3">
+					<p:growl id="msgs3" showDetail="true" />
+					<p:dataTable resizableColumns="true" liveResize="true" id="cars13"
+						var="car" value="" editable="true" style="margin-bottom:20px">
+						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+							update=":form:msgs" />
+						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
+							update=":form:msgs" />
+						<p:column headerText="ID">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Ad">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Bulunduğu İl">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Türü">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column headerText="Başlama Tarihi">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Bitirme Tarihi">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="" style="width:100%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Sil">
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<p:menuitem value="Delete" update="productID"
+										icon="ui-icon-close" />
+								</f:facet>
+								<f:facet name="input">
+									<p:menuitem value="Delete" update="productID"
+										icon="ui-icon-close" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+						<p:column style="width:35px">
+							<p:rowEditor />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</h:panelGrid>
+		</p:dialog>
 	</div>
 </h:body>
 </html>

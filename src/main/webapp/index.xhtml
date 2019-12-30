@@ -4,8 +4,46 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Yeni Personel Ekle</title>
+	<title>Personel Bilgi Sistemi | Anasayfa</title>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{resource['images/favicon.ico']}" />
 </h:head>
-<h:body>
+<h:body style="padding-left:10%">
+	<style>
+.ui-button {
+	min-width: 600px;
+	min-height: 150px;
+	height: 150px;
+	width: 600px;
+}
+
+.ui-button-icon-left {
+	margin-top: -6% !important;
+	height: 60%;
+}
+</style>
+	<script src="https://kit.fontawesome.com/59528223ba.js"
+		crossorigin="anonymous"></script>
+
+	<div style="margin-left: 15%; margin-right: 15%">
+		<h:form id="form">
+			<h:panelGrid columns="1">
+				<p:panel style="width:680px; height:10%; background-color:#999999;">
+					<p:outputLabel value="Personel Bilgi Sistemi"
+						style="margin-left:40%; color:black" />
+				</p:panel>
+
+				<h:panelGrid columns="1"
+					style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">
+					<p:commandButton value="Yeni Personel Ekle"
+						icon="fa fa-fw fa-users fa-5x" ajax="false" />
+					<p:commandButton value="Personel Listesini Görüntüle"
+						icon="fa fa-fw far fa-id-card fa-5x" ajax="false" />
+					<p:commandButton value="İnfografikleri Görüntüle"
+						icon="fa fa-fw far fa-pie-chart fa-5x" ajax="false" />
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</div>
 </h:body>
 </html>

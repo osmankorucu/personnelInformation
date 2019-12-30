@@ -4,8 +4,43 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>İnfografik</title>
+	<title>Personel Bilgi Sistemi | İnfografik</title>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{resource['images/favicon.ico']}" />
 </h:head>
-<h:body>
+<h:body style="padding-left:10%">
+	<script src="https://kit.fontawesome.com/59528223ba.js"
+		crossorigin="anonymous"></script>
+
+	<div style="margin-left: 15%; margin-right: 15%">
+		<h:form id="form">
+			<h:panelGrid columns="1">
+				<p:panel style="width:680px; height:10%; background-color:#999999;">
+					<p:outputLabel value="İnfografikler"
+						style="margin-left:40%; color:black" />
+				</p:panel>
+
+				<h:panelGrid columns="1">
+					<h:panelGrid columns="2"
+						style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">
+						<p:commandButton value="Geri" ajax="false" />
+						<p:selectOneMenu style="width:480px" id="console5">
+							<f:selectItem itemLabel="Grafik Seçiniz" itemValue="" />
+							<f:selectItem itemLabel="Grafik 1" itemValue="0" />
+							<f:selectItem itemLabel="Grafik 2" itemValue="1" />
+							<f:selectItem itemLabel="Grafik 3" itemValue="2" />
+							<f:selectItem itemLabel="Grafik 4" itemValue="3" />
+							<f:selectItem itemLabel="Grafik 5" itemValue="4" />
+							<f:facet name="footer">
+								<p:separator />
+								<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+							</f:facet>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					<p:graphicImage style="width:200px;height:300px"></p:graphicImage>
+				</h:panelGrid>
+			</h:panelGrid>
+		</h:form>
+	</div>
 </h:body>
 </html>
