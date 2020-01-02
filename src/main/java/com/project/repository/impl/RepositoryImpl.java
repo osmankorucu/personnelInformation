@@ -1,7 +1,13 @@
 package com.project.repository.impl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import com.project.factory.impl.FactoryImpl;
 import com.project.model.Children;
@@ -45,13 +51,13 @@ public class RepositoryImpl implements Repository {
 		this.entityTransaction.begin();
 		this.entityManager.persist(children);
 		this.entityTransaction.commit();
-		
+
 	}
 
 	public void deleteChildren(Children children) {
 		this.entityTransaction.begin();
 		this.entityManager.remove(children);
-		this.entityTransaction.commit();		
+		this.entityTransaction.commit();
 	}
 
 	public Children updateChildren(Children children) {
@@ -72,13 +78,13 @@ public class RepositoryImpl implements Repository {
 		this.entityTransaction.begin();
 		this.entityManager.persist(educationStatus);
 		this.entityTransaction.commit();
-		
+
 	}
 
 	public void deleteEducationStatus(EducationStatus educationStatus) {
 		this.entityTransaction.begin();
 		this.entityManager.remove(educationStatus);
-		this.entityTransaction.commit();		
+		this.entityTransaction.commit();
 	}
 
 	public EducationStatus updateEducationStatus(EducationStatus educationStatus) {
@@ -93,6 +99,15 @@ public class RepositoryImpl implements Repository {
 		if (findedEducationStatus != null)
 			return findedEducationStatus;
 		return null;
+	}
+
+	public List<Personnel> getPersonnels() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Personnel> cq = cb.createQuery(Personnel.class);
+		Root<Personnel> rootEntry = cq.from(Personnel.class);
+		CriteriaQuery<Personnel> all = cq.select(rootEntry);
+		TypedQuery<Personnel> allQuery = entityManager.createQuery(all);
+		return allQuery.getResultList();
 	}
 
 }

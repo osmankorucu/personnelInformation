@@ -33,10 +33,15 @@
 
 	<div style="margin: 1%">
 		<h:panelGrid columns="1">
-			<p:panel style="width:99%;height:10%; background-color: #999999;">
-				<p:outputLabel value="Yeni Personel Ekle"
-					style="margin-left:40%; margin-right:40%; color: black"></p:outputLabel>
-			</p:panel>
+			<h:form>
+				<p:panel style="width:99%;height:10%; background-color: #999999;">
+					<p:commandButton value="Geri"
+						icon="fa fa-fw far fa-angle-double-left" ajax="false"
+						action="#{bean.navigateToIndex()}" />
+					<p:outputLabel value="Yeni Personel Ekle"
+						style="margin-left:30%; margin-right:30%; color: black"></p:outputLabel>
+				</p:panel>
+			</h:form>
 
 			<h:panelGrid columns="2">
 				<h:form>
@@ -49,7 +54,7 @@
 				</h:form>
 				<h:form>
 					<h:panelGrid columns="2">
-						<p:inputText style="width:615px" id="search"
+						<p:inputText style="width:820px" id="search"
 							placeholder="Arama Yap..." />
 
 						<p:commandButton style="width:100%" value="Ara"
@@ -62,27 +67,28 @@
 			<h:panelGrid columns="1">
 				<h:form id="form">
 					<p:growl id="msgs" showDetail="true" />
-					<p:dataTable resizableColumns="true" liveResize="true" id="cars1"
-						scrollable="true" scrollWidth="190%" var="car" value=""
-						editable="true" style="width:1300px; margin-bottom:20px">
+					<p:dataTable id="cars1" resizableColumns="true" liveResize="true"
+						scrollable="true" scrollWidth="190%" var="personnel"
+						value="#{bean.personnels}" editable="true"
+						style="width:1300px; margin-bottom:20px">
 						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
 						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
-						<p:column headerText="ID">
+						<p:column style="width:15px" headerText="ID">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsId}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText disabled="true" value="#{personnel.prsId}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="Fotoğraf">
 							<p:cellEditor>
 								<f:facet name="output">
-									<p:graphicImage></p:graphicImage>
+									<h:graphicImage value="data:image/jpg;base64,#{personnel.prsPhoto}" style="max-width: 300px; max-height: 300px;" />
 								</f:facet>
 								<f:facet name="input">
 									<p:fileUpload mode="simple" skinSimple="true"
@@ -94,10 +100,10 @@
 						<p:column headerText="Ad">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsName}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="#{personnel.prsName}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -105,30 +111,40 @@
 						<p:column headerText="Soyad">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsSurname}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="#{personnel.prsSurname}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="Cinsiyet">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsSex ? 'Erkek' : 'Kadın'}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:selectOneMenu value="#{personnel.prsSex ? 'Erkek' : 'Kadın'}" style="width:84%" id="console" required="true"
+										requiredMessage="">
+										<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+										<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+										<f:facet name="footer">
+											<p:separator />
+											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+										</f:facet>
+									</p:selectOneMenu>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="Doğum Tarihi">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsDateOfBirth}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:calendar id="dobButtonDate" locale="tr" navigator="true"
+										pattern="dd.MM.yyyy" required="true" requiredMessage=""
+										value="#{personnel.prsDateOfBirth}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -136,10 +152,11 @@
 						<p:column headerText="Medeni Durum">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsIsMarried ? 'Evli' : 'Bekar'}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:selectBooleanCheckbox 
+										value="#{personnel.prsIsMarried}" itemLabel="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -147,10 +164,10 @@
 						<p:column headerText="Çocuğu var mı?">
 							<p:cellEditor>
 								<f:facet name="output">
-									<p:commandLink value="Var" onclick="PF('dlg2').show();" />
+									<p:commandLink value="Detay" onclick="PF('dlg2').show();" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:outputLabel value="-" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -160,17 +177,22 @@
 									<p:commandLink value="Detay" onclick="PF('dlg3').show();" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:outputLabel value="-" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="E-Posta">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsEMail}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="#{personnel.prsEMail}" style="width:615px"
+										id="emailInputText" validatorMessage="!" required="true"
+										requiredMessage="">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
+									</p:inputText>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -178,10 +200,12 @@
 						<p:column headerText="Telefon">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsPhoneNumber}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputMask value="#{personnel.prsPhoneNumber}"
+										id="phoneInputText" required="true" requiredMessage=""
+										mask="(999) 999-9999" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -189,25 +213,17 @@
 						<p:column headerText="Adres">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{personnel.prsAddress}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="#{personnel.prsAddress}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column headerText="Sil">
-
-							<p:cellEditor>
-								<f:facet name="output">
-									<p:menuButton></p:menuButton>
-								</f:facet>
-								<f:facet name="input">
-									<p:menuitem value="Delete" icon="fas fa-times" />
-								</f:facet>
-							</p:cellEditor>
+						<p:column style="width:5px" headerText="Sil">
+							<p:commandLink class="fa fa-fw fa-user-times" />
 						</p:column>
-						<p:column style="width:35px">
+						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />
 						</p:column>
 					</p:dataTable>
@@ -232,19 +248,19 @@
 			<h:panelGrid columns="1">
 				<h:form id="form2">
 					<p:growl id="msgs2" showDetail="true" />
-					<p:dataTable resizableColumns="true" liveResize="true" id="cars12"
-						var="car" value="" editable="true" style="margin-bottom:20px">
+					<p:dataTable id="cars12" var="car" value="" editable="true"
+						style="margin-bottom:20px">
 						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
 						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
-						<p:column headerText="ID">
+						<p:column headerText="ID" style="width:15px">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -255,7 +271,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -266,7 +282,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -276,7 +292,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -286,25 +302,15 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Sil">
-
-							<p:cellEditor>
-								<f:facet name="output">
-									<p:menuitem value="Delete" update="productID"
-										icon="ui-icon-close" />
-								</f:facet>
-								<f:facet name="input">
-									<p:menuitem value="Delete" update="productID"
-										icon="ui-icon-close" />
-								</f:facet>
-							</p:cellEditor>
+						<p:column style="width:5px" headerText="Sil">
+							<p:commandLink class="fa fa-fw fa-user-times" />
 						</p:column>
-						<p:column style="width:35px">
+						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />
 						</p:column>
 					</p:dataTable>
@@ -329,19 +335,19 @@
 			<h:panelGrid columns="1">
 				<h:form id="form3">
 					<p:growl id="msgs3" showDetail="true" />
-					<p:dataTable resizableColumns="true" liveResize="true" id="cars13"
-						var="car" value="" editable="true" style="margin-bottom:20px">
+					<p:dataTable id="cars13" var="car" value="" editable="true"
+						style="margin-bottom:20px">
 						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
 						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
-						<p:column headerText="ID">
+						<p:column headerText="ID" style="width:15px">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -352,7 +358,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -363,7 +369,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -373,7 +379,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -383,7 +389,7 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -394,25 +400,15 @@
 									<h:outputText value="" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" style="width:100%" />
+									<p:inputText value="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Sil">
-
-							<p:cellEditor>
-								<f:facet name="output">
-									<p:menuitem value="Delete" update="productID"
-										icon="ui-icon-close" />
-								</f:facet>
-								<f:facet name="input">
-									<p:menuitem value="Delete" update="productID"
-										icon="ui-icon-close" />
-								</f:facet>
-							</p:cellEditor>
+						<p:column style="width:10px" headerText="Sil">
+							<p:commandLink class="fa fa-fw fa-user-times" />
 						</p:column>
-						<p:column style="width:35px">
+						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />
 						</p:column>
 					</p:dataTable>

@@ -64,12 +64,20 @@
 		};
 	</script>
 	<div style="margin-left: 15%; margin-right: 15%">
+		<h:panelGrid columns="1">
+			<h:form>
+				<p:panel style="width:1050px;height:10%; background-color: #999999;">
+					<p:commandButton value="Geri"
+						icon="fa fa-fw far fa-angle-double-left" ajax="false"
+						action="#{bean.navigateToIndex()}" />
+					<p:outputLabel value="Yeni Personel Ekle"
+						style="margin-left:30%; margin-right:30%; color: black"></p:outputLabel>
+				</p:panel>
+			</h:form>
+		</h:panelGrid>
 		<h:form id="form">
 			<h:panelGrid columns="1">
-				<p:panel style="width:99%;height:10%; background-color: #999999;">
-					<p:outputLabel value="Yeni Personel Ekle"
-						style="margin-left:40%; margin-right:40%; color: black"></p:outputLabel>
-				</p:panel>
+
 
 				<h:panelGrid columns="2"
 					style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">

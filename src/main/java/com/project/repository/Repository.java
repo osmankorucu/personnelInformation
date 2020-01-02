@@ -1,5 +1,7 @@
 package com.project.repository;
 
+import java.util.List;
+
 import com.project.model.Children;
 import com.project.model.EducationStatus;
 import com.project.model.Personnel;
@@ -13,6 +15,8 @@ public interface Repository {
 	Personnel updatePersonnel(Personnel personnel);
 
 	Personnel getPersonnel(int id);
+	
+	List<Personnel> getPersonnels();
 	
 	void createChildren(Children children);
 
