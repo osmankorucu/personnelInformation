@@ -84,21 +84,22 @@
 
 					<h:panelGrid columns="6">
 						<p:outputLabel for="nameInputText" value="Ad:"></p:outputLabel>
-						<p:inputText id="nameInputText" required="true" requiredMessage="">
+						<p:inputText value="#{bean.newPrsName}" id="nameInputText"
+							required="true" requiredMessage="">
 							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
 						</p:inputText>
 						<h:message for="nameInputText" style="color: red" />
 
 						<p:outputLabel for="surnameInputText" value="Soyad:" />
-						<p:inputText id="surnameInputText" required="true"
-							requiredMessage="">
+						<p:inputText value="#{bean.newPrsSurname}" id="surnameInputText"
+							required="true" requiredMessage="">
 							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
 						</p:inputText>
 						<h:message for="surnameInputText" style="color: red" />
 
 						<p:outputLabel for="@next" value="Cinsiyet:" />
-						<p:selectOneMenu style="width:84%" id="console" required="true"
-							requiredMessage="">
+						<p:selectOneMenu value="#{bean.newPrsSex}" style="width:84%"
+							id="console" required="true" requiredMessage="">
 							<f:selectItem itemLabel="Seçiniz" itemValue="" />
 							<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 							<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
@@ -111,15 +112,15 @@
 
 						<p:outputLabel class="outputLabelClass" for="dobButtonDate"
 							value="Doğum Tarihi:" />
-						<p:calendar id="dobButtonDate" value="" locale="tr"
-							navigator="true" pattern="dd.MM.yyyy" required="true"
+						<p:calendar value="#{bean.newPrsDateOfBirth}" id="dobButtonDate"
+							locale="tr" navigator="true" pattern="dd.MM.yyyy" required="true"
 							requiredMessage="" />
 						<h:message for="dobButtonDate" style="color: red" />
 
 						<p:outputLabel class="outputLabelClass" for="@next"
 							value="Medeni Durum:" />
-						<p:selectOneMenu style="width:84%" id="console2" required="true"
-							requiredMessage="">
+						<p:selectOneMenu value="#{bean.newPrsIsMarried}" style="width:84%"
+							id="console2" required="true" requiredMessage="">
 							<f:selectItem itemLabel="Seçiniz" itemValue="" />
 							<f:selectItem itemLabel="Bekar" itemValue="Bekar" />
 							<f:selectItem itemLabel="Evli" itemValue="Evli" />
@@ -137,8 +138,8 @@
 
 						<p:outputLabel class="outputLabelClass" for="phoneInputText"
 							value="Telefon Numarası:" />
-						<p:inputMask id="phoneInputText" required="true"
-							requiredMessage="" mask="(999) 999-9999" />
+						<p:inputMask value="#{bean.newPrsPhoneNumber}" id="phoneInputText"
+							required="true" requiredMessage="" mask="(999) 999-9999" />
 						<h:message for="phoneInputText" style="color: red" />
 
 						<p:outputLabel for="@next" value="Eğitim Bilgisi:" />
@@ -156,8 +157,9 @@
 					<h:panelGrid columns="3">
 						<p:outputLabel class="outputLabelClass" for="emailInputText"
 							value="E-Posta Adresi: "></p:outputLabel>
-						<p:inputText style="width:615px" id="emailInputText"
-							validatorMessage="!" required="true" requiredMessage="">
+						<p:inputText value="#{bean.newPrsEMail}" style="width:615px"
+							id="emailInputText" validatorMessage="!" required="true"
+							requiredMessage="">
 							<f:validateRegex
 								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
 						</p:inputText>
@@ -165,10 +167,10 @@
 
 						<p:outputLabel class="outputLabelClass" for="adresTextArea"
 							value="Adres: "></p:outputLabel>
-						<p:inputTextarea style="width:615px" id="adresTextArea" rows="5"
-							cols="30" counter="display" maxlength="100"
-							counterTemplate="{0} karakter kaldı." required="true"
-							requiredMessage="" />
+						<p:inputTextarea value="#{bean.newPrsAddress}" style="width:615px"
+							id="adresTextArea" rows="5" cols="30" counter="display"
+							maxlength="100" counterTemplate="{0} karakter kaldı."
+							required="true" requiredMessage="" />
 						<h:message for="adresTextArea" style="color: red" />
 					</h:panelGrid>
 
@@ -181,7 +183,8 @@
 
 				<h:panelGrid style="margin-left:35%" columns="2">
 					<p:commandButton value="Kaydet" type="submit" update="form"
-						icon="fa fa-fw fa-save" />
+						icon="fa fa-fw fa-save" action="#{bean.creatorNewPersonnel()}"
+						ajax="false" />
 					<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 						<p:ajax update="form" resetValues="true" />
 					</p:commandButton>
@@ -229,9 +232,8 @@
 
 						<p:outputLabel class="outputLabelClass" for="childDobButtonDate"
 							value="Doğum Tarihi:" />
-						<p:calendar id="childDobButtonDate" value="" locale="tr"
-							navigator="true" pattern="dd.MM.yyyy" required="true"
-							requiredMessage="" />
+						<p:calendar id="childDobButtonDate" locale="tr" navigator="true"
+							pattern="dd.MM.yyyy" required="true" requiredMessage="" />
 						<h:message for="childDobButtonDate" style="color: red" />
 
 
@@ -253,7 +255,7 @@
 					<p:panelGrid id="display" columns="4"
 						columnClasses="label,value,label,value">
 						<h:outputText value="German (other Pattern):" />
-						<h:outputText value="">
+						<h:outputText>
 							<f:convertDateTime pattern="dd.MM.yyyy" />
 						</h:outputText>
 					</p:panelGrid>
@@ -388,16 +390,14 @@
 
 							<p:outputLabel class="outputLabelClass" for="sdButtonDate"
 								value="Başlama Tarihi:" />
-							<p:calendar id="sdButtonDate" value="" locale="tr"
-								navigator="true" pattern="dd.MM.yyyy" required="true"
-								requiredMessage="" />
+							<p:calendar id="sdButtonDate" locale="tr" navigator="true"
+								pattern="dd.MM.yyyy" required="true" requiredMessage="" />
 							<h:message for="sdButtonDate" style="color: red" />
 
 							<p:outputLabel class="outputLabelClass" for="gdButtonDate"
 								value="Bitirme Tarihi:" />
-							<p:calendar id="gdButtonDate" value="" locale="tr"
-								navigator="true" pattern="dd.MM.yyyy" required="true"
-								requiredMessage="" />
+							<p:calendar id="gdButtonDate" locale="tr" navigator="true"
+								pattern="dd.MM.yyyy" required="true" requiredMessage="" />
 							<h:message for="gdButtonDate" style="color: red" />
 
 						</h:panelGrid>

@@ -1,5 +1,6 @@
 package com.project.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -10,20 +11,24 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity(name = "children")
-public class Children {
+public class Children implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int chdID;
 	private String chdName;
 	private String chdSurname;
-	private boolean chdSex; // "true" for male, "false" for female;
+	private String chdSex; // "true" for male, "false" for female;
 	@Temporal(TemporalType.DATE)
 	private Date chdDateOfBirth;
 
 	public Children() {
 	}
 
-	public Children(String chdName, String chdSurname, boolean chdSex, Date chdDateOfBirth) {
+	public Children(String chdName, String chdSurname, String chdSex, Date chdDateOfBirth) {
 		super();
 		this.chdName = chdName;
 		this.chdSurname = chdSurname;
@@ -47,11 +52,11 @@ public class Children {
 		this.chdName = chdName;
 	}
 
-	public boolean isChdSex() {
+	public String getChdSex() {
 		return chdSex;
 	}
 
-	public void setChdSex(boolean chdSex) {
+	public void setChdSex(String chdSex) {
 		this.chdSex = chdSex;
 	}
 

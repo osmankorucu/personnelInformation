@@ -38,39 +38,39 @@
 					<p:commandButton value="Geri"
 						icon="fa fa-fw far fa-angle-double-left" ajax="false"
 						action="#{bean.navigateToIndex()}" />
-					<p:outputLabel value="Yeni Personel Ekle"
+					<p:outputLabel value="Personel Listesi"
 						style="margin-left:30%; margin-right:30%; color: black"></p:outputLabel>
 				</p:panel>
 			</h:form>
 
-			<h:panelGrid columns="2">
-				<h:form>
-					<h:panelGrid columns="2">
-						<p:commandButton value="Yeni Personel Ekle"
-							icon="fa fa-fw fa-users" style="width:100%" type="button" />
-						<p:commandButton style="width:100%" value="İnfografik"
-							icon="fa fa-fw fa-pie-chart" type="button" />
-					</h:panelGrid>
-				</h:form>
-				<h:form>
-					<h:panelGrid columns="2">
-						<p:inputText style="width:820px" id="search"
-							placeholder="Arama Yap..." />
-
-						<p:commandButton style="width:100%" value="Ara"
-							onkeyup="PF('carsTable1').filter()" icon="fa fa-fw fa-search"
-							type="button" />
-					</h:panelGrid>
-				</h:form>
-			</h:panelGrid>
+			<h:form>
+				<h:panelGrid columns="3">
+					<p:commandButton value="Yeni Personel Ekle"
+						icon="fa fa-fw fa-users" style="width:100%" ajax="false"
+						action="#{bean.navigateToNewPersonnelAdd()}" />
+					<p:commandButton style="width:100%" value="İnfografik"
+						icon="fa fa-fw fa-pie-chart" ajax="false"
+						action="#{bean.navigateToInfoGraphic()}" />
+					<p:inputText id="globalFilter" onkeyup="PF('carsTable1').filter()"
+						style="width:820px" placeholder="Arama Yap..." />
+					<!--* -->
+					<!--* -->
+					<!--* -->
+					<!--* -->
+					<!--* -->
+				</h:panelGrid>
+			</h:form>
 
 			<h:panelGrid columns="1">
 				<h:form id="form">
 					<p:growl id="msgs" showDetail="true" />
 					<p:dataTable id="cars1" resizableColumns="true" liveResize="true"
-						scrollable="true" scrollWidth="190%" var="personnel"
+						lazy="false" scrollable="true" scrollWidth="190%" var="personnel"
+						widgetVar="carsTable1" emptyMessage="Personel Bulunamadı"
+						filteredValue="#{bean.filteredPersonnels}"
 						value="#{bean.personnels}" editable="true"
 						style="width:1300px; margin-bottom:20px">
+
 						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
 						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
@@ -88,11 +88,13 @@
 						<p:column headerText="Fotoğraf">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:graphicImage value="data:image/jpg;base64,#{personnel.prsPhoto}" style="max-width: 300px; max-height: 300px;" />
+									<h:graphicImage
+										value="data:image/jpg;base64,#{personnel.prsPhoto}"
+										style="max-width: 300px; max-height: 300px;" />
 								</f:facet>
 								<f:facet name="input">
-									<p:fileUpload mode="simple" skinSimple="true"
-										label="Fotoğraf Ekle" />
+									<p:fileUpload style="margin-left:6%;margin-top:2%"
+										mode="simple" skinSimple="true" label="Fotoğraf Ekle" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -121,14 +123,17 @@
 						<p:column headerText="Cinsiyet">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="#{personnel.prsSex ? 'Erkek' : 'Kadın'}" />
+									<h:outputText value="#{personnel.prsSex}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:selectOneMenu value="#{personnel.prsSex ? 'Erkek' : 'Kadın'}" style="width:84%" id="console" required="true"
+									<p:selectOneMenu
+										value="#{personnel.prsSex}"
+										style="width:50px" id="console" required="true"
 										requiredMessage="">
 										<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 										<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
 										<f:facet name="footer">
+
 											<p:separator />
 											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 										</f:facet>
@@ -152,10 +157,11 @@
 						<p:column headerText="Medeni Durum">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="#{personnel.prsIsMarried ? 'Evli' : 'Bekar'}" />
+									<h:outputText
+										value="#{personnel.prsIsMarried}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:selectBooleanCheckbox 
+									<p:selectBooleanCheckbox style="margin-left:50%"
 										value="#{personnel.prsIsMarried}" itemLabel="" />
 								</f:facet>
 							</p:cellEditor>
@@ -167,7 +173,7 @@
 									<p:commandLink value="Detay" onclick="PF('dlg2').show();" />
 								</f:facet>
 								<f:facet name="input">
-									<p:outputLabel value="-" />
+									<p:outputLabel style="margin-left:50%" value="-" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -177,7 +183,7 @@
 									<p:commandLink value="Detay" onclick="PF('dlg3').show();" />
 								</f:facet>
 								<f:facet name="input">
-									<p:outputLabel value="-" />
+									<p:outputLabel style="margin-left:50%" value="-" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -221,7 +227,8 @@
 							</p:cellEditor>
 						</p:column>
 						<p:column style="width:5px" headerText="Sil">
-							<p:commandLink class="fa fa-fw fa-user-times" />
+							<p:commandLink class="fa fa-fw fa-user-times"
+								actionListener="#{bean.deletePersonnel(personnel)}" update="cars1"/>
 						</p:column>
 						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />

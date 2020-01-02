@@ -1,5 +1,6 @@
 package com.project.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -12,7 +13,11 @@ import javax.persistence.TemporalType;
 import com.project.model.util.EducationType;
 
 @Entity(name = "educationstatus")
-public class EducationStatus {
+public class EducationStatus implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int esId;

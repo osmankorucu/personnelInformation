@@ -1,5 +1,6 @@
 package com.project.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -16,13 +17,17 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity(name = "personnel")
-public class Personnel {
+public class Personnel implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int prsId;
 	private String prsName;
 	private String prsSurname;
-	private boolean prsSex; // "true" for male, "false" for female;
+	private String prsSex; // "true" for male, "false" for female;
 	@Temporal(TemporalType.DATE)
 	private Date prsDateOfBirth;
 	private String prsEMail;
@@ -33,15 +38,15 @@ public class Personnel {
 	private List<EducationStatus> prsEducationStatus = new ArrayList<EducationStatus>();
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Children> prsChildren = new ArrayList<Children>();
-	private boolean prsIsMarried;
+	private String prsIsMarried;
 	@Lob
 	private Base64 prsPhoto;
 
 	public Personnel() {
 	}
 
-	public Personnel(String prsName, String prsSurname, boolean prsSex, Date prsDateOfBirth, String prsEMail,
-			String prsPhoneNumber, String prsAddress, boolean prsIsMarried, Base64 prsPhoto) {
+	public Personnel(String prsName, String prsSurname, String prsSex, Date prsDateOfBirth, String prsEMail,
+			String prsPhoneNumber, String prsAddress, String prsIsMarried, Base64 prsPhoto) {
 		super();
 		this.prsName = prsName;
 		this.prsSurname = prsSurname;
@@ -85,11 +90,11 @@ public class Personnel {
 		this.prsSurname = prsSurname;
 	}
 
-	public boolean isPrsSex() {
+	public String getPrsSex() {
 		return prsSex;
 	}
 
-	public void setPrsSex(boolean prsSex) {
+	public void setPrsSex(String prsSex) {
 		this.prsSex = prsSex;
 	}
 
@@ -141,11 +146,11 @@ public class Personnel {
 		this.prsChildren = prsChildren;
 	}
 
-	public boolean isPrsIsMarried() {
+	public String getPrsIsMarried() {
 		return prsIsMarried;
 	}
 
-	public void setPrsIsMarried(boolean prsIsMarried) {
+	public void setPrsIsMarried(String prsIsMarried) {
 		this.prsIsMarried = prsIsMarried;
 	}
 
