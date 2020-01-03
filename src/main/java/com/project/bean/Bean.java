@@ -5,10 +5,15 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+
+import org.primefaces.event.FileUploadEvent;
 
 import com.project.model.Children;
 import com.project.model.EducationStatus;
@@ -17,7 +22,7 @@ import com.project.repository.Repository;
 import com.project.repository.impl.RepositoryImpl;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class Bean implements Serializable {
 	/**
 	 * 
@@ -38,36 +43,33 @@ public class Bean implements Serializable {
 	private List<EducationStatus> newPrsEducationStatus = new ArrayList<EducationStatus>();
 	private List<Children> newPrsChildren = new ArrayList<Children>();
 	private String newPrsIsMarried;
-	private Base64 newPrsPhoto;
+	private String base64Image;
 	private Personnel newPersonnel;
 
 	Repository repository = new RepositoryImpl();
 
 	@PostConstruct
 	public void init() {
-		personnels = repository.getPersonnels();
-
+		readDB();
 	}
 
-	public boolean globalFilterFunction(Object value, Object filter) {
-		String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
-		if (filterText == null || filterText.equals("")) {
-			return true;
+	public void onUploadImage(FileUploadEvent event) {
+		String fileName = event.getFile().getFileName();
+		// Get file extension.
+		String extension = "png";
+		int i = fileName.lastIndexOf('.');
+		if (i > 0) {
+			extension = fileName.substring(i + 1).toLowerCase();
 		}
-
-		Personnel personnel = (Personnel) value;
-		return Integer.toString(personnel.getPrsId()).toLowerCase().contains(filterText)
-				|| personnel.getPrsName().toLowerCase().contains(filterText)
-				|| personnel.getPrsSurname().toLowerCase().contains(filterText)
-				|| personnel.getPrsSex().toLowerCase().contains(filterText)
-				|| personnel.getPrsIsMarried().toLowerCase().contains(filterText);
+		String encodedImage = java.util.Base64.getEncoder().encodeToString(event.getFile().getContents());
+		this.base64Image = String.format("data:image/%s;base64,%s", extension, encodedImage);
 	}
 
 	public String creatorNewPersonnel() {
 		String message;
 		try {
 			newPersonnel = new Personnel(newPrsName, newPrsSurname, newPrsSex, newPrsDateOfBirth, newPrsEMail,
-					newPrsPhoneNumber, newPrsAddress, newPrsIsMarried, newPrsPhoto);
+					newPrsPhoneNumber, newPrsAddress, newPrsIsMarried, null);
 			repository.createPersonnel(newPersonnel);
 			clearTempPrsData();
 			message = "Ekleme işlemi Başarılı";
@@ -75,7 +77,6 @@ public class Bean implements Serializable {
 		} catch (Exception e) {
 			message = "Ekleme işlemi Başarısız";
 			return message;
-
 		}
 	}
 
@@ -84,10 +85,12 @@ public class Bean implements Serializable {
 		try {
 			repository.deletePersonnel(personnel);
 			message = "Silme işlemi Başarılı";
+			readDB();
 			return message;
 
 		} catch (Exception e) {
 			message = "Silme işlemi Başarısız";
+			readDB();
 			return message;
 		}
 	}
@@ -100,7 +103,11 @@ public class Bean implements Serializable {
 		newPrsPhoneNumber = "";
 		newPrsAddress = "";
 		newPrsIsMarried = "";
-		newPrsDateOfBirth = null;
+		newPrsDateOfBirth = new Date();
+	}
+
+	private void readDB() {
+		personnels = repository.getPersonnels();
 	}
 
 	public List<Personnel> getFilteredPersonnels() {
@@ -215,12 +222,12 @@ public class Bean implements Serializable {
 		this.newPrsIsMarried = newPrsIsMarried;
 	}
 
-	public Base64 getNewPrsPhoto() {
-		return newPrsPhoto;
+	public String getNewPrsPhoto() {
+		return base64Image;
 	}
 
-	public void setNewPrsPhoto(Base64 newPrsPhoto) {
-		this.newPrsPhoto = newPrsPhoto;
+	public void setNewPrsPhoto(String newPrsPhoto) {
+		this.base64Image = newPrsPhoto;
 	}
 
 	public String navigateToNewPersonnelAdd() {
@@ -241,6 +248,22 @@ public class Bean implements Serializable {
 	public String navigateToIndex() {
 		navigateTo = "index?faces-redirect=true";
 		return navigateTo;
+	}
+
+	public String getBase64Image() {
+		return base64Image;
+	}
+
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
+	}
+
+	public Personnel getNewPersonnel() {
+		return newPersonnel;
+	}
+
+	public void setNewPersonnel(Personnel newPersonnel) {
+		this.newPersonnel = newPersonnel;
 	}
 
 }

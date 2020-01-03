@@ -44,32 +44,29 @@
 			</h:form>
 
 			<h:form>
-				<h:panelGrid columns="3">
+				<h:panelGrid columns="2">
 					<p:commandButton value="Yeni Personel Ekle"
 						icon="fa fa-fw fa-users" style="width:100%" ajax="false"
 						action="#{bean.navigateToNewPersonnelAdd()}" />
 					<p:commandButton style="width:100%" value="İnfografik"
 						icon="fa fa-fw fa-pie-chart" ajax="false"
 						action="#{bean.navigateToInfoGraphic()}" />
-					<p:inputText id="globalFilter" onkeyup="PF('carsTable1').filter()"
-						style="width:820px" placeholder="Arama Yap..." />
-					<!--* -->
-					<!--* -->
-					<!--* -->
-					<!--* -->
-					<!--* -->
 				</h:panelGrid>
 			</h:form>
 
 			<h:panelGrid columns="1">
 				<h:form id="form">
 					<p:growl id="msgs" showDetail="true" />
+
+					<!-- sortBy="#{personnel.prsId}" sortOrder="ascending" -->
+
 					<p:dataTable id="cars1" resizableColumns="true" liveResize="true"
-						lazy="false" scrollable="true" scrollWidth="190%" var="personnel"
+						scrollable="true" scrollWidth="190%" var="personnel"
 						widgetVar="carsTable1" emptyMessage="Personel Bulunamadı"
 						filteredValue="#{bean.filteredPersonnels}"
 						value="#{bean.personnels}" editable="true"
-						style="width:1300px; margin-bottom:20px">
+						style="width:1300px; 
+						margin-bottom:20px">
 
 						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
 							update=":form:msgs" />
@@ -99,7 +96,8 @@
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Ad">
+						<p:column headerText="Ad" filterBy="#{personnel.prsName}"
+							filterMatchMode="contains">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsName}" />
@@ -110,7 +108,8 @@
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Soyad">
+						<p:column headerText="Soyad" filterBy="#{personnel.prsSurname}"
+							filterMatchMode="contains">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsSurname}" />
@@ -120,16 +119,23 @@
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column headerText="Cinsiyet">
+						<p:column headerText="Cinsiyet" filterBy="#{personnel.prsSex}"
+							filterMatchMode="contains">
+							<f:facet name="filter">
+								<p:selectOneButton onchange="PF('carsTable1').filter()"
+									styleClass="custom-filter">
+									<f:selectItem itemLabel="T" itemValue="" />
+									<f:selectItem itemLabel="E" itemValue="Erkek" />
+									<f:selectItem itemLabel="K" itemValue="Kadın" />
+								</p:selectOneButton>
+							</f:facet>
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsSex}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:selectOneMenu
-										value="#{personnel.prsSex}"
-										style="width:50px" id="console" required="true"
-										requiredMessage="">
+									<p:selectOneMenu value="#{personnel.prsSex}" style="width:50px"
+										id="console" required="true" requiredMessage="">
 										<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 										<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
 										<f:facet name="footer">
@@ -141,7 +147,8 @@
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column headerText="Doğum Tarihi">
+						<p:column headerText="Doğum Tarihi"
+							filterBy="#{personnel.prsDateOfBirth}" filterMatchMode="contains">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsDateOfBirth}" />
@@ -154,11 +161,19 @@
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Medeni Durum">
+						<p:column headerText="Medeni Durum"
+							filterBy="#{personnel.prsIsMarried}" filterMatchMode="equals">
+							<f:facet name="filter">
+								<p:selectOneButton onchange="PF('carsTable1').filter()"
+									styleClass="custom-filter">
+									<f:selectItem itemLabel="T" itemValue="" />
+									<f:selectItem itemLabel="E" itemValue="Evli" />
+									<f:selectItem itemLabel="B" itemValue="Bekar" />
+								</p:selectOneButton>
+							</f:facet>
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText
-										value="#{personnel.prsIsMarried}" />
+									<h:outputText value="#{personnel.prsIsMarried}" />
 								</f:facet>
 								<f:facet name="input">
 									<p:selectBooleanCheckbox style="margin-left:50%"
@@ -187,7 +202,8 @@
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column headerText="E-Posta">
+						<p:column headerText="E-Posta" filterBy="#{personnel.prsEMail}"
+							filterMatchMode="contains">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsEMail}" />
@@ -203,7 +219,9 @@
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Telefon">
+						<p:column headerText="Telefon"
+							filterBy="#{personnel.prsPhoneNumber}" filterMatchMode="contains">
+
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsPhoneNumber}" />
@@ -216,7 +234,8 @@
 							</p:cellEditor>
 						</p:column>
 
-						<p:column headerText="Adres">
+						<p:column headerText="Adres" filterBy="#{personnel.prsAddress}"
+							filterMatchMode="contains">
 							<p:cellEditor>
 								<f:facet name="output">
 									<h:outputText value="#{personnel.prsAddress}" />
@@ -226,9 +245,10 @@
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
-						<p:column style="width:5px" headerText="Sil">
+						<p:column headerText="Sil" style="width:5px">
 							<p:commandLink class="fa fa-fw fa-user-times"
-								actionListener="#{bean.deletePersonnel(personnel)}" update="cars1"/>
+								actionListener="#{bean.deletePersonnel(personnel)}"
+								update="form" />
 						</p:column>
 						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />
