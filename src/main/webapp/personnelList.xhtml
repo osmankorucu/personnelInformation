@@ -85,9 +85,11 @@
 						<p:column headerText="Fotoğraf">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:graphicImage
-										value="data:image/jpg;base64,#{personnel.prsPhoto}"
-										style="max-width: 300px; max-height: 300px;" />
+									<p:commandLink onclick="PF('photoDlg').show();"
+										action="#{bean.getPersonnelPhoto(personnel.prsId)}">
+										<img alt="Personel Fotoğrafı" height="85" width="80"
+											src="#{personnel.prsPhoto}" style="margin-left: 30%" />
+									</p:commandLink>
 								</f:facet>
 								<f:facet name="input">
 									<p:fileUpload style="margin-left:6%;margin-top:2%"
@@ -257,6 +259,13 @@
 				</h:form>
 			</h:panelGrid>
 		</h:panelGrid>
+		<p:dialog header="Personel Fotoğrafı" widgetVar="photoDlg"
+			resizable="false" modal="true" height="350" width="300">
+			<img alt="Personel Fotoğrafı" height="340" width="290"
+				src="#{bean.tempPrsPhoto}" />
+			<p:outputLabel value="#{bean.tempPrsPhoto}"></p:outputLabel>
+		</p:dialog>
+
 		<p:dialog header="Çocuk Bilgileri" widgetVar="dlg2" resizable="false"
 			modal="true" height="250">
 			<h:panelGrid columns="2">

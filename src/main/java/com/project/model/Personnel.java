@@ -40,13 +40,13 @@ public class Personnel implements Serializable {
 	private List<Children> prsChildren = new ArrayList<Children>();
 	private String prsIsMarried;
 	@Lob
-	private Base64 prsPhoto;
+	private String prsPhoto;
 
 	public Personnel() {
 	}
 
 	public Personnel(String prsName, String prsSurname, String prsSex, Date prsDateOfBirth, String prsEMail,
-			String prsPhoneNumber, String prsAddress, String prsIsMarried, Base64 prsPhoto) {
+			String prsPhoneNumber, String prsAddress, String prsIsMarried, String prsPhoto) {
 		super();
 		this.prsName = prsName;
 		this.prsSurname = prsSurname;
@@ -58,10 +58,11 @@ public class Personnel implements Serializable {
 		this.prsIsMarried = prsIsMarried;
 		this.prsPhoto = prsPhoto;
 	}
-	
+
 	public void addChildren(Children child) {
 		prsChildren.add(child);
 	}
+
 	public void addEducationStatus(EducationStatus educationStatus) {
 		prsEducationStatus.add(educationStatus);
 	}
@@ -154,11 +155,11 @@ public class Personnel implements Serializable {
 		this.prsIsMarried = prsIsMarried;
 	}
 
-	public Base64 getPrsPhoto() {
+	public String getPrsPhoto() {
 		return prsPhoto;
 	}
 
-	public void setPrsPhoto(Base64 prsPhoto) {
+	public void setPrsPhoto(String prsPhoto) {
 		this.prsPhoto = prsPhoto;
 	}
 
