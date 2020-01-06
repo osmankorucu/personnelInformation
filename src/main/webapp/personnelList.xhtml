@@ -68,10 +68,13 @@
 						style="width:1300px; 
 						margin-bottom:20px">
 
-						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+						<p:ajax event="rowEdit"
+							listener="#{bean.updatePersonnel(personnel.prsId)}"
 							update=":form:msgs" />
-						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
+						<p:ajax event="rowEditCancel" resetValues="true"
 							update=":form:msgs" />
+						<p:ajax event="rowEditInit" listener="#{bean.createTempDatas(personnel.prsId)}" />
+						<!-- ******************************************* -->
 						<p:column style="width:15px" headerText="ID">
 							<p:cellEditor>
 								<f:facet name="output">
@@ -85,15 +88,34 @@
 						<p:column headerText="Fotoğraf">
 							<p:cellEditor>
 								<f:facet name="output">
-									<p:commandLink onclick="PF('photoDlg').show();"
-										action="#{bean.getPersonnelPhoto(personnel.prsId)}">
+									<p:commandLink onclick="PF('photoDlg').show();">
+										<p:ajax listener="#{bean.getPersonnelPhoto(personnel.prsId)}"
+											update="photoPanel" />
 										<img alt="Personel Fotoğrafı" height="85" width="80"
 											src="#{personnel.prsPhoto}" style="margin-left: 30%" />
 									</p:commandLink>
 								</f:facet>
 								<f:facet name="input">
-									<p:fileUpload style="margin-left:6%;margin-top:2%"
-										mode="simple" skinSimple="true" label="Fotoğraf Ekle" />
+									<p:fileUpload mode="advanced" skinSimple="true"
+										label="Fotoğraf Ekle"
+										fileUploadListener="#{bean.onUploadImage}" multiple="false"
+										fileLimit="1" auto="true" uploadLabel="false"
+										allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+										style="margin-left:6%;margin-top:2%" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="TC No" filterBy="#{personnel.prsIDNumber}"
+							filterMatchMode="contains">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{personnel.prsIDNumber}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputMask value="#{bean.newPrsIDNumber}"
+										id="idNumberInputText" required="true" requiredMessage=""
+										mask="99999999999" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -105,7 +127,10 @@
 									<h:outputText value="#{personnel.prsName}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{personnel.prsName}" />
+									<p:inputText value="#{bean.newPrsName}" id="nameInputText"
+										required="true" requiredMessage="">
+										<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+									</p:inputText>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -117,7 +142,10 @@
 									<h:outputText value="#{personnel.prsSurname}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{personnel.prsSurname}" />
+									<p:inputText value="#{bean.newPrsSurname}"
+										id="surnameInputText" required="true" requiredMessage="">
+										<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+									</p:inputText>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -136,12 +164,12 @@
 									<h:outputText value="#{personnel.prsSex}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:selectOneMenu value="#{personnel.prsSex}" style="width:50px"
+									<p:selectOneMenu value="#{bean.newPrsSex}" style="width:84%"
 										id="console" required="true" requiredMessage="">
+										<f:selectItem itemLabel="Seçiniz" itemValue="" />
 										<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 										<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
 										<f:facet name="footer">
-
 											<p:separator />
 											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 										</f:facet>
@@ -156,9 +184,10 @@
 									<h:outputText value="#{personnel.prsDateOfBirth}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:calendar id="dobButtonDate" locale="tr" navigator="true"
+									<p:calendar value="#{bean.newPrsDateOfBirth}"
+										id="dobButtonDate" locale="tr" navigator="true"
 										pattern="dd.MM.yyyy" required="true" requiredMessage=""
-										value="#{personnel.prsDateOfBirth}" />
+										autocomplete="off" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -178,8 +207,17 @@
 									<h:outputText value="#{personnel.prsIsMarried}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:selectBooleanCheckbox style="margin-left:50%"
-										value="#{personnel.prsIsMarried}" itemLabel="" />
+									<p:selectOneMenu value="#{bean.newPrsIsMarried}"
+										style="width:84%" id="console2" required="true"
+										requiredMessage="">
+										<f:selectItem itemLabel="Seçiniz" itemValue="" />
+										<f:selectItem itemLabel="Bekar" itemValue="Bekar" />
+										<f:selectItem itemLabel="Evli" itemValue="Evli" />
+										<f:facet name="footer2">
+											<p:separator />
+											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+										</f:facet>
+									</p:selectOneMenu>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -211,7 +249,7 @@
 									<h:outputText value="#{personnel.prsEMail}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{personnel.prsEMail}" style="width:615px"
+									<p:inputText value="#{bean.newPrsEMail}" style="width:615px"
 										id="emailInputText" validatorMessage="!" required="true"
 										requiredMessage="">
 										<f:validateRegex
@@ -229,7 +267,7 @@
 									<h:outputText value="#{personnel.prsPhoneNumber}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputMask value="#{personnel.prsPhoneNumber}"
+									<p:inputMask value="#{bean.newPrsPhoneNumber}"
 										id="phoneInputText" required="true" requiredMessage=""
 										mask="(999) 999-9999" />
 								</f:facet>
@@ -243,14 +281,16 @@
 									<h:outputText value="#{personnel.prsAddress}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="#{personnel.prsAddress}" />
+									<p:inputText value="#{bean.newPrsAddress}" id="adresTextArea"
+										required="true" requiredMessage="" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="Sil" style="width:5px">
-							<p:commandLink class="fa fa-fw fa-user-times"
-								actionListener="#{bean.deletePersonnel(personnel)}"
-								update="form" />
+							<p:commandLink ajax="true" class="fa fa-fw fa-user-times"
+								actionListener="#{bean.deletePersonnel(personnel)}">
+								<p:ajax update="form"></p:ajax>
+							</p:commandLink>
 						</p:column>
 						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />
@@ -260,10 +300,11 @@
 			</h:panelGrid>
 		</h:panelGrid>
 		<p:dialog header="Personel Fotoğrafı" widgetVar="photoDlg"
-			resizable="false" modal="true" height="350" width="300">
-			<img alt="Personel Fotoğrafı" height="340" width="290"
-				src="#{bean.tempPrsPhoto}" />
-			<p:outputLabel value="#{bean.tempPrsPhoto}"></p:outputLabel>
+			resizable="false" modal="true" height="450" width="390">
+			<p:panel id="photoPanel" style="border:none">
+				<img alt="Personel Fotoğrafı" height="350" width="300"
+					src="#{bean.tempPrsPhoto}" />
+			</p:panel>
 		</p:dialog>
 
 		<p:dialog header="Çocuk Bilgileri" widgetVar="dlg2" resizable="false"

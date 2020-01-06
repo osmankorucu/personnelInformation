@@ -64,6 +64,7 @@
 		};
 	</script>
 	<div style="margin-left: 15%; margin-right: 15%">
+	<p:growl id="growl" showDetail="true" sticky="true" />  
 		<h:panelGrid columns="1">
 			<h:form>
 				<p:panel style="width:1050px;height:10%; background-color: #999999;">
@@ -83,6 +84,15 @@
 					style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">
 
 					<h:panelGrid columns="6">
+						<p:outputLabel for="idNumberInputText" value="TC No:"></p:outputLabel>
+						<p:inputMask value="#{bean.newPrsIDNumber}" id="idNumberInputText"
+							required="true" requiredMessage="" mask="99999999999" />
+						<h:message for="idNumberInputText" style="color: red" />
+
+						<p:panel style="border:none"></p:panel>
+						<p:panel style="border:none"></p:panel>
+						<p:panel style="border:none"></p:panel>
+
 						<p:outputLabel for="nameInputText" value="Ad:"></p:outputLabel>
 						<p:inputText value="#{bean.newPrsName}" id="nameInputText"
 							required="true" requiredMessage="">

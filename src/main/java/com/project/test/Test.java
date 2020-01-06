@@ -14,7 +14,7 @@ public class Test {
 	public static void main(String[] args) {
 		Repository repository = new RepositoryImpl();
 
-		Personnel personnel = new Personnel("Osman", "KORUCU", "Erkek", createDate(11, 7, 1997), "osman25korucu@gmail.com",
+		Personnel personnel = new Personnel("32950486658","Osman", "KORUCU", "Erkek", createDate(11, 7, 1997), "osman25korucu@gmail.com",
 				"+905537045625", "Şükrüpaşa Mah. Şıhköyü Cad. Tugay Sitesi A Bl. Kat: 3 No: 10 Yakutiye/Erzurum", "Bekar",
 				null);
 		personnel.addChildren(new Children("Ali", "KORUCU", "Erkek", createDate(11, 11, 2011)));

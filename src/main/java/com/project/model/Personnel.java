@@ -2,7 +2,6 @@ package com.project.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +24,7 @@ public class Personnel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int prsId;
+	private String prsIDNumber;
 	private String prsName;
 	private String prsSurname;
 	private String prsSex; // "true" for male, "false" for female;
@@ -45,9 +45,10 @@ public class Personnel implements Serializable {
 	public Personnel() {
 	}
 
-	public Personnel(String prsName, String prsSurname, String prsSex, Date prsDateOfBirth, String prsEMail,
+	public Personnel(String prsIDNumber,String prsName, String prsSurname, String prsSex, Date prsDateOfBirth, String prsEMail,
 			String prsPhoneNumber, String prsAddress, String prsIsMarried, String prsPhoto) {
 		super();
+		this.prsIDNumber = prsIDNumber;
 		this.prsName = prsName;
 		this.prsSurname = prsSurname;
 		this.prsSex = prsSex;
@@ -162,5 +163,15 @@ public class Personnel implements Serializable {
 	public void setPrsPhoto(String prsPhoto) {
 		this.prsPhoto = prsPhoto;
 	}
+
+	public String getPrsIDNumber() {
+		return prsIDNumber;
+	}
+
+	public void setPrsIDNumber(String prsIDNumber) {
+		this.prsIDNumber = prsIDNumber;
+	}
+	
+	
 
 }
