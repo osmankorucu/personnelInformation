@@ -43,17 +43,6 @@
 				</p:panel>
 			</h:form>
 
-			<h:form>
-				<h:panelGrid columns="2">
-					<p:commandButton value="Yeni Personel Ekle"
-						icon="fa fa-fw fa-users" style="width:100%" ajax="false"
-						action="#{bean.navigateToNewPersonnelAdd()}" />
-					<p:commandButton style="width:100%" value="İnfografik"
-						icon="fa fa-fw fa-pie-chart" ajax="false"
-						action="#{bean.navigateToInfoGraphic()}" />
-				</h:panelGrid>
-			</h:form>
-
 			<h:panelGrid columns="1">
 				<h:form id="form">
 					<p:growl id="msgs" showDetail="true" />
@@ -73,7 +62,8 @@
 							update=":form:msgs" />
 						<p:ajax event="rowEditCancel" resetValues="true"
 							update=":form:msgs" />
-						<p:ajax event="rowEditInit" listener="#{bean.createTempDatas(personnel.prsId)}" />
+						<p:ajax event="rowEditInit"
+							listener="#{bean.createTempDatas(personnel.prsId)}" />
 						<!-- ******************************************* -->
 						<p:column style="width:15px" headerText="ID">
 							<p:cellEditor>
