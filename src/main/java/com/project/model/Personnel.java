@@ -59,6 +59,26 @@ public class Personnel implements Serializable {
 		this.prsIsMarried = prsIsMarried;
 		this.prsPhoto = prsPhoto;
 	}
+	
+	
+
+	public Personnel(String prsIDNumber, String prsName, String prsSurname, String prsSex, Date prsDateOfBirth,
+			String prsEMail, String prsPhoneNumber, String prsAddress, List<EducationStatus> prsEducationStatus,
+			List<Children> prsChildren, String prsIsMarried, String prsPhoto) {
+		super();
+		this.prsIDNumber = prsIDNumber;
+		this.prsName = prsName;
+		this.prsSurname = prsSurname;
+		this.prsSex = prsSex;
+		this.prsDateOfBirth = prsDateOfBirth;
+		this.prsEMail = prsEMail;
+		this.prsPhoneNumber = prsPhoneNumber;
+		this.prsAddress = prsAddress;
+		this.prsEducationStatus = prsEducationStatus;
+		this.prsChildren = prsChildren;
+		this.prsIsMarried = prsIsMarried;
+		this.prsPhoto = prsPhoto;
+	}
 
 	public void addChildren(Children child) {
 		prsChildren.add(child);

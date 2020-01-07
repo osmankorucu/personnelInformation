@@ -64,7 +64,7 @@
 		};
 	</script>
 	<div style="margin-left: 15%; margin-right: 15%">
-	<p:growl id="growl" showDetail="true" />  
+		<p:growl id="growl" showDetail="true" />
 		<h:panelGrid columns="1">
 			<h:form>
 				<p:panel style="width:1050px;height:10%; background-color: #999999;">
@@ -215,22 +215,22 @@
 
 					<h:panelGrid columns="6">
 						<p:outputLabel for="childNameInputText" value="Ad:"></p:outputLabel>
-						<p:inputText id="childNameInputText" required="true"
-							requiredMessage="">
+						<p:inputText value="#{bean.newChdName}" id="childNameInputText"
+							required="true" requiredMessage="">
 							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
 						</p:inputText>
 						<h:message for="childNameInputText" style="color: red" />
 
 						<p:outputLabel for="childSurnameInputText" value="Soyad:" />
-						<p:inputText id="childSurnameInputText" required="true"
-							requiredMessage="">
+						<p:inputText value="#{bean.newChdSurname}"
+							id="childSurnameInputText" required="true" requiredMessage="">
 							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
 						</p:inputText>
 						<h:message for="childSurnameInputText" style="color: red" />
 
 						<p:outputLabel for="@next" value="Cinsiyet:" />
-						<p:selectOneMenu style="width:185px" id="console3" required="true"
-							requiredMessage="">
+						<p:selectOneMenu value="#{bean.newChdSex}" style="width:185px"
+							id="console3" required="true" requiredMessage="">
 							<f:selectItem itemLabel="Seçiniz" itemValue="" />
 							<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 							<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
@@ -243,19 +243,18 @@
 
 						<p:outputLabel class="outputLabelClass" for="childDobButtonDate"
 							value="Doğum Tarihi:" />
-						<p:calendar id="childDobButtonDate" locale="tr" navigator="true"
+
+						<p:calendar value="#{bean.newChdDateOfBirth}"
+							id="childDobButtonDate" locale="tr" navigator="true"
 							pattern="dd.MM.yyyy" required="true" requiredMessage=""
 							autocomplete="off" />
 						<h:message for="childDobButtonDate" style="color: red" />
-
-
-
 
 					</h:panelGrid>
 
 					<h:panelGrid style="margin-left:35%" columns="2">
 						<p:commandButton value="Kaydet" type="submit" update="cocukForm"
-							icon="fa fa-fw fa-save" />
+							icon="fa fa-fw fa-save" action="#{bean.creatorNewChildren}" />
 						<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 							<p:ajax update="cocukForm" resetValues="true" />
 						</p:commandButton>
@@ -274,6 +273,7 @@
 				</p:dialog>
 			</h:form>
 		</p:dialog>
+
 		<p:dialog header="Yeni Eğitim Bilgisi Ekle" widgetVar="dlg3"
 			resizable="false" modal="true" height="275">
 			<h:form id="egitimBilgisiForm">
@@ -285,8 +285,9 @@
 					<h:panelGrid columns="1" style="padding:5px">
 						<h:panelGrid columns="3" style="padding:5px">
 							<p:outputLabel for="esNameInputText" value="Ad:"></p:outputLabel>
-							<p:inputText id="esNameInputText" required="true"
-								requiredMessage="" style="margin-left:98px; width:571px" />
+							<p:inputText value="#{bean.newESName}" id="esNameInputText"
+								required="true" requiredMessage=""
+								style="margin-left:98px; width:571px" />
 							<h:message for="esNameInputText" style="color: red" />
 						</h:panelGrid>
 
@@ -294,8 +295,8 @@
 
 
 							<p:outputLabel for="@next" value="Şehirler:" />
-							<p:selectOneMenu style="width:185px" id="console4"
-								required="true" requiredMessage="">
+							<p:selectOneMenu value="#{bean.newESCity}" style="width:185px"
+								id="console4" required="true" requiredMessage="">
 								<f:selectItem itemValue="" itemLabel="Seçiniz" />
 								<f:selectItem itemValue="1" itemLabel="Adana" />
 								<f:selectItem itemValue="2" itemLabel="Adıyaman" />
@@ -386,8 +387,8 @@
 							<h:message for="console4" style="color: red" />
 
 							<p:outputLabel for="@next" value="Tür:" />
-							<p:selectOneMenu style="width:185px" id="console5"
-								required="true" requiredMessage="">
+							<p:selectOneMenu value="#{bean.newESType}" style="width:185px"
+								id="console5" required="true" requiredMessage="">
 								<f:selectItem itemLabel="Seçiniz" itemValue="" />
 								<f:selectItem itemLabel="Lise" itemValue="0" />
 								<f:selectItem itemLabel="Lisans" itemValue="1" />
@@ -402,14 +403,16 @@
 
 							<p:outputLabel class="outputLabelClass" for="sdButtonDate"
 								value="Başlama Tarihi:" />
-							<p:calendar id="sdButtonDate" locale="tr" navigator="true"
-								pattern="dd.MM.yyyy" required="true" requiredMessage="" />
+							<p:calendar value="#{bean.newESStartDate}" id="sdButtonDate"
+								locale="tr" navigator="true" pattern="dd.MM.yyyy"
+								required="true" requiredMessage="" />
 							<h:message for="sdButtonDate" style="color: red" />
 
 							<p:outputLabel class="outputLabelClass" for="gdButtonDate"
 								value="Bitirme Tarihi:" />
-							<p:calendar id="gdButtonDate" locale="tr" navigator="true"
-								pattern="dd.MM.yyyy" required="true" requiredMessage="" />
+							<p:calendar value="#{bean.newESGraduatedDate}" id="gdButtonDate"
+								locale="tr" navigator="true" pattern="dd.MM.yyyy"
+								required="true" requiredMessage="" />
 							<h:message for="gdButtonDate" style="color: red" />
 
 						</h:panelGrid>
@@ -417,7 +420,8 @@
 
 					<h:panelGrid style="margin-left:35%; padding:5px" columns="2">
 						<p:commandButton value="Kaydet" type="submit"
-							update="egitimBilgisiForm" icon="fa fa-fw fa-save" />
+							update="egitimBilgisiForm" icon="fa fa-fw fa-save"
+							action="#{bean.creatorNewEducationStatus}" />
 						<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 							<p:ajax update="egitimBilgisiForm" resetValues="true" />
 						</p:commandButton>

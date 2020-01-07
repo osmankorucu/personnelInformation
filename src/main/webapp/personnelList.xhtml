@@ -47,8 +47,6 @@
 				<h:form id="form">
 					<p:growl id="msgs" showDetail="true" />
 
-					<!-- sortBy="#{personnel.prsId}" sortOrder="ascending" -->
-
 					<p:dataTable id="cars1" resizableColumns="true" liveResize="true"
 						scrollable="true" scrollWidth="190%" var="personnel"
 						widgetVar="carsTable1" emptyMessage="Personel Bulunamadı"
@@ -63,8 +61,8 @@
 						<p:ajax event="rowEditCancel" resetValues="true"
 							update=":form:msgs" />
 						<p:ajax event="rowEditInit"
-							listener="#{bean.createTempDatas(personnel.prsId)}" />
-						<!-- ******************************************* -->
+							listener="#{bean.createTempPrsDatas(personnel.prsId)}" />
+
 						<p:column style="width:15px" headerText="ID">
 							<p:cellEditor>
 								<f:facet name="output">
@@ -75,6 +73,7 @@
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
+
 						<p:column headerText="Fotoğraf">
 							<p:cellEditor>
 								<f:facet name="output">
@@ -215,7 +214,11 @@
 						<p:column headerText="Çocuğu var mı?">
 							<p:cellEditor>
 								<f:facet name="output">
-									<p:commandLink value="Detay" onclick="PF('dlg2').show();" />
+									<p:commandLink value="Detay" onclick="PF('dlg2').show();">
+										<p:ajax
+											listener="#{bean.getPersonnelChildren(personnel.prsId)}"
+											update="form2" />
+									</p:commandLink>
 								</f:facet>
 								<f:facet name="input">
 									<p:outputLabel style="margin-left:50%" value="-" />
@@ -296,38 +299,30 @@
 					src="#{bean.tempPrsPhoto}" />
 			</p:panel>
 		</p:dialog>
-
 		<p:dialog header="Çocuk Bilgileri" widgetVar="dlg2" resizable="false"
 			modal="true" height="250">
-			<h:panelGrid columns="2">
-				<h:form>
-					<h:panelGrid columns="2">
-						<p:inputText style="width:615px" id="search"
-							placeholder="Arama Yap..." />
-
-						<p:commandButton style="width:100%" value="Ara"
-							onkeyup="PF('carsTable1').filter()" icon="fa fa-fw fa-user-times"
-							type="button" />
-					</h:panelGrid>
-				</h:form>
-			</h:panelGrid>
-
 			<h:panelGrid columns="1">
 				<h:form id="form2">
 					<p:growl id="msgs2" showDetail="true" />
-					<p:dataTable id="cars12" var="car" value="" editable="true"
-						style="margin-bottom:20px">
-						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+
+					<p:dataTable id="cars12" var="children" editable="true"
+						style="margin-bottom:20px" value="#{bean.children}"
+						emptyMessage="Çocuk Bulunamadı" resizableColumns="true"
+						liveResize="true">
+						<p:ajax event="rowEdit"
+							listener="#{bean.updateChildren(children.chdID)}"
 							update=":form:msgs" />
-						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
+						<p:ajax event="rowEditCancel" resetValues="true"
 							update=":form:msgs" />
-						<p:column headerText="ID" style="width:15px">
+						<p:ajax event="rowEditInit"
+							listener="#{bean.createTempChdDatas(personnel.prsId)}" />
+						<p:column style="width:15px" headerText="ID">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{children.chdID}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:inputText disabled="true" value="#{children.chdID}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -335,10 +330,13 @@
 						<p:column headerText="Ad">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{children.chdName}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:inputText value="#{bean.newChdName}" id="nameInputText"
+										required="true" requiredMessage="">
+										<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+									</p:inputText>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -346,41 +344,64 @@
 						<p:column headerText="Soyad">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{children.chdSurname}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
-								</f:facet>
-							</p:cellEditor>
-						</p:column>
-						<p:column headerText="Cinsiyet">
-							<p:cellEditor>
-								<f:facet name="output">
-									<h:outputText value="" />
-								</f:facet>
-								<f:facet name="input">
-									<p:inputText value="" />
-								</f:facet>
-							</p:cellEditor>
-						</p:column>
-						<p:column headerText="Doğum Tarihi">
-							<p:cellEditor>
-								<f:facet name="output">
-									<h:outputText value="" />
-								</f:facet>
-								<f:facet name="input">
-									<p:inputText value="" />
+									<p:inputText value="#{bean.newChdSurname}"
+										id="surnameInputText" required="true" requiredMessage="">
+										<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+									</p:inputText>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 
-						<p:column style="width:5px" headerText="Sil">
-							<p:commandLink class="fa fa-fw fa-user-times" />
+						<p:column headerText="Cinsiyet">
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{children.chdSex}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:selectOneMenu value="#{bean.newChdSex}" style="width:84%"
+										id="console" required="true" requiredMessage="">
+										<f:selectItem itemLabel="Seçiniz" itemValue="" />
+										<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+										<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+										<f:facet name="footer">
+											<p:separator />
+											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+										</f:facet>
+									</p:selectOneMenu>
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Doğum Tarihi">
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{children.chdDateOfBirth}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:calendar value="#{bean.newChdDateOfBirth}"
+										id="dobButtonDate" locale="tr" navigator="true"
+										pattern="dd.MM.yyyy" required="true" requiredMessage=""
+										autocomplete="off" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column headerText="Sil" style="width:5px">
+							<p:commandLink ajax="true" class="fa fa-fw fa-user-times"
+								actionListener="#{bean.deleteChildren(children)}">
+								<p:ajax update="form2"></p:ajax>
+							</p:commandLink>
 						</p:column>
 						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />
 						</p:column>
 					</p:dataTable>
+					<p:commandButton value="Yeni Çocuk Ekle"
+						actionListener="#{bean.createNewChild()}" update="form2" />
 				</h:form>
 			</h:panelGrid>
 		</p:dialog>
