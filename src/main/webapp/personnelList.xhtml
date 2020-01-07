@@ -228,7 +228,11 @@
 						<p:column headerText="Eğitim Durumu">
 							<p:cellEditor>
 								<f:facet name="output">
-									<p:commandLink value="Detay" onclick="PF('dlg3').show();" />
+									<p:commandLink value="Detay" onclick="PF('dlg3').show();">
+										<p:ajax
+											listener="#{bean.getPersonnelChildren(personnel.prsId)}"
+											update="form2" />
+									</p:commandLink>
 								</f:facet>
 								<f:facet name="input">
 									<p:outputLabel style="margin-left:50%" value="-" />
@@ -407,35 +411,30 @@
 		</p:dialog>
 		<p:dialog header="Eğitim Bilgileri" widgetVar="dlg3" resizable="false"
 			modal="true" height="275">
-			<h:panelGrid columns="2">
-				<h:form>
-					<h:panelGrid columns="2">
-						<p:inputText style="width:615px" id="search"
-							placeholder="Arama Yap..." />
-
-						<p:commandButton style="width:100%" value="Ara"
-							onkeyup="PF('carsTable1').filter()" icon="fa fa-fw fa-search"
-							type="button" />
-					</h:panelGrid>
-				</h:form>
-			</h:panelGrid>
-
 			<h:panelGrid columns="1">
 				<h:form id="form3">
 					<p:growl id="msgs3" showDetail="true" />
-					<p:dataTable id="cars13" var="car" value="" editable="true"
-						style="margin-bottom:20px">
-						<p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}"
+					<p:dataTable id="cars13" var="educationStatus"
+						value="#{bean.educationStatus}" editable="true"
+						style="margin-bottom:20px"
+						emptyMessage="Eğitim Bilgisi Bulunamadı" resizableColumns="true"
+						liveResize="true">
+						<p:ajax event="rowEdit"
+							listener="#{bean.updateEducationStatus(educationStatus.esId)}"
 							update=":form:msgs" />
-						<p:ajax event="rowEditCancel" listener="#{dtEditView.onRowEdit}"
+						<p:ajax event="rowEditCancel" resetValues="true"
 							update=":form:msgs" />
+						<p:ajax event="rowEditInit"
+							listener="#{bean.createTempESDatas(personnel.prsId)}" />
+
+
 						<p:column headerText="ID" style="width:15px">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{educationStatus.esId}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:inputText disabled="true" value="#{educationStatus.esId}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -443,10 +442,10 @@
 						<p:column headerText="Ad">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{educationStatus.esName}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:inputText value="#{educationStatus.newESName}" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -454,30 +453,134 @@
 						<p:column headerText="Bulunduğu İl">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{educationStatus.esCity}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:selectOneMenu value="#{bean.newESCity}" style="width:84%"
+										id="console" required="true" requiredMessage="">
+										<f:selectItem itemValue="" itemLabel="Seçiniz" />
+										<f:selectItem itemValue="Adana" itemLabel="Adana" />
+										<f:selectItem itemValue="Adıyaman" itemLabel="Adıyaman" />
+										<f:selectItem itemValue="Afyonkarahisar"
+											itemLabel="Afyonkarahisar" />
+										<f:selectItem itemValue="Ağrı" itemLabel="Ağrı" />
+										<f:selectItem itemValue="Amasya" itemLabel="Amasya" />
+										<f:selectItem itemValue="Ankara" itemLabel="Ankara" />
+										<f:selectItem itemValue="Antalya" itemLabel="Antalya" />
+										<f:selectItem itemValue="Artvin" itemLabel="Artvin" />
+										<f:selectItem itemValue="Aydın" itemLabel="Aydın" />
+										<f:selectItem itemValue="Balıkesir" itemLabel="Balıkesir" />
+										<f:selectItem itemValue="Bilecik" itemLabel="Bilecik" />
+										<f:selectItem itemValue="Bingöl" itemLabel="Bingöl" />
+										<f:selectItem itemValue="Bitlis" itemLabel="Bitlis" />
+										<f:selectItem itemValue="Bolu" itemLabel="Bolu" />
+										<f:selectItem itemValue="Burdur" itemLabel="Burdur" />
+										<f:selectItem itemValue="Bursa" itemLabel="Bursa" />
+										<f:selectItem itemValue="Çanakkale" itemLabel="Çanakkale" />
+										<f:selectItem itemValue="Çankırı" itemLabel="Çankırı" />
+										<f:selectItem itemValue="Çorum" itemLabel="Çorum" />
+										<f:selectItem itemValue="Denizli" itemLabel="Denizli" />
+										<f:selectItem itemValue="Diyarbakır" itemLabel="Diyarbakır" />
+										<f:selectItem itemValue="Edirne" itemLabel="Edirne" />
+										<f:selectItem itemValue="Elazığ" itemLabel="Elazığ" />
+										<f:selectItem itemValue="Erzincan" itemLabel="Erzincan" />
+										<f:selectItem itemValue="Erzurum" itemLabel="Erzurum" />
+										<f:selectItem itemValue="Eskişehir" itemLabel="Eskişehir" />
+										<f:selectItem itemValue="Gaziantep" itemLabel="Gaziantep" />
+										<f:selectItem itemValue="Giresun" itemLabel="Giresun" />
+										<f:selectItem itemValue="Gümüşhane" itemLabel="Gümüşhane" />
+										<f:selectItem itemValue="Hakkâri" itemLabel="Hakkâri" />
+										<f:selectItem itemValue="Hatay" itemLabel="Hatay" />
+										<f:selectItem itemValue="Isparta" itemLabel="Isparta" />
+										<f:selectItem itemValue="Mersin" itemLabel="Mersin" />
+										<f:selectItem itemValue="İstanbul" itemLabel="İstanbul" />
+										<f:selectItem itemValue="İzmir" itemLabel="İzmir" />
+										<f:selectItem itemValue="Kars" itemLabel="Kars" />
+										<f:selectItem itemValue="Kastamonu" itemLabel="Kastamonu" />
+										<f:selectItem itemValue="Kayseri" itemLabel="Kayseri" />
+										<f:selectItem itemValue="Kırklareli" itemLabel="Kırklareli" />
+										<f:selectItem itemValue="Kırşehir" itemLabel="Kırşehir" />
+										<f:selectItem itemValue="Kocaeli" itemLabel="Kocaeli" />
+										<f:selectItem itemValue="Konya" itemLabel="Konya" />
+										<f:selectItem itemValue="Kütahya" itemLabel="Kütahya" />
+										<f:selectItem itemValue="Malatya" itemLabel="Malatya" />
+										<f:selectItem itemValue="Manisa" itemLabel="Manisa" />
+										<f:selectItem itemValue="Kahramanmaraş"
+											itemLabel="Kahramanmaraş" />
+										<f:selectItem itemValue="Mardin" itemLabel="Mardin" />
+										<f:selectItem itemValue="Muğla" itemLabel="Muğla" />
+										<f:selectItem itemValue="Muş" itemLabel="Muş" />
+										<f:selectItem itemValue="Nevşehir" itemLabel="Nevşehir" />
+										<f:selectItem itemValue="Niğde" itemLabel="Niğde" />
+										<f:selectItem itemValue="Ordu" itemLabel="Ordu" />
+										<f:selectItem itemValue="Rize" itemLabel="Rize" />
+										<f:selectItem itemValue="Sakarya" itemLabel="Sakarya" />
+										<f:selectItem itemValue="Samsun" itemLabel="Samsun" />
+										<f:selectItem itemValue="Siirt" itemLabel="Siirt" />
+										<f:selectItem itemValue="Sinop" itemLabel="Sinop" />
+										<f:selectItem itemValue="Sivas" itemLabel="Sivas" />
+										<f:selectItem itemValue="Tekirdağ" itemLabel="Tekirdağ" />
+										<f:selectItem itemValue="Tokat" itemLabel="Tokat" />
+										<f:selectItem itemValue="Trabzon" itemLabel="Trabzon" />
+										<f:selectItem itemValue="Tunceli" itemLabel="Tunceli" />
+										<f:selectItem itemValue="Şanlıurfa" itemLabel="Şanlıurfa" />
+										<f:selectItem itemValue="Uşak" itemLabel="Uşak" />
+										<f:selectItem itemValue="Van" itemLabel="Van" />
+										<f:selectItem itemValue="Yozgat" itemLabel="Yozgat" />
+										<f:selectItem itemValue="Zonguldak" itemLabel="Zonguldak" />
+										<f:selectItem itemValue="Aksaray" itemLabel="Aksaray" />
+										<f:selectItem itemValue="Bayburt" itemLabel="Bayburt" />
+										<f:selectItem itemValue="Karaman" itemLabel="Karaman" />
+										<f:selectItem itemValue="Kırıkkale" itemLabel="Kırıkkale" />
+										<f:selectItem itemValue="Batman" itemLabel="Batman" />
+										<f:selectItem itemValue="Şırnak" itemLabel="Şırnak" />
+										<f:selectItem itemValue="Bartın" itemLabel="Bartın" />
+										<f:selectItem itemValue="Ardahan" itemLabel="Ardahan" />
+										<f:selectItem itemValue="Iğdır" itemLabel="Iğdır" />
+										<f:selectItem itemValue="Yalova" itemLabel="Yalova" />
+										<f:selectItem itemValue="Karabük" itemLabel="Karabük" />
+										<f:selectItem itemValue="Kilis" itemLabel="Kilis" />
+										<f:selectItem itemValue="Osmaniye" itemLabel="Osmaniye" />
+										<f:selectItem itemValue="Düzce" itemLabel="Düzce" />
+										<f:facet name="footer">
+											<p:separator />
+											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+										</f:facet>
+									</p:selectOneMenu>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="Türü">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{educationStatus.esType}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:selectOneMenu value="#{bean.newESType}" style="width:185px"
+										id="console5" required="true" requiredMessage="">
+										<f:selectItem itemLabel="Seçiniz" itemValue="" />
+										<f:selectItem itemLabel="Lise" itemValue="Lise" />
+										<f:selectItem itemLabel="Lisans" itemValue="Lisans" />
+										<f:selectItem itemLabel="Yüksek Lisans"
+											itemValue="Yüksek Lisans" />
+										<f:selectItem itemLabel="Doktora" itemValue="Doktora" />
+										<f:facet name="footer">
+											<p:separator />
+											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+										</f:facet>
+									</p:selectOneMenu>
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 						<p:column headerText="Başlama Tarihi">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{educationStatus.esStartDate}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:calendar value="#{bean.newESStartDate}" id="gdButtonDate"
+										locale="tr" navigator="true" pattern="dd.MM.yyyy"
+										required="true" requiredMessage="" autocomplete="off" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
@@ -485,16 +588,22 @@
 						<p:column headerText="Bitirme Tarihi">
 							<p:cellEditor>
 								<f:facet name="output">
-									<h:outputText value="" />
+									<h:outputText value="#{educationStatus.esGraduatedDate}" />
 								</f:facet>
 								<f:facet name="input">
-									<p:inputText value="" />
+									<p:calendar value="#{bean.newESGraduatedDate}"
+										id="sdButtonDate" locale="tr" navigator="true"
+										pattern="dd.MM.yyyy" required="true" requiredMessage=""
+										autocomplete="off" />
 								</f:facet>
 							</p:cellEditor>
 						</p:column>
 
-						<p:column style="width:10px" headerText="Sil">
-							<p:commandLink class="fa fa-fw fa-user-times" />
+						<p:column headerText="Sil" style="width:5px">
+							<p:commandLink ajax="true" class="fa fa-fw fa-user-times"
+								actionListener="#{bean.deleteEducationStatus(educationStatus)}">
+								<p:ajax update="form2"></p:ajax>
+							</p:commandLink>
 						</p:column>
 						<p:column style="width:25px" headerText="Düzenle">
 							<p:rowEditor />

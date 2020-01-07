@@ -27,12 +27,13 @@ public class EducationStatus implements Serializable {
 	private Date esStartDate;
 	@Temporal(TemporalType.DATE)
 	private Date esGraduatedDate;
-	private EducationType esType;
+	private String esType;
+//	private EducationType esType;
 
 	public EducationStatus() {
 	}
 
-	public EducationStatus(String esName, String esCity, Date esStartDate, Date esGraduatedDate, EducationType esType) {
+	public EducationStatus(String esName, String esCity, Date esStartDate, Date esGraduatedDate, String esType) {
 		super();
 		this.esName = esName;
 		this.esCity = esCity;
@@ -81,11 +82,11 @@ public class EducationStatus implements Serializable {
 		this.esGraduatedDate = esGraduatedDate;
 	}
 
-	public EducationType getEsType() {
+	public String getEsType() {
 		return esType;
 	}
 
-	public void setEsType(EducationType esType) {
+	public void setEsType(String esType) {
 		this.esType = esType;
 	}
 

@@ -67,7 +67,7 @@ public class Bean implements Serializable {
 	private int newESId;
 	private String newESName;
 	private String newESCity;
-	private EducationType newESType;
+	private String newESType;
 	private Date newESStartDate;
 	private Date newESGraduatedDate;
 
@@ -629,11 +629,11 @@ public class Bean implements Serializable {
 		this.personnel = personnel;
 	}
 
-	public EducationType getNewESType() {
+	public String getNewESType() {
 		return newESType;
 	}
 
-	public void setNewESType(EducationType newESType) {
+	public void setNewESType(String newESType) {
 		this.newESType = newESType;
 	}
 
