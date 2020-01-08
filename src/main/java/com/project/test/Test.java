@@ -6,7 +6,6 @@ import java.util.Date;
 import com.project.model.Children;
 import com.project.model.EducationStatus;
 import com.project.model.Personnel;
-import com.project.model.util.EducationType;
 import com.project.repository.Repository;
 import com.project.repository.impl.RepositoryImpl;
 
@@ -14,15 +13,15 @@ public class Test {
 	public static void main(String[] args) {
 		Repository repository = new RepositoryImpl();
 
-		Personnel personnel = new Personnel("32950486658","Osman", "KORUCU", "Erkek", createDate(11, 7, 1997), "osman25korucu@gmail.com",
-				"+905537045625", "Şükrüpaşa Mah. Şıhköyü Cad. Tugay Sitesi A Bl. Kat: 3 No: 10 Yakutiye/Erzurum", "Bekar",
-				null);
+		Personnel personnel = new Personnel("32950486658", "Osman", "KORUCU", "Erkek", createDate(11, 7, 1997),
+				"osman25korucu@gmail.com", "+905537045625",
+				"Şükrüpaşa Mah. Şıhköyü Cad. Tugay Sitesi A Bl. Kat: 3 No: 10 Yakutiye/Erzurum", "Bekar", null);
 		Children children = new Children("Ali", "KORUCU", "Erkek", createDate(11, 11, 2011));
 		personnel.addChildren(children);
 		personnel.addEducationStatus(new EducationStatus("Mehmet Akif Ersoy Anadolu Lisesi", "Erzurum",
-				createDate(15, 9, 2011), createDate(15, 6, 2015), EducationType.LISE));
+				createDate(15, 9, 2011), createDate(15, 6, 2015), "Lise"));
 		repository.createPersonnel(personnel);
-		
+
 	}
 
 	public static Date createDate(int day, int month, int year) {

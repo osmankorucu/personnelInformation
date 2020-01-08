@@ -17,7 +17,6 @@ import org.primefaces.event.FileUploadEvent;
 import com.project.model.Children;
 import com.project.model.EducationStatus;
 import com.project.model.Personnel;
-import com.project.model.util.EducationType;
 import com.project.repository.Repository;
 import com.project.repository.impl.RepositoryImpl;
 
@@ -36,6 +35,7 @@ public class Bean implements Serializable {
 
 	private List<Personnel> personnels;
 	private List<Personnel> filteredPersonnels;
+	private int selectedPersonnelId;
 
 	private Personnel personnel;
 	private Personnel newPersonnel;
@@ -92,8 +92,6 @@ public class Bean implements Serializable {
 							newPrsDateOfBirth, newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus,
 							newPrsChildren, newPrsIsMarried, newPrsPhoto);
 					repository.createPersonnel(newPersonnel);
-//					newPersonnel.setPrsChildren(prsChildren);
-//					repository.updatePersonnel(newPersonnel);
 					clearTempPrsDatas();
 					message = "Ekleme işlemi Başarılı";
 				} catch (Exception e) {
@@ -113,7 +111,7 @@ public class Bean implements Serializable {
 		personnels = repository.getPersonnels();
 	}
 
-	public void updatePersonnel(int id) {
+	public void updatePersonnel() {
 		try {
 			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
 			long idNumber = Long.parseLong(newPrsIDNumber);
@@ -123,7 +121,7 @@ public class Bean implements Serializable {
 					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
 			if (result) {
 				try {
-					newPersonnel = repository.getPersonnel(id);
+					newPersonnel = repository.getPersonnel(selectedPersonnelId);
 					newPersonnel.setPrsIDNumber(newPrsIDNumber);
 					newPersonnel.setPrsName(newPrsName);
 					newPersonnel.setPrsSurname(newPrsSurname);
@@ -167,6 +165,7 @@ public class Bean implements Serializable {
 	}
 
 	public void createTempPrsDatas(int id) {
+		selectedPersonnelId = id;
 		newPersonnel = repository.getPersonnel(id);
 		newPrsIDNumber = newPersonnel.getPrsIDNumber();
 		newPrsName = newPersonnel.getPrsName();
@@ -200,6 +199,11 @@ public class Bean implements Serializable {
 	public void getPersonnelChildren(int id) {
 		this.personnel = repository.getPersonnel(id);
 		this.children = repository.getPersonnel(id).getPrsChildren();
+	}
+
+	public void getPersonnelEducationStatus(int id) {
+		this.personnel = repository.getPersonnel(id);
+		this.educationStatus = repository.getPersonnel(id).getPrsEducationStatus();
 	}
 
 	public void creatorNewChildren() {
@@ -330,7 +334,7 @@ public class Bean implements Serializable {
 	}
 
 	public void createNewES() {
-		EducationStatus educationStatus = new EducationStatus("", "", null, null, null);
+		EducationStatus educationStatus = new EducationStatus("", "", null, null, "");
 		this.personnel.addEducationStatus(educationStatus);
 
 	}
