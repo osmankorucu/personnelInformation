@@ -36,6 +36,7 @@ public class Bean implements Serializable {
 	private List<Personnel> personnels;
 	private List<Personnel> filteredPersonnels;
 	private int selectedPersonnelId;
+	private boolean renderFlag = true;
 
 	private Personnel personnel;
 	private Personnel newPersonnel;
@@ -135,6 +136,7 @@ public class Bean implements Serializable {
 					repository.updatePersonnel(newPersonnel);
 					clearTempPrsDatas();
 					message = "Ekleme işlemi Başarılı";
+					renderFlag = true;
 				} catch (Exception e) {
 					message = "Ekleme işlemi Başarısız";
 				}
@@ -146,6 +148,7 @@ public class Bean implements Serializable {
 			System.out.println(ex.getMessage());
 		}
 
+		clearTempPrsDatas();
 		saveMessage(message);
 
 	}
@@ -165,8 +168,10 @@ public class Bean implements Serializable {
 	}
 
 	public void createTempPrsDatas(int id) {
+		renderFlag = false;
 		selectedPersonnelId = id;
 		newPersonnel = repository.getPersonnel(id);
+		newPrsPhoto = newPersonnel.getPrsPhoto();
 		newPrsIDNumber = newPersonnel.getPrsIDNumber();
 		newPrsName = newPersonnel.getPrsName();
 		newPrsSurname = newPersonnel.getPrsSurname();
@@ -179,6 +184,7 @@ public class Bean implements Serializable {
 	}
 
 	public void clearTempPrsDatas() {
+		selectedPersonnelId = -1;
 		newPrsIDNumber = "";
 		newPrsName = "";
 		newPrsSurname = "";
@@ -673,4 +679,21 @@ public class Bean implements Serializable {
 		this.educationStatus = educationStatus;
 	}
 
+	public int getSelectedPersonnelId() {
+		return selectedPersonnelId;
+	}
+
+	public void setSelectedPersonnelId(int selectedPersonnelId) {
+		this.selectedPersonnelId = selectedPersonnelId;
+	}
+
+	public boolean isRenderFlag() {
+		return renderFlag;
+	}
+
+	public void setRenderFlag(boolean renderFlag) {
+		this.renderFlag = renderFlag;
+	}
+
+	
 }

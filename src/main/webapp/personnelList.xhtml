@@ -65,7 +65,7 @@
 	<div id="plDiv">
 		<p:growl id="messages" />
 		<div id="plListDiv" style="margin: 1%">
-			<p:panel id="listPanel" rendered="true" style="border:none">
+			<p:panel id="listPanel" rendered="#{bean.renderFlag}" style="border:none">
 				<h:panelGrid columns="1">
 
 					<h:form>
@@ -192,7 +192,7 @@
 								<p:column style="width:25px" headerText="Düzenle">
 									<p:commandLink class="fa fa-fw fa-edit"
 										actionListener="#{bean.createTempPrsDatas(personnel.prsId)}"
-										update="editPanel">
+										update="editForm">
 									</p:commandLink>
 								</p:column>
 							</p:dataTable>
@@ -300,7 +300,7 @@
 		</div>
 
 		<div id="plEditDiv" style="margin-left: 15%; margin-right: 15%">
-			<p:panel id="editPanel" rendered="true" style="border:none">
+			<p:panel id="editPanel" rendered="#{!bean.renderFlag}" style="border:none">
 				<h:panelGrid columns="1">
 					<h:form>
 						<p:panel
@@ -441,7 +441,7 @@
 						<h:panelGrid style="margin-left:35%" columns="2">
 							<p:commandButton value="Kaydet" type="submit"
 								update="editPersonnelForm" icon="fa fa-fw fa-save"
-								action="#{bean.updatePersonnel(personnel.prsId)}" ajax="false" />
+								action="#{bean.updatePersonnel()}" ajax="false" />
 							<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 								<p:ajax update="editPersonnelForm" resetValues="true" />
 							</p:commandButton>
