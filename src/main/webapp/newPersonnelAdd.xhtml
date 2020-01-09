@@ -96,7 +96,7 @@
 						<p:outputLabel for="nameInputText" value="Ad:"></p:outputLabel>
 						<p:inputText value="#{bean.newPrsName}" id="nameInputText"
 							required="true" requiredMessage="">
-							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+							<p:keyFilter regEx="/[ a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 						</p:inputText>
 						<h:message for="nameInputText" style="color: red" />
 
@@ -228,7 +228,7 @@
 						<p:outputLabel for="childNameInputText" value="Ad:"></p:outputLabel>
 						<p:inputText value="#{bean.newChdName}" id="childNameInputText"
 							required="true" requiredMessage="">
-							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
+							<p:keyFilter regEx="/[ a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 						</p:inputText>
 						<h:message for="childNameInputText" style="color: red" />
 

@@ -337,7 +337,7 @@
 								<p:inputText id="personnelNameInputText"
 									value="#{bean.newPersonnel.prsName}" required="true"
 									requiredMessage="">
-									<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ ]/i" />
+									<p:keyFilter regEx="/[ a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 								</p:inputText>
 								<h:message for="personnelNameInputText" style="color: red" />
 
@@ -476,7 +476,7 @@
 								<p:outputLabel for="childNameInputText" value="Ad:"></p:outputLabel>
 								<p:inputText id="childNameInputText" value="#{bean.newChdName}"
 									required="true" requiredMessage="">
-									<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ ]/i" />
+									<p:keyFilter regEx="/[ a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 								</p:inputText>
 								<h:message for="childNameInputText" style="color: red" />
 
