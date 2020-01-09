@@ -115,24 +115,15 @@ public class Bean implements Serializable {
 	public void updatePersonnel() {
 		try {
 			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
-			long idNumber = Long.parseLong(newPrsIDNumber);
+			long idNumber = Long.parseLong(newPersonnel.getPrsIDNumber());
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(newPrsDateOfBirth);
-			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
-					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
+			calendar.setTime(newPersonnel.getPrsDateOfBirth());
+			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPersonnel.getPrsName().toUpperCase(),
+					newPersonnel.getPrsSurname().toUpperCase(), calendar.get(Calendar.YEAR));
 			if (result) {
 				try {
-					newPersonnel = repository.getPersonnel(selectedPersonnelId);
-					newPersonnel.setPrsIDNumber(newPrsIDNumber);
-					newPersonnel.setPrsName(newPrsName);
-					newPersonnel.setPrsSurname(newPrsSurname);
-					newPersonnel.setPrsSex(newPrsSex);
-					newPersonnel.setPrsDateOfBirth(newPrsDateOfBirth);
-					newPersonnel.setPrsEMail(newPrsEMail);
-					newPersonnel.setPrsPhoneNumber(newPrsPhoneNumber);
-					newPersonnel.setPrsAddress(newPrsAddress);
-					newPersonnel.setPrsIsMarried(newPrsIsMarried);
-					newPersonnel.setPrsPhoto(newPrsPhoto);
+					newPersonnel.setPrsChildren(newPrsChildren);
+					newPersonnel.setPrsEducationStatus(newPrsEducationStatus);
 					repository.updatePersonnel(newPersonnel);
 					clearTempPrsDatas();
 					message = "Ekleme işlemi Başarılı";
@@ -150,7 +141,6 @@ public class Bean implements Serializable {
 
 		clearTempPrsDatas();
 		saveMessage(message);
-
 	}
 
 	public void deletePersonnel(Personnel personnel) {
@@ -167,20 +157,11 @@ public class Bean implements Serializable {
 		}
 	}
 
-	public void createTempPrsDatas(int id) {
+	public void createTempPrsDatas(Personnel personnel) {
 		renderFlag = false;
-		selectedPersonnelId = id;
-		newPersonnel = repository.getPersonnel(id);
-		newPrsPhoto = newPersonnel.getPrsPhoto();
-		newPrsIDNumber = newPersonnel.getPrsIDNumber();
-		newPrsName = newPersonnel.getPrsName();
-		newPrsSurname = newPersonnel.getPrsSurname();
-		newPrsSex = newPersonnel.getPrsSex();
-		newPrsDateOfBirth = newPersonnel.getPrsDateOfBirth();
-		newPrsEMail = newPersonnel.getPrsEMail();
-		newPrsPhoneNumber = newPersonnel.getPrsPhoneNumber();
-		newPrsAddress = newPersonnel.getPrsAddress();
-		newPrsIsMarried = newPersonnel.getPrsIsMarried();
+		newPrsChildren = personnel.getPrsChildren();
+		newPrsEducationStatus = personnel.getPrsEducationStatus();
+		this.newPersonnel = personnel;
 	}
 
 	public void clearTempPrsDatas() {
@@ -371,6 +352,7 @@ public class Bean implements Serializable {
 		}
 		String encodedImage = java.util.Base64.getEncoder().encodeToString(event.getFile().getContents());
 		this.newPrsPhoto = String.format("data:image/%s;base64,%s", extension, encodedImage);
+		this.newPersonnel.setPrsPhoto(String.format("data:image/%s;base64,%s", extension, encodedImage));
 	}
 
 	public void saveMessage(String message) {
@@ -378,6 +360,9 @@ public class Bean implements Serializable {
 		context.addMessage(null, new FacesMessage(message));
 	}
 
+	public void changeFlag() {
+		this.renderFlag=!renderFlag;
+	}
 	public String navigateToNewPersonnelAdd() {
 		navigateToPage = "newPersonnelAdd?faces-redirect=true";
 		return navigateToPage;
@@ -695,5 +680,4 @@ public class Bean implements Serializable {
 		this.renderFlag = renderFlag;
 	}
 
-	
 }

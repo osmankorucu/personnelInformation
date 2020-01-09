@@ -21,6 +21,11 @@
 	text-overflow: ellipsis;
 }
 
+.ui-panel {
+	border: none;
+	padding: 0px;
+}
+
 .outputLabelClass {
 	width: 200px;
 	overflow: hidden;
@@ -62,10 +67,11 @@
 			allDayText : 'Tam Gün'
 		};
 	</script>
-	<div id="plDiv">
+	<p:panel id="plPanel">
 		<p:growl id="messages" />
-		<div id="plListDiv" style="margin: 1%">
-			<p:panel id="listPanel" rendered="#{bean.renderFlag}" style="border:none">
+		<p:panel id="plListPanel">
+			<p:panel id="listPanel" rendered="#{bean.renderFlag}"
+				style="margin-left:-2%">
 				<h:panelGrid columns="1">
 
 					<h:form>
@@ -97,7 +103,7 @@
 										<p:ajax listener="#{bean.getPersonnelPhoto(personnel.prsId)}"
 											update="photoPanel" />
 										<img alt="Personel Fotoğrafı" height="85" width="80"
-											src="#{personnel.prsPhoto}" style="margin-left: 30%" />
+											src="#{personnel.prsPhoto}" />
 									</p:commandLink>
 								</p:column>
 
@@ -191,8 +197,8 @@
 								</p:column>
 								<p:column style="width:25px" headerText="Düzenle">
 									<p:commandLink class="fa fa-fw fa-edit"
-										actionListener="#{bean.createTempPrsDatas(personnel.prsId)}"
-										update="editForm">
+										actionListener="#{bean.createTempPrsDatas(personnel)}"
+										update="plPanel">
 									</p:commandLink>
 								</p:column>
 							</p:dataTable>
@@ -202,7 +208,7 @@
 				<p:dialog header="Personel Fotoğrafı" widgetVar="photoDlg"
 					resizable="false" modal="true" height="450" width="390">
 					<p:panel id="photoPanel" style="border:none">
-						<img alt="Personel Fotoğrafı" height="450" width="390"
+						<img alt="Personel Fotoğrafı" height="410" width="315"
 							src="#{bean.tempPrsPhoto}" />
 					</p:panel>
 				</p:dialog>
@@ -297,17 +303,15 @@
 					</h:panelGrid>
 				</p:dialog>
 			</p:panel>
-		</div>
+		</p:panel>
 
-		<div id="plEditDiv" style="margin-left: 15%; margin-right: 15%">
-			<p:panel id="editPanel" rendered="#{!bean.renderFlag}" style="border:none">
+		<p:panel id="plEditPanel">
+			<p:panel id="editPanel" rendered="#{!bean.renderFlag}"
+				style="margin-top:-2%">
 				<h:panelGrid columns="1">
 					<h:form>
 						<p:panel
 							style="width:1050px;height:10%; background-color: #999999;">
-							<p:commandButton value="Geri"
-								icon="fa fa-fw far fa-angle-double-left" ajax="false"
-								action="#{bean.navigateToIndex()}" />
 							<p:outputLabel value="Personel Düzenle"
 								style="margin-left:30%; margin-right:30%; color: black"></p:outputLabel>
 						</p:panel>
@@ -321,7 +325,7 @@
 
 								<p:outputLabel for="personnelIdNumberInputText" value="TC No:"></p:outputLabel>
 								<p:inputMask id="personnelIdNumberInputText"
-									value="#{bean.newPrsIDNumber}" required="true"
+									value="#{bean.newPersonnel.prsIDNumber}" required="true"
 									requiredMessage="" mask="99999999999" />
 								<h:message for="personnelIdNumberInputText" style="color: red" />
 
@@ -331,14 +335,15 @@
 
 								<p:outputLabel for="personnelNameInputText" value="Ad:"></p:outputLabel>
 								<p:inputText id="personnelNameInputText"
-									value="#{bean.newPrsName}" required="true" requiredMessage="">
+									value="#{bean.newPersonnel.prsName}" required="true"
+									requiredMessage="">
 									<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ ]/i" />
 								</p:inputText>
 								<h:message for="personnelNameInputText" style="color: red" />
 
 								<p:outputLabel for="personnelSurnameInputText" value="Soyad:" />
 								<p:inputText id="personnelSurnameInputText"
-									value="#{bean.newPrsSurname}" required="true"
+									value="#{bean.newPersonnel.prsSurname}" required="true"
 									requiredMessage="">
 									<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 								</p:inputText>
@@ -346,8 +351,8 @@
 
 								<p:outputLabel for="@next" value="Cinsiyet:" />
 								<p:selectOneMenu id="personnelSexSelectOneMenu"
-									value="#{bean.newPrsSex}" required="true" requiredMessage=""
-									style="width:84%">
+									value="#{bean.newPersonnel.prsSex}" required="true"
+									requiredMessage="" style="width:84%">
 									<f:selectItem itemLabel="Seçiniz" itemValue="" />
 									<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 									<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
@@ -361,15 +366,15 @@
 								<p:outputLabel class="outputLabelClass"
 									for="personnelDobCalendar" value="Doğum Tarihi:" />
 								<p:calendar id="personnelDobCalendar"
-									value="#{bean.newPrsDateOfBirth}" locale="tr" navigator="true"
-									pattern="dd.MM.yyyy" required="true" requiredMessage=""
-									autocomplete="off" />
+									value="#{bean.newPersonnel.prsDateOfBirth}" locale="tr"
+									navigator="true" pattern="dd.MM.yyyy" required="true"
+									requiredMessage="" autocomplete="off" />
 								<h:message for="personnelDobCalendar" style="color: red" />
 
 								<p:outputLabel class="outputLabelClass" for="@next"
 									value="Medeni Durum:" />
 								<p:selectOneMenu id="personnelIsMarriedSelectOneMenu"
-									value="#{bean.newPrsIsMarried}" required="true"
+									value="#{bean.newPersonnel.prsIsMarried}" required="true"
 									requiredMessage="" style="width:84%">
 									<f:selectItem itemLabel="Seçiniz" itemValue="" />
 									<f:selectItem itemLabel="Bekar" itemValue="Bekar" />
@@ -382,37 +387,48 @@
 								<h:message for="personnelIsMarriedSelectOneMenu"
 									style="color: red" />
 
-								<p:outputLabel for="@next" value="Çocuk Bilgisi:" />
-								<p:commandButton value="Ekle" type="button"
-									onclick="PF('newChildDiaolg').show();" icon="fa fa-fw fa-child"
-									style="width:100%" />
-								<br />
-
 								<p:outputLabel class="outputLabelClass"
 									for="personnelPhoneInputMask" value="Telefon Numarası:" />
 								<p:inputMask id="personnelPhoneInputMask"
-									value="#{bean.newPrsPhoneNumber}" required="true"
+									value="#{bean.newPersonnel.prsPhoneNumber}" required="true"
 									requiredMessage="" mask="(999) 999-9999" />
 								<h:message for="personnelPhoneInputMask" style="color: red" />
 
-								<p:outputLabel for="@next" value="Eğitim Bilgisi:" />
-								<p:commandButton value="Ekle" type="button"
-									onclick="PF('newEducationStatusDialog').show();"
-									icon="fa fa-fw fa-mortar-board" style="width:100%" />
-								<br></br>
+								<p:outputLabel value="Çocuk Bilgisi:" />
+								<h:panelGrid columns="2" style="padding:0px;">
+									<p:commandButton style="width:100%" value="Ekle" type="button"
+										onclick="PF('newChildDiaolg').show();"
+										icon="fa fa-fw fa-child" />
+									<p:commandButton style="width:100%" value="Göster"
+										type="button" onclick="PF('childDialogOnEdit').show();"
+										icon="fa fa-fw fa-table" />
+								</h:panelGrid>
+								<br />
+
+								<p:outputLabel value="Eğitim Bilgisi:" />
+								<h:panelGrid columns="2" style="padding:0px;">
+									<p:commandButton style="width:100%" value="Ekle" type="button"
+										onclick="PF('newEducationStatusDialog').show();"
+										icon="fa fa-fw fa-mortar-board" />
+									<p:commandButton style="width:100%" value="Göster"
+										type="button"
+										onclick="PF('educationStatusDialogOnEdit').show();"
+										update="educationStatusDataTable" icon="fa fa-fw fa-table" />
+								</h:panelGrid>
+								<br />
 
 							</h:panelGrid>
 
 							<h:panelGrid columns="1" id="personnelImage">
 								<img alt="Personel Fotoğrafı" height="170" width="165"
-									src="#{bean.newPrsPhoto}" />
+									src="#{bean.newPersonnel.prsPhoto}" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="3">
 								<p:outputLabel class="outputLabelClass"
 									for="personnelEmailInputText" value="E-Posta Adresi: "></p:outputLabel>
 								<p:inputText id="personnelEmailInputText"
-									value="#{bean.newPrsEMail}" validatorMessage="!"
+									value="#{bean.newPersonnel.prsEMail}" validatorMessage="!"
 									required="true" requiredMessage="" style="width:615px">
 									<f:validateRegex
 										pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
@@ -422,7 +438,7 @@
 								<p:outputLabel class="outputLabelClass"
 									for="personnelAdresTextArea" value="Adres: "></p:outputLabel>
 								<p:inputTextarea id="personnelAdresTextArea"
-									value="#{bean.newPrsAddress}" rows="5" cols="30"
+									value="#{bean.newPersonnel.prsAddress}" rows="5" cols="30"
 									counter="display" maxlength="100"
 									counterTemplate="{0} karakter kaldı." required="true"
 									requiredMessage="" style="width:615px" />
@@ -442,9 +458,8 @@
 							<p:commandButton value="Kaydet" type="submit"
 								update="editPersonnelForm" icon="fa fa-fw fa-save"
 								action="#{bean.updatePersonnel()}" ajax="false" />
-							<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
-								<p:ajax update="editPersonnelForm" resetValues="true" />
-							</p:commandButton>
+							<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close"
+								update="plPanel" action="#{bean.changeFlag()}" />
 						</h:panelGrid>
 					</h:panelGrid>
 				</h:form>
@@ -499,8 +514,8 @@
 
 							<h:panelGrid style="margin-left:35%" columns="2">
 								<p:commandButton value="Kaydet" type="submit"
-									update="editChildForm" icon="fa fa-fw fa-save"
-									action="#{bean.creatorNewChildren}" />
+									update="editChildForm,:childFormOnEdit:childDataTableOnEdit"
+									icon="fa fa-fw fa-save" action="#{bean.creatorNewChildren}" />
 								<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 									<p:ajax update="editChildForm" resetValues="true" />
 								</p:commandButton>
@@ -509,7 +524,7 @@
 					</h:form>
 				</p:dialog>
 				<p:dialog header="Eğitim Bilgisi Düzenle"
-					widgetVar="newEducationStatus" resizable="false" modal="true"
+					widgetVar="newEducationStatusDialog" resizable="false" modal="true"
 					height="275">
 					<h:form id="editEducationStatusForm">
 						<h:panelGrid columns="1">
@@ -663,7 +678,8 @@
 							</h:panelGrid>
 							<h:panelGrid style="margin-left:35%; padding:5px" columns="2">
 								<p:commandButton value="Kaydet" type="submit"
-									update="editEducationStatusForm" icon="fa fa-fw fa-save"
+									update="editEducationStatusForm,:educationStatusFormOnEdit:educationStatusDataTableOnEdit"
+									icon="fa fa-fw fa-save"
 									action="#{bean.creatorNewEducationStatus}" />
 								<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 									<p:ajax update="editEducationStatusForm" resetValues="true" />
@@ -672,8 +688,74 @@
 						</h:panelGrid>
 					</h:form>
 				</p:dialog>
+				<p:dialog header="Çocuk Bilgileri" widgetVar="childDialogOnEdit"
+					resizable="false" modal="true" height="250">
+					<h:panelGrid columns="1">
+						<h:form id="childFormOnEdit">
+							<p:dataTable id="childDataTableOnEdit" var="children"
+								value="#{bean.newPersonnel.prsChildren}"
+								emptyMessage="Çocuk Bulunamadı" resizableColumns="true"
+								liveResize="true" tableStyle="table-layout:auto !important;"
+								style="margin-bottom:20px">
+
+								<p:column headerText="Ad">
+									<h:outputText value="#{children.chdName}" />
+								</p:column>
+
+								<p:column headerText="Soyad">
+									<h:outputText value="#{children.chdSurname}" />
+								</p:column>
+
+								<p:column headerText="Cinsiyet">
+									<h:outputText value="#{children.chdSex}" />
+								</p:column>
+
+								<p:column headerText="Doğum Tarihi">
+									<h:outputText value="#{children.chdDateOfBirth}" />
+								</p:column>
+
+							</p:dataTable>
+						</h:form>
+					</h:panelGrid>
+				</p:dialog>
+				<p:dialog header="Eğitim Bilgileri"
+					widgetVar="educationStatusDialogOnEdit" resizable="false"
+					modal="true" height="275">
+					<h:panelGrid columns="1">
+						<h:form id="educationStatusFormOnEdit">
+							<p:dataTable id="educationStatusDataTableOnEdit"
+								var="educationStatus" value="#{bean.newPrsEducationStatus}"
+								tableStyle="table-layout:auto !important;"
+								emptyMessage="Eğitim Bilgisi Bulunamadı" resizableColumns="true"
+								liveResize="true" style="margin-bottom:20px">
+
+								<p:column headerText="Ad">
+									<h:outputText value="#{educationStatus.esName}" />
+								</p:column>
+
+								<p:column headerText="Bulunduğu İl">
+									<h:outputText value="#{educationStatus.esCity}" />
+								</p:column>
+
+								<p:column headerText="Türü">
+									<h:outputText value="#{educationStatus.esType}" />
+								</p:column>
+
+								<p:column headerText="Başlama Tarihi">
+									<h:outputText value="#{educationStatus.esStartDate}" />
+								</p:column>
+
+								<p:column headerText="Bitirme Tarihi">
+									<h:outputText value="#{educationStatus.esGraduatedDate}" />
+								</p:column>
+
+							</p:dataTable>
+						</h:form>
+					</h:panelGrid>
+				</p:dialog>
+
 			</p:panel>
-		</div>
+		</p:panel>
 		<p:dialog modal="true" resizable="false" header="Values"
 			widgetVar="dlg" showEffect="fold">
 			<p:panelGrid id="display" columns="4"
@@ -690,6 +772,6 @@
 			<p:commandButton value="Hayır" type="button"
 				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
 		</p:confirmDialog>
-	</div>
+	</p:panel>
 </h:body>
 </html>

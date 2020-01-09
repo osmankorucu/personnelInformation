@@ -80,7 +80,6 @@
 		<h:form id="form">
 			<h:panelGrid columns="1">
 
-
 				<h:panelGrid columns="2"
 					style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">
 
@@ -142,23 +141,34 @@
 						</p:selectOneMenu>
 						<h:message for="console2" style="color: red" />
 
-						<p:outputLabel for="@next" value="Çocuk Bilgisi:" />
-						<p:commandButton style="width:100%" value="Ekle" type="button"
-							onclick="PF('dlg2').show();" icon="fa fa-fw fa-child" />
-						<br />
-
 						<p:outputLabel class="outputLabelClass" for="phoneInputText"
 							value="Telefon Numarası:" />
 						<p:inputMask value="#{bean.newPrsPhoneNumber}" id="phoneInputText"
 							required="true" requiredMessage="" mask="(999) 999-9999" />
 						<h:message for="phoneInputText" style="color: red" />
 
-						<p:outputLabel for="@next" value="Eğitim Bilgisi:" />
-						<p:commandButton style="width:100%" value="Ekle" type="button"
-							onclick="PF('dlg3').show();" icon="fa fa-fw fa-mortar-board" />
-						<br></br>
+						<p:outputLabel value="Çocuk Bilgisi:" />
+						<h:panelGrid columns="2" style="padding:0px;">
+							<p:commandButton style="width:100%" value="Ekle" type="button"
+								onclick="PF('dlg2').show();" icon="fa fa-fw fa-child" />
+							<p:commandButton style="width:100%" value="Göster" type="button"
+								onclick="PF('childDialog').show();" icon="fa fa-fw fa-table" />
+						</h:panelGrid>
+						<br />
+
+						<p:outputLabel value="Eğitim Bilgisi:" />
+						<h:panelGrid columns="2" style="padding:0px;">
+							<p:commandButton style="width:100%" value="Ekle" type="button"
+								onclick="PF('dlg3').show();" icon="fa fa-fw fa-mortar-board" />
+							<p:commandButton style="width:100%" value="Göster" type="button"
+								onclick="PF('educationStatusDialog').show();"
+								update="educationStatusDataTable" icon="fa fa-fw fa-table" />
+						</h:panelGrid>
+						<br />
+
 
 					</h:panelGrid>
+
 
 					<h:panelGrid columns="1" id="image">
 						<img alt="Personel Fotoğrafı" height="170" width="165"
@@ -254,7 +264,8 @@
 					</h:panelGrid>
 
 					<h:panelGrid style="margin-left:35%" columns="2">
-						<p:commandButton value="Kaydet" type="submit" update="cocukForm"
+						<p:commandButton value="Kaydet" type="submit"
+							update="cocukForm,:childForm:childDataTable"
 							icon="fa fa-fw fa-save" action="#{bean.creatorNewChildren}" />
 						<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 							<p:ajax update="cocukForm" resetValues="true" />
@@ -423,7 +434,8 @@
 
 					<h:panelGrid style="margin-left:35%; padding:5px" columns="2">
 						<p:commandButton value="Kaydet" type="submit"
-							update="egitimBilgisiForm" icon="fa fa-fw fa-save"
+							update="egitimBilgisiForm,:educationStatusForm:educationStatusDataTable"
+							icon="fa fa-fw fa-save"
 							action="#{bean.creatorNewEducationStatus}" />
 						<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
 							<p:ajax update="egitimBilgisiForm" resetValues="true" />
@@ -433,6 +445,70 @@
 				</h:panelGrid>
 
 			</h:form>
+		</p:dialog>
+		<p:dialog header="Çocuk Bilgileri" widgetVar="childDialog"
+			resizable="false" modal="true" height="250">
+			<h:panelGrid columns="1">
+				<h:form id="childForm">
+					<p:dataTable id="childDataTable" var="children"
+						value="#{bean.newPrsChildren}" emptyMessage="Çocuk Bulunamadı"
+						resizableColumns="true" liveResize="true"
+						tableStyle="table-layout:auto !important;"
+						style="margin-bottom:20px">
+
+						<p:column headerText="Ad">
+							<h:outputText value="#{children.chdName}" />
+						</p:column>
+
+						<p:column headerText="Soyad">
+							<h:outputText value="#{children.chdSurname}" />
+						</p:column>
+
+						<p:column headerText="Cinsiyet">
+							<h:outputText value="#{children.chdSex}" />
+						</p:column>
+
+						<p:column headerText="Doğum Tarihi">
+							<h:outputText value="#{children.chdDateOfBirth}" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</h:panelGrid>
+		</p:dialog>
+		<p:dialog header="Eğitim Bilgileri" widgetVar="educationStatusDialog"
+			resizable="false" modal="true" height="275">
+			<h:panelGrid columns="1">
+				<h:form id="educationStatusForm">
+					<p:dataTable id="educationStatusDataTable" var="educationStatus"
+						value="#{bean.newPrsEducationStatus}"
+						tableStyle="table-layout:auto !important;"
+						emptyMessage="Eğitim Bilgisi Bulunamadı" resizableColumns="true"
+						liveResize="true" style="margin-bottom:20px">
+
+						<p:column headerText="Ad">
+							<h:outputText value="#{educationStatus.esName}" />
+						</p:column>
+
+						<p:column headerText="Bulunduğu İl">
+							<h:outputText value="#{educationStatus.esCity}" />
+						</p:column>
+
+						<p:column headerText="Türü">
+							<h:outputText value="#{educationStatus.esType}" />
+						</p:column>
+
+						<p:column headerText="Başlama Tarihi">
+							<h:outputText value="#{educationStatus.esStartDate}" />
+						</p:column>
+
+						<p:column headerText="Bitirme Tarihi">
+							<h:outputText value="#{educationStatus.esGraduatedDate}" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</h:panelGrid>
 		</p:dialog>
 		<p:dialog modal="true" resizable="false" header="Values"
 			widgetVar="dlg" showEffect="fold">
