@@ -7,6 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
 import com.project.factory.impl.FactoryImpl;
@@ -109,5 +110,13 @@ public class RepositoryImpl implements Repository {
 		TypedQuery<Personnel> allQuery = entityManager.createQuery(all);
 		return allQuery.getResultList();
 	}
-
+	
+	public List<Number> getPersonnelGenderData() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		 CriteriaQuery<Personnel> q = cb.createQuery(Personnel.class);
+		  Root<Personnel> c = q.from(Personnel.class);
+		  q.select(c);
+		  ParameterExpression<Integer> p = cb.parameter(Integer.class);
+		  q.where(cb.gt(c.get("population"), p));
+	}
 }

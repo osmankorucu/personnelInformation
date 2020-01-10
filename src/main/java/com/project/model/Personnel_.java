@@ -6,14 +6,14 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2020-01-07T09:42:22.002+0300")
+@Generated(value="Dali", date="2020-01-10T17:49:07.717+0300")
 @StaticMetamodel(Personnel.class)
 public class Personnel_ {
 	public static volatile SingularAttribute<Personnel, Integer> prsId;
 	public static volatile SingularAttribute<Personnel, String> prsIDNumber;
 	public static volatile SingularAttribute<Personnel, String> prsName;
 	public static volatile SingularAttribute<Personnel, String> prsSurname;
-	public static volatile SingularAttribute<Personnel, String> prsSex;
+	public static volatile SingularAttribute<Personnel, String> prsGender;
 	public static volatile SingularAttribute<Personnel, Date> prsDateOfBirth;
 	public static volatile SingularAttribute<Personnel, String> prsEMail;
 	public static volatile SingularAttribute<Personnel, String> prsPhoneNumber;

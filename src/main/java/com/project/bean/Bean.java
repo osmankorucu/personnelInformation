@@ -44,7 +44,7 @@ public class Bean implements Serializable {
 	private String newPrsIDNumber;
 	private String newPrsName;
 	private String newPrsSurname;
-	private String newPrsSex;
+	private String newPrsGender;
 	private Date newPrsDateOfBirth;
 	private String newPrsEMail;
 	private String newPrsPhoneNumber;
@@ -60,7 +60,7 @@ public class Bean implements Serializable {
 	private int newChdId;
 	private String newChdName;
 	private String newChdSurname;
-	private String newChdSex;
+	private String newChdGender;
 	private Date newChdDateOfBirth;
 
 	private List<EducationStatus> educationStatus;
@@ -89,7 +89,7 @@ public class Bean implements Serializable {
 
 			if (result) {
 				try {
-					newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsSex,
+					newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender,
 							newPrsDateOfBirth, newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus,
 							newPrsChildren, newPrsIsMarried, newPrsPhoto);
 					repository.createPersonnel(newPersonnel);
@@ -169,7 +169,7 @@ public class Bean implements Serializable {
 		newPrsIDNumber = "";
 		newPrsName = "";
 		newPrsSurname = "";
-		newPrsSex = "";
+		newPrsGender = "";
 		newPrsEMail = "";
 		newPrsPhoneNumber = "";
 		newPrsAddress = "";
@@ -195,7 +195,7 @@ public class Bean implements Serializable {
 
 	public void creatorNewChildren() {
 		try {
-			newChildren = new Children(newChdName, newChdSurname, newChdSex, newChdDateOfBirth);
+			newChildren = new Children(newChdName, newChdSurname, newChdGender, newChdDateOfBirth);
 			newPrsChildren.add(newChildren);
 			clearTempChdDatas();
 			message = "Ekleme işlemi Başarılı";
@@ -211,13 +211,8 @@ public class Bean implements Serializable {
 		newPrsChildren = repository.getPersonnel(prsId).getPrsChildren();
 	}
 
-	public void updateChildren(int id) {
+	public void updateChildren() {
 		try {
-			newChildren = repository.getChildren(id);
-			newChildren.setChdName(newChdName);
-			newChildren.setChdSurname(newChdSurname);
-			newChildren.setChdSex(newChdSex);
-			newChildren.setChdDateOfBirth(newChdDateOfBirth);
 			repository.updateChildren(newChildren);
 			clearTempChdDatas();
 			message = "Ekleme işlemi Başarılı";
@@ -251,18 +246,14 @@ public class Bean implements Serializable {
 
 	}
 
-	public void createTempChdDatas(int id) {
-		newChildren = repository.getChildren(id);
-		newChdName = newChildren.getChdName();
-		newChdSurname = newChildren.getChdSurname();
-		newChdSex = newChildren.getChdSex();
-		newChdDateOfBirth = newChildren.getChdDateOfBirth();
+	public void createTempChdDatas(Children children) {
+		this.newChildren = children;
 	}
 
 	public void clearTempChdDatas() {
 		newChdName = "";
 		newChdSurname = "";
-		newChdSex = "";
+		newChdGender = "";
 		newChdDateOfBirth = null;
 	}
 
@@ -285,14 +276,8 @@ public class Bean implements Serializable {
 		newPrsEducationStatus = repository.getPersonnel(prsId).getPrsEducationStatus();
 	}
 
-	public void updateEducationStatus(int id) {
+	public void updateEducationStatus() {
 		try {
-			newEducationStatus = repository.getEducationStatus(id);
-			newEducationStatus.setEsName(newESName);
-			newEducationStatus.setEsCity(newESCity);
-			newEducationStatus.setEsType(newESType);
-			newEducationStatus.setEsStartDate(newESStartDate);
-			newEducationStatus.setEsGraduatedDate(newESGraduatedDate);
 			repository.updateEducationStatus(newEducationStatus);
 			clearTempESDatas();
 			message = "Ekleme işlemi Başarılı";
@@ -326,13 +311,8 @@ public class Bean implements Serializable {
 
 	}
 
-	public void createTempESDatas(int id) {
-		newEducationStatus = repository.getEducationStatus(id);
-		newESName = newEducationStatus.getEsName();
-		newESCity = newEducationStatus.getEsCity();
-		newESGraduatedDate = newEducationStatus.getEsGraduatedDate();
-		newESStartDate = newEducationStatus.getEsStartDate();
-		newESType = newEducationStatus.getEsType();
+	public void createTempESDatas(EducationStatus educationStatus) {
+		this.newEducationStatus = educationStatus;
 	}
 
 	public void clearTempESDatas() {
@@ -361,8 +341,9 @@ public class Bean implements Serializable {
 	}
 
 	public void changeFlag() {
-		this.renderFlag=!renderFlag;
+		this.renderFlag = !renderFlag;
 	}
+
 	public String navigateToNewPersonnelAdd() {
 		navigateToPage = "newPersonnelAdd?faces-redirect=true";
 		return navigateToPage;
@@ -456,12 +437,12 @@ public class Bean implements Serializable {
 		this.newPrsSurname = newPrsSurname;
 	}
 
-	public String getNewPrsSex() {
-		return newPrsSex;
+	public String getNewPrsGender() {
+		return newPrsGender;
 	}
 
-	public void setNewPrsSex(String newPrsSex) {
-		this.newPrsSex = newPrsSex;
+	public void setNewPrsGender(String newPrsGender) {
+		this.newPrsGender = newPrsGender;
 	}
 
 	public Date getNewPrsDateOfBirth() {
@@ -568,12 +549,12 @@ public class Bean implements Serializable {
 		this.newChdSurname = newChdSurname;
 	}
 
-	public String getNewChdSex() {
-		return newChdSex;
+	public String getNewChdGender() {
+		return newChdGender;
 	}
 
-	public void setNewChdSex(String newChdSex) {
-		this.newChdSex = newChdSex;
+	public void setNewChdGender(String newChdGender) {
+		this.newChdGender = newChdGender;
 	}
 
 	public Date getNewChdDateOfBirth() {

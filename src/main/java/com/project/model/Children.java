@@ -21,18 +21,18 @@ public class Children implements Serializable {
 	private int chdID;
 	private String chdName;
 	private String chdSurname;
-	private String chdSex; // "true" for male, "false" for female;
+	private String chdGender; // "true" for male, "false" for female;
 	@Temporal(TemporalType.DATE)
 	private Date chdDateOfBirth;
 
 	public Children() {
 	}
 
-	public Children(String chdName, String chdSurname, String chdSex, Date chdDateOfBirth) {
+	public Children(String chdName, String chdSurname, String chdGender, Date chdDateOfBirth) {
 		super();
 		this.chdName = chdName;
 		this.chdSurname = chdSurname;
-		this.chdSex = chdSex;
+		this.chdGender = chdGender;
 		this.chdDateOfBirth = chdDateOfBirth;
 	}
 
@@ -52,12 +52,12 @@ public class Children implements Serializable {
 		this.chdName = chdName;
 	}
 
-	public String getChdSex() {
-		return chdSex;
+	public String getChdGender() {
+		return chdGender;
 	}
 
-	public void setChdSex(String chdSex) {
-		this.chdSex = chdSex;
+	public void setChdGender(String chdGender) {
+		this.chdGender = chdGender;
 	}
 
 	public Date getChdDateOfBirth() {

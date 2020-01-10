@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,10 +25,11 @@ public class Personnel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int prsId;
+	@Column(unique = true)
 	private String prsIDNumber;
 	private String prsName;
 	private String prsSurname;
-	private String prsSex; // "true" for male, "false" for female;
+	private String prsGender;
 	@Temporal(TemporalType.DATE)
 	private Date prsDateOfBirth;
 	private String prsEMail;
@@ -45,13 +47,13 @@ public class Personnel implements Serializable {
 	public Personnel() {
 	}
 
-	public Personnel(String prsIDNumber,String prsName, String prsSurname, String prsSex, Date prsDateOfBirth, String prsEMail,
-			String prsPhoneNumber, String prsAddress, String prsIsMarried, String prsPhoto) {
+	public Personnel(String prsIDNumber, String prsName, String prsSurname, String prsGender, Date prsDateOfBirth,
+			String prsEMail, String prsPhoneNumber, String prsAddress, String prsIsMarried, String prsPhoto) {
 		super();
 		this.prsIDNumber = prsIDNumber;
 		this.prsName = prsName;
 		this.prsSurname = prsSurname;
-		this.prsSex = prsSex;
+		this.prsGender = prsGender;
 		this.prsDateOfBirth = prsDateOfBirth;
 		this.prsEMail = prsEMail;
 		this.prsPhoneNumber = prsPhoneNumber;
@@ -59,17 +61,15 @@ public class Personnel implements Serializable {
 		this.prsIsMarried = prsIsMarried;
 		this.prsPhoto = prsPhoto;
 	}
-	
-	
 
-	public Personnel(String prsIDNumber, String prsName, String prsSurname, String prsSex, Date prsDateOfBirth,
+	public Personnel(String prsIDNumber, String prsName, String prsSurname, String prsGender, Date prsDateOfBirth,
 			String prsEMail, String prsPhoneNumber, String prsAddress, List<EducationStatus> prsEducationStatus,
 			List<Children> prsChildren, String prsIsMarried, String prsPhoto) {
 		super();
 		this.prsIDNumber = prsIDNumber;
 		this.prsName = prsName;
 		this.prsSurname = prsSurname;
-		this.prsSex = prsSex;
+		this.prsGender = prsGender;
 		this.prsDateOfBirth = prsDateOfBirth;
 		this.prsEMail = prsEMail;
 		this.prsPhoneNumber = prsPhoneNumber;
@@ -112,12 +112,12 @@ public class Personnel implements Serializable {
 		this.prsSurname = prsSurname;
 	}
 
-	public String getPrsSex() {
-		return prsSex;
+	public String getPrsGender() {
+		return prsGender;
 	}
 
-	public void setPrsSex(String prsSex) {
-		this.prsSex = prsSex;
+	public void setPrsGender(String prsGender) {
+		this.prsGender = prsGender;
 	}
 
 	public Date getPrsDateOfBirth() {
@@ -191,7 +191,5 @@ public class Personnel implements Serializable {
 	public void setPrsIDNumber(String prsIDNumber) {
 		this.prsIDNumber = prsIDNumber;
 	}
-	
-	
 
 }

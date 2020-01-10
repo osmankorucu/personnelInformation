@@ -92,16 +92,16 @@
 								emptyMessage="Personel Bulunamadı!"
 								filteredValue="#{bean.filteredPersonnels}"
 								value="#{bean.personnels}"
-								style="width:1300px; margin-bottom:20px">
+								style="width:1250px; margin-bottom:20px">
 
 								<p:column headerText="ID" style="width:15px">
 									<h:outputText value="#{personnel.prsId}" />
 								</p:column>
 
 								<p:column headerText="Fotoğraf">
-									<p:commandLink onclick="PF('photoDlg').show();">
-										<p:ajax listener="#{bean.getPersonnelPhoto(personnel.prsId)}"
-											update="photoPanel" />
+									<p:commandLink oncomplete="PF('photoDlg').show();"
+										actionListener="#{bean.getPersonnelPhoto(personnel.prsId)}"
+										update="photoPanel">
 										<img alt="Personel Fotoğrafı" height="85" width="80"
 											src="#{personnel.prsPhoto}" />
 									</p:commandLink>
@@ -122,7 +122,7 @@
 									<h:outputText value="#{personnel.prsSurname}" />
 								</p:column>
 
-								<p:column headerText="Cinsiyet" filterBy="#{personnel.prsSex}"
+								<p:column headerText="Cinsiyet" filterBy="#{personnel.prsGender}"
 									filterMatchMode="contains">
 									<f:facet name="filter">
 										<p:selectOneButton onchange="PF('personnelTableWV').filter()"
@@ -132,13 +132,15 @@
 											<f:selectItem itemLabel="K" itemValue="Kadın" />
 										</p:selectOneButton>
 									</f:facet>
-									<h:outputText value="#{personnel.prsSex}" />
+									<h:outputText value="#{personnel.prsGender}" />
 								</p:column>
 
 								<p:column headerText="Doğum Tarihi"
 									filterBy="#{personnel.prsDateOfBirth}"
 									filterMatchMode="contains">
-									<h:outputText value="#{personnel.prsDateOfBirth}" />
+									<h:outputText value="#{personnel.prsDateOfBirth}">
+										<f:convertDateTime pattern="dd.MM.yyyy" />
+									</h:outputText>
 								</p:column>
 
 								<p:column headerText="Medeni Durum"
@@ -156,20 +158,16 @@
 
 								<p:column headerText="Çocuğu var mı?">
 									<p:commandLink value="Detay"
-										onclick="PF('childDialog').show();">
-										<p:ajax
-											listener="#{bean.getPersonnelChildren(personnel.prsId)}"
-											update="childForm" />
-									</p:commandLink>
+										oncomplete="PF('childDialog').show();"
+										actionListener="#{bean.getPersonnelChildren(personnel.prsId)}"
+										update="childForm" />
 								</p:column>
 
 								<p:column headerText="Eğitim Durumu">
 									<p:commandLink value="Detay"
-										onclick="PF('educationStatusDialog').show();">
-										<p:ajax
-											listener="#{bean.getPersonnelEducationStatus(personnel.prsId)}"
-											update="educationStatusForm" />
-									</p:commandLink>
+										oncomplete="PF('educationStatusDialog').show();"
+										actionListener="#{bean.getPersonnelEducationStatus(personnel.prsId)}"
+										update="educationStatusForm" />
 								</p:column>
 
 								<p:column headerText="E-Posta" filterBy="#{personnel.prsEMail}"
@@ -235,11 +233,13 @@
 								</p:column>
 
 								<p:column headerText="Cinsiyet">
-									<h:outputText value="#{children.chdSex}" />
+									<h:outputText value="#{children.chdGender}" />
 								</p:column>
 
 								<p:column headerText="Doğum Tarihi">
-									<h:outputText value="#{children.chdDateOfBirth}" />
+									<h:outputText value="#{children.chdDateOfBirth}">
+										<f:convertDateTime pattern="dd.MM.yyyy" />
+									</h:outputText>
 								</p:column>
 
 								<p:column headerText="Sil" style="width:5px">
@@ -283,11 +283,15 @@
 								</p:column>
 
 								<p:column headerText="Başlama Tarihi">
-									<h:outputText value="#{educationStatus.esStartDate}" />
+									<h:outputText value="#{educationStatus.esStartDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy" />
+									</h:outputText>
 								</p:column>
 
 								<p:column headerText="Bitirme Tarihi">
-									<h:outputText value="#{educationStatus.esGraduatedDate}" />
+									<h:outputText value="#{educationStatus.esGraduatedDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy" />
+									</h:outputText>
 								</p:column>
 
 								<p:column headerText="Sil" style="width:5px">
@@ -304,7 +308,6 @@
 				</p:dialog>
 			</p:panel>
 		</p:panel>
-
 		<p:panel id="plEditPanel">
 			<p:panel id="editPanel" rendered="#{!bean.renderFlag}"
 				style="margin-top:-2%">
@@ -321,38 +324,35 @@
 					<h:panelGrid columns="1">
 						<h:panelGrid columns="2"
 							style="padding-bottom:1%;padding-top:1%;padding-left:5%;padding-right:5%">
-							<h:panelGrid columns="6">
+							<h:panelGrid columns="4">
 
 								<p:outputLabel for="personnelIdNumberInputText" value="TC No:"></p:outputLabel>
 								<p:inputMask id="personnelIdNumberInputText"
 									value="#{bean.newPersonnel.prsIDNumber}" required="true"
-									requiredMessage="" mask="99999999999" />
-								<h:message for="personnelIdNumberInputText" style="color: red" />
+									requiredMessage="Personel TC kimlik numarası giriniz!"
+									mask="99999999999" />
 
-								<p:panel style="border:none"></p:panel>
 								<p:panel style="border:none"></p:panel>
 								<p:panel style="border:none"></p:panel>
 
 								<p:outputLabel for="personnelNameInputText" value="Ad:"></p:outputLabel>
 								<p:inputText id="personnelNameInputText"
 									value="#{bean.newPersonnel.prsName}" required="true"
-									requiredMessage="">
+									requiredMessage="Personel ismi giriniz!">
 									<p:keyFilter regEx="/[ a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 								</p:inputText>
-								<h:message for="personnelNameInputText" style="color: red" />
 
 								<p:outputLabel for="personnelSurnameInputText" value="Soyad:" />
 								<p:inputText id="personnelSurnameInputText"
 									value="#{bean.newPersonnel.prsSurname}" required="true"
-									requiredMessage="">
+									requiredMessage="Personel soyismi giriniz!">
 									<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 								</p:inputText>
-								<h:message for="personnelSurnameInputText" style="color: red" />
 
 								<p:outputLabel for="@next" value="Cinsiyet:" />
-								<p:selectOneMenu id="personnelSexSelectOneMenu"
-									value="#{bean.newPersonnel.prsSex}" required="true"
-									requiredMessage="" style="width:84%">
+								<p:selectOneMenu id="personnelGenderSelectOneMenu"
+									value="#{bean.newPersonnel.prsGender}" required="true"
+									requiredMessage="Personel cinsiyeti seçiniz!" style="width:84%">
 									<f:selectItem itemLabel="Seçiniz" itemValue="" />
 									<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 									<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
@@ -361,21 +361,21 @@
 										<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 									</f:facet>
 								</p:selectOneMenu>
-								<h:message for="personnelSexSelectOneMenu" style="color: red" />
 
 								<p:outputLabel class="outputLabelClass"
 									for="personnelDobCalendar" value="Doğum Tarihi:" />
 								<p:calendar id="personnelDobCalendar"
 									value="#{bean.newPersonnel.prsDateOfBirth}" locale="tr"
 									navigator="true" pattern="dd.MM.yyyy" required="true"
-									requiredMessage="" autocomplete="off" />
-								<h:message for="personnelDobCalendar" style="color: red" />
+									requiredMessage="Personel doğum tarihi giriniz!"
+									autocomplete="off" />
 
 								<p:outputLabel class="outputLabelClass" for="@next"
 									value="Medeni Durum:" />
 								<p:selectOneMenu id="personnelIsMarriedSelectOneMenu"
 									value="#{bean.newPersonnel.prsIsMarried}" required="true"
-									requiredMessage="" style="width:84%">
+									requiredMessage="Personel medeni durumunu giriniz!"
+									style="width:84%">
 									<f:selectItem itemLabel="Seçiniz" itemValue="" />
 									<f:selectItem itemLabel="Bekar" itemValue="Bekar" />
 									<f:selectItem itemLabel="Evli" itemValue="Evli" />
@@ -384,15 +384,13 @@
 										<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 									</f:facet>
 								</p:selectOneMenu>
-								<h:message for="personnelIsMarriedSelectOneMenu"
-									style="color: red" />
 
 								<p:outputLabel class="outputLabelClass"
 									for="personnelPhoneInputMask" value="Telefon Numarası:" />
 								<p:inputMask id="personnelPhoneInputMask"
 									value="#{bean.newPersonnel.prsPhoneNumber}" required="true"
-									requiredMessage="" mask="(999) 999-9999" />
-								<h:message for="personnelPhoneInputMask" style="color: red" />
+									requiredMessage="Personel telefon numarasını giriniz!"
+									mask="(999) 999-9999" />
 
 								<p:outputLabel value="Çocuk Bilgisi:" />
 								<h:panelGrid columns="2" style="padding:0px;">
@@ -403,7 +401,6 @@
 										type="button" onclick="PF('childDialogOnEdit').show();"
 										icon="fa fa-fw fa-table" />
 								</h:panelGrid>
-								<br />
 
 								<p:outputLabel value="Eğitim Bilgisi:" />
 								<h:panelGrid columns="2" style="padding:0px;">
@@ -415,7 +412,6 @@
 										onclick="PF('educationStatusDialogOnEdit').show();"
 										update="educationStatusDataTable" icon="fa fa-fw fa-table" />
 								</h:panelGrid>
-								<br />
 
 							</h:panelGrid>
 
@@ -424,16 +420,17 @@
 									src="#{bean.newPersonnel.prsPhoto}" />
 							</h:panelGrid>
 
-							<h:panelGrid columns="3">
+							<h:panelGrid columns="2">
 								<p:outputLabel class="outputLabelClass"
 									for="personnelEmailInputText" value="E-Posta Adresi: "></p:outputLabel>
 								<p:inputText id="personnelEmailInputText"
 									value="#{bean.newPersonnel.prsEMail}" validatorMessage="!"
-									required="true" requiredMessage="" style="width:615px">
+									required="true"
+									requiredMessage="Personel e-posta adresi giriniz!"
+									style="width:615px">
 									<f:validateRegex
 										pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"></f:validateRegex>
 								</p:inputText>
-								<h:message for="personnelEmailInputText" style="color: red" />
 
 								<p:outputLabel class="outputLabelClass"
 									for="personnelAdresTextArea" value="Adres: "></p:outputLabel>
@@ -441,12 +438,11 @@
 									value="#{bean.newPersonnel.prsAddress}" rows="5" cols="30"
 									counter="display" maxlength="100"
 									counterTemplate="{0} karakter kaldı." required="true"
-									requiredMessage="" style="width:615px" />
-								<h:message for="personnelAdresTextArea" style="color: red" />
+									requiredMessage="Personel adresi giriniz!" style="width:615px" />
 							</h:panelGrid>
 
 							<h:panelGrid columns="1">
-								<p:fileUpload mode="advanced" skinSimple="true"
+								<p:fileUpload id="fileUpload2" mode="advanced" skinSimple="true"
 									label="Fotoğraf Ekle"
 									fileUploadListener="#{bean.onUploadImage}" multiple="false"
 									fileLimit="1" auto="true"
@@ -455,9 +451,8 @@
 						</h:panelGrid>
 
 						<h:panelGrid style="margin-left:35%" columns="2">
-							<p:commandButton value="Kaydet" type="submit"
-								update="editPersonnelForm" icon="fa fa-fw fa-save"
-								action="#{bean.updatePersonnel()}" ajax="false" />
+							<p:commandButton value="Kaydet" type="submit" update="plPanel"
+								icon="fa fa-fw fa-save" action="#{bean.updatePersonnel()}" />
 							<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close"
 								update="plPanel" action="#{bean.changeFlag()}" />
 						</h:panelGrid>
@@ -472,25 +467,24 @@
 									style="margin-left:40%; color:black"></p:outputLabel>
 							</p:panel>
 
-							<h:panelGrid columns="6">
+							<h:panelGrid columns="4">
 								<p:outputLabel for="childNameInputText" value="Ad:"></p:outputLabel>
 								<p:inputText id="childNameInputText" value="#{bean.newChdName}"
-									required="true" requiredMessage="">
+									required="true" requiredMessage="Çocuk ismi giriniz!">
 									<p:keyFilter regEx="/[ a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 								</p:inputText>
-								<h:message for="childNameInputText" style="color: red" />
 
 								<p:outputLabel for="childSurnameInputText" value="Soyad:" />
 								<p:inputText value="#{bean.newChdSurname}"
-									id="childSurnameInputText" required="true" requiredMessage="">
+									id="childSurnameInputText" required="true"
+									requiredMessage="Çocuk soyismi giriniz!">
 									<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
 								</p:inputText>
-								<h:message for="childSurnameInputText" style="color: red" />
 
 								<p:outputLabel for="@next" value="Cinsiyet:" />
-								<p:selectOneMenu id="childSexSelectOneMenu"
-									value="#{bean.newChdSex}" required="true" requiredMessage=""
-									style="width:185px">
+								<p:selectOneMenu id="childGenderSelectOneMenu"
+									value="#{bean.newChdGender}" required="true"
+									requiredMessage="Çocuk cinsiyeti seçiniz!" style="width:185px">
 									<f:selectItem itemLabel="Seçiniz" itemValue="" />
 									<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 									<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
@@ -499,26 +493,24 @@
 										<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 									</f:facet>
 								</p:selectOneMenu>
-								<h:message for="childSexSelectOneMenu" style="color: red" />
 
 								<p:outputLabel class="outputLabelClass" for="childDobCalendar"
 									value="Doğum Tarihi:" />
 
 								<p:calendar id="childDobCalendar"
 									value="#{bean.newChdDateOfBirth}" locale="tr" navigator="true"
-									pattern="dd.MM.yyyy" required="true" requiredMessage=""
+									pattern="dd.MM.yyyy" required="true"
+									requiredMessage="Çocuk doğum tarihi giriniz!"
 									autocomplete="off" />
-								<h:message for="childDobCalendar" style="color: red" />
 
 							</h:panelGrid>
 
 							<h:panelGrid style="margin-left:35%" columns="2">
 								<p:commandButton value="Kaydet" type="submit"
-									update="editChildForm,:childFormOnEdit:childDataTableOnEdit"
+									update="editChildForm,:childFormOnEdit:childDataTableOnEdit,messages"
 									icon="fa fa-fw fa-save" action="#{bean.creatorNewChildren}" />
-								<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
-									<p:ajax update="editChildForm" resetValues="true" />
-								</p:commandButton>
+								<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close"
+									update="editChildForm" resetValues="true" />
 							</h:panelGrid>
 						</h:panelGrid>
 					</h:form>
@@ -533,21 +525,21 @@
 									style="margin-left:40%; color:black"></p:outputLabel>
 							</p:panel>
 							<h:panelGrid columns="1" style="padding:5px">
-								<h:panelGrid columns="3" style="padding:5px">
+								<h:panelGrid columns="2" style="padding:5px">
 
 									<p:outputLabel for="educationStatusNameInputText" value="Ad:" />
 									<p:inputText id="educationStatusNameInputText"
-										value="#{bean.newESName}" required="true" requiredMessage=""
+										value="#{bean.newESName}" required="true"
+										requiredMessage="Eğitim kurumu ismi giriniz!"
 										style="margin-left:98px; width:571px" />
-									<h:message for="educationStatusNameInputText"
-										style="color: red" />
 
 								</h:panelGrid>
-								<h:panelGrid columns="6" style="padding:5px">
+								<h:panelGrid columns="4" style="padding:5px">
 
 									<p:outputLabel for="@next" value="Şehirler:" />
 									<p:selectOneMenu id="educationStatusCitySelectOneMenu"
-										value="#{bean.newESCity}" required="true" requiredMessage=""
+										value="#{bean.newESCity}" required="true"
+										requiredMessage="Eğitim kurumunun bulunduğu şehri giriniz!"
 										style="width:185px">
 										<f:selectItem itemValue="" itemLabel="Seçiniz" />
 										<f:selectItem itemValue="Adana" itemLabel="Adana" />
@@ -638,13 +630,11 @@
 											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 										</f:facet>
 									</p:selectOneMenu>
-									<h:message for="educationStatusCitySelectOneMenu"
-										style="color: red" />
 
 									<p:outputLabel for="@next" value="Tür:" />
 									<p:selectOneMenu id="educationStatusTypeSelectOneMenu"
-										value="#{bean.newESType}" required="true" requiredMessage=""
-										style="width:185px">
+										value="#{bean.newESType}" required="true"
+										requiredMessage="Eğitim türü giriniz!" style="width:185px">
 										<f:selectItem itemLabel="Seçiniz" itemValue="" />
 										<f:selectItem itemLabel="Lise" itemValue="Lise" />
 										<f:selectItem itemLabel="Lisans" itemValue="Lisans" />
@@ -656,34 +646,30 @@
 											<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 										</f:facet>
 									</p:selectOneMenu>
-									<h:message for="educationStatusTypeSelectOneMenu"
-										style="color: red" />
 
 									<p:outputLabel class="outputLabelClass"
 										for="educationStatusSDCalendar" value="Başlama Tarihi:" />
 									<p:calendar id="educationStatusSDCalendar"
 										value="#{bean.newESStartDate}" locale="tr" navigator="true"
-										pattern="dd.MM.yyyy" required="true" requiredMessage="" />
-									<h:message for="educationStatusSDCalendar" style="color: red" />
+										pattern="dd.MM.yyyy" required="true"
+										requiredMessage="Eğitim başlangıç tarihi giriniz!" />
 
 									<p:outputLabel class="outputLabelClass"
 										for="educationStatusGDButtonDate" value="Bitirme Tarihi:" />
 									<p:calendar id="educationStatusGDButtonDate"
 										value="#{bean.newESGraduatedDate}" locale="tr"
 										navigator="true" pattern="dd.MM.yyyy" required="true"
-										requiredMessage="" />
-									<h:message for="educationStatusGDButtonDate" style="color: red" />
+										requiredMessage="Eğitim bitiş tarihi giriniz!" />
 
 								</h:panelGrid>
 							</h:panelGrid>
 							<h:panelGrid style="margin-left:35%; padding:5px" columns="2">
 								<p:commandButton value="Kaydet" type="submit"
-									update="editEducationStatusForm,:educationStatusFormOnEdit:educationStatusDataTableOnEdit"
+									update="editEducationStatusForm,:educationStatusFormOnEdit:educationStatusDataTableOnEdit,messages"
 									icon="fa fa-fw fa-save"
 									action="#{bean.creatorNewEducationStatus}" />
-								<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close">
-									<p:ajax update="editEducationStatusForm" resetValues="true" />
-								</p:commandButton>
+								<p:commandButton value="Vazgeç" icon="fa fa-fw fa-close"
+									update="editEducationStatusForm" resetValues="true" />
 							</h:panelGrid>
 						</h:panelGrid>
 					</h:form>
@@ -693,32 +679,101 @@
 					<h:panelGrid columns="1">
 						<h:form id="childFormOnEdit">
 							<p:dataTable id="childDataTableOnEdit" var="children"
-								value="#{bean.newPersonnel.prsChildren}"
+								editable="true" value="#{bean.newPersonnel.prsChildren}"
 								emptyMessage="Çocuk Bulunamadı" resizableColumns="true"
 								liveResize="true" tableStyle="table-layout:auto !important;"
 								style="margin-bottom:20px">
 
+								<p:ajax event="rowEdit" listener="#{bean.updateChildren()}"
+									update="childDataTableOnEdit" />
+								<p:ajax event="rowEditCancel" resetValues="true"
+									update="childDataTableOnEdit" />
+								<p:ajax event="rowEditInit"
+									listener="#{bean.createTempChdDatas(children)}" />
+
+								<p:column style="width:15px" headerText="ID">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{children.chdID}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText disabled="true" value="#{children.chdID}" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
 								<p:column headerText="Ad">
-									<h:outputText value="#{children.chdName}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{children.chdName}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{children.chdName}" id="nameInputText"
+												required="true" requiredMessage="">
+												<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+											</p:inputText>
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Soyad">
-									<h:outputText value="#{children.chdSurname}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{children.chdSurname}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{children.chdSurname}"
+												id="surnameInputText" required="true" requiredMessage="">
+												<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
+											</p:inputText>
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Cinsiyet">
-									<h:outputText value="#{children.chdSex}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{children.chdGender}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:selectOneMenu value="#{children.chdGender}" style="width:84%"
+												id="console" required="true" requiredMessage="">
+												<f:selectItem itemLabel="Seçiniz" itemValue="" />
+												<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
+												<f:selectItem itemLabel="Kadın" itemValue="Kadın" />
+												<f:facet name="footer">
+													<p:separator />
+													<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+												</f:facet>
+											</p:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Doğum Tarihi">
-									<h:outputText value="#{children.chdDateOfBirth}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{children.chdDateOfBirth}">
+												<f:convertDateTime pattern="dd.MM.yyyy" />
+											</h:outputText>
+										</f:facet>
+										<f:facet name="input">
+											<p:calendar value="#{children.chdDateOfBirth}"
+												id="dobButtonDate" locale="tr" navigator="true"
+												pattern="dd.MM.yyyy" required="true" requiredMessage=""
+												autocomplete="off" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
+								<p:column style="width:25px" headerText="Düzenle">
+									<p:rowEditor />
+								</p:column>
 							</p:dataTable>
 						</h:form>
 					</h:panelGrid>
 				</p:dialog>
-				<p:dialog header="Eğitim Bilgileri"
+				<p:dialog header="Eğitim Bilgileri" style="max-width:700px;"
 					widgetVar="educationStatusDialogOnEdit" resizable="false"
 					modal="true" height="275">
 					<h:panelGrid columns="1">
@@ -727,33 +782,204 @@
 								var="educationStatus" value="#{bean.newPrsEducationStatus}"
 								tableStyle="table-layout:auto !important;"
 								emptyMessage="Eğitim Bilgisi Bulunamadı" resizableColumns="true"
-								liveResize="true" style="margin-bottom:20px">
+								liveResize="true" style="margin-bottom:20px" editable="true">
+								<p:ajax event="rowEdit"
+									listener="#{bean.updateEducationStatus()}"
+									update="educationStatusDataTableOnEdit" />
+								<p:ajax event="rowEditCancel" resetValues="true"
+									update="educationStatusDataTableOnEdit" />
+								<p:ajax event="rowEditInit"
+									listener="#{bean.createTempESDatas(educationStatus)}" />
+
+								<p:column headerText="ID" style="width:15px">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{educationStatus.esId}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText disabled="true" value="#{educationStatus.esId}" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
 
 								<p:column headerText="Ad">
-									<h:outputText value="#{educationStatus.esName}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{educationStatus.esName}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{educationStatus.esName}"
+												id="nameInputText" required="true" requiredMessage="" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Bulunduğu İl">
-									<h:outputText value="#{educationStatus.esCity}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{educationStatus.esCity}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:selectOneMenu value="#{educationStatus.esCity}"
+												style="width:84%" id="console" required="true"
+												requiredMessage="">
+												<f:selectItem itemValue="" itemLabel="Seçiniz" />
+												<f:selectItem itemValue="Adana" itemLabel="Adana" />
+												<f:selectItem itemValue="Adıyaman" itemLabel="Adıyaman" />
+												<f:selectItem itemValue="Afyonkarahisar"
+													itemLabel="Afyonkarahisar" />
+												<f:selectItem itemValue="Ağrı" itemLabel="Ağrı" />
+												<f:selectItem itemValue="Amasya" itemLabel="Amasya" />
+												<f:selectItem itemValue="Ankara" itemLabel="Ankara" />
+												<f:selectItem itemValue="Antalya" itemLabel="Antalya" />
+												<f:selectItem itemValue="Artvin" itemLabel="Artvin" />
+												<f:selectItem itemValue="Aydın" itemLabel="Aydın" />
+												<f:selectItem itemValue="Balıkesir" itemLabel="Balıkesir" />
+												<f:selectItem itemValue="Bilecik" itemLabel="Bilecik" />
+												<f:selectItem itemValue="Bingöl" itemLabel="Bingöl" />
+												<f:selectItem itemValue="Bitlis" itemLabel="Bitlis" />
+												<f:selectItem itemValue="Bolu" itemLabel="Bolu" />
+												<f:selectItem itemValue="Burdur" itemLabel="Burdur" />
+												<f:selectItem itemValue="Bursa" itemLabel="Bursa" />
+												<f:selectItem itemValue="Çanakkale" itemLabel="Çanakkale" />
+												<f:selectItem itemValue="Çankırı" itemLabel="Çankırı" />
+												<f:selectItem itemValue="Çorum" itemLabel="Çorum" />
+												<f:selectItem itemValue="Denizli" itemLabel="Denizli" />
+												<f:selectItem itemValue="Diyarbakır" itemLabel="Diyarbakır" />
+												<f:selectItem itemValue="Edirne" itemLabel="Edirne" />
+												<f:selectItem itemValue="Elazığ" itemLabel="Elazığ" />
+												<f:selectItem itemValue="Erzincan" itemLabel="Erzincan" />
+												<f:selectItem itemValue="Erzurum" itemLabel="Erzurum" />
+												<f:selectItem itemValue="Eskişehir" itemLabel="Eskişehir" />
+												<f:selectItem itemValue="Gaziantep" itemLabel="Gaziantep" />
+												<f:selectItem itemValue="Giresun" itemLabel="Giresun" />
+												<f:selectItem itemValue="Gümüşhane" itemLabel="Gümüşhane" />
+												<f:selectItem itemValue="Hakkâri" itemLabel="Hakkâri" />
+												<f:selectItem itemValue="Hatay" itemLabel="Hatay" />
+												<f:selectItem itemValue="Isparta" itemLabel="Isparta" />
+												<f:selectItem itemValue="Mersin" itemLabel="Mersin" />
+												<f:selectItem itemValue="İstanbul" itemLabel="İstanbul" />
+												<f:selectItem itemValue="İzmir" itemLabel="İzmir" />
+												<f:selectItem itemValue="Kars" itemLabel="Kars" />
+												<f:selectItem itemValue="Kastamonu" itemLabel="Kastamonu" />
+												<f:selectItem itemValue="Kayseri" itemLabel="Kayseri" />
+												<f:selectItem itemValue="Kırklareli" itemLabel="Kırklareli" />
+												<f:selectItem itemValue="Kırşehir" itemLabel="Kırşehir" />
+												<f:selectItem itemValue="Kocaeli" itemLabel="Kocaeli" />
+												<f:selectItem itemValue="Konya" itemLabel="Konya" />
+												<f:selectItem itemValue="Kütahya" itemLabel="Kütahya" />
+												<f:selectItem itemValue="Malatya" itemLabel="Malatya" />
+												<f:selectItem itemValue="Manisa" itemLabel="Manisa" />
+												<f:selectItem itemValue="Kahramanmaraş"
+													itemLabel="Kahramanmaraş" />
+												<f:selectItem itemValue="Mardin" itemLabel="Mardin" />
+												<f:selectItem itemValue="Muğla" itemLabel="Muğla" />
+												<f:selectItem itemValue="Muş" itemLabel="Muş" />
+												<f:selectItem itemValue="Nevşehir" itemLabel="Nevşehir" />
+												<f:selectItem itemValue="Niğde" itemLabel="Niğde" />
+												<f:selectItem itemValue="Ordu" itemLabel="Ordu" />
+												<f:selectItem itemValue="Rize" itemLabel="Rize" />
+												<f:selectItem itemValue="Sakarya" itemLabel="Sakarya" />
+												<f:selectItem itemValue="Samsun" itemLabel="Samsun" />
+												<f:selectItem itemValue="Siirt" itemLabel="Siirt" />
+												<f:selectItem itemValue="Sinop" itemLabel="Sinop" />
+												<f:selectItem itemValue="Sivas" itemLabel="Sivas" />
+												<f:selectItem itemValue="Tekirdağ" itemLabel="Tekirdağ" />
+												<f:selectItem itemValue="Tokat" itemLabel="Tokat" />
+												<f:selectItem itemValue="Trabzon" itemLabel="Trabzon" />
+												<f:selectItem itemValue="Tunceli" itemLabel="Tunceli" />
+												<f:selectItem itemValue="Şanlıurfa" itemLabel="Şanlıurfa" />
+												<f:selectItem itemValue="Uşak" itemLabel="Uşak" />
+												<f:selectItem itemValue="Van" itemLabel="Van" />
+												<f:selectItem itemValue="Yozgat" itemLabel="Yozgat" />
+												<f:selectItem itemValue="Zonguldak" itemLabel="Zonguldak" />
+												<f:selectItem itemValue="Aksaray" itemLabel="Aksaray" />
+												<f:selectItem itemValue="Bayburt" itemLabel="Bayburt" />
+												<f:selectItem itemValue="Karaman" itemLabel="Karaman" />
+												<f:selectItem itemValue="Kırıkkale" itemLabel="Kırıkkale" />
+												<f:selectItem itemValue="Batman" itemLabel="Batman" />
+												<f:selectItem itemValue="Şırnak" itemLabel="Şırnak" />
+												<f:selectItem itemValue="Bartın" itemLabel="Bartın" />
+												<f:selectItem itemValue="Ardahan" itemLabel="Ardahan" />
+												<f:selectItem itemValue="Iğdır" itemLabel="Iğdır" />
+												<f:selectItem itemValue="Yalova" itemLabel="Yalova" />
+												<f:selectItem itemValue="Karabük" itemLabel="Karabük" />
+												<f:selectItem itemValue="Kilis" itemLabel="Kilis" />
+												<f:selectItem itemValue="Osmaniye" itemLabel="Osmaniye" />
+												<f:selectItem itemValue="Düzce" itemLabel="Düzce" />
+												<f:facet name="footer">
+													<p:separator />
+													<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+												</f:facet>
+											</p:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Türü">
-									<h:outputText value="#{educationStatus.esType}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{educationStatus.esType}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:selectOneMenu value="#{educationStatus.esType}"
+												style="width:185px" id="console5" required="true"
+												requiredMessage="">
+												<f:selectItem itemLabel="Seçiniz" itemValue="" />
+												<f:selectItem itemLabel="Lise" itemValue="Lise" />
+												<f:selectItem itemLabel="Lisans" itemValue="Lisans" />
+												<f:selectItem itemLabel="Yüksek Lisans"
+													itemValue="Yüksek Lisans" />
+												<f:selectItem itemLabel="Doktora" itemValue="Doktora" />
+												<f:facet name="footer">
+													<p:separator />
+													<p:outputLabel value="3 consoles" style="font-weight:bold;" />
+												</f:facet>
+											</p:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Başlama Tarihi">
-									<h:outputText value="#{educationStatus.esStartDate}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{educationStatus.esStartDate}">
+												<f:convertDateTime pattern="dd.MM.yyyy" />
+											</h:outputText>
+										</f:facet>
+										<f:facet name="input">
+											<p:calendar value="#{educationStatus.esStartDate}"
+												id="gdButtonDate" locale="tr" navigator="true"
+												pattern="dd.MM.yyyy" required="true" requiredMessage=""
+												autocomplete="off" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="Bitirme Tarihi">
-									<h:outputText value="#{educationStatus.esGraduatedDate}" />
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{educationStatus.esGraduatedDate}">
+												<f:convertDateTime pattern="dd.MM.yyyy" />
+											</h:outputText>
+										</f:facet>
+										<f:facet name="input">
+											<p:calendar value="#{educationStatus.esGraduatedDate}"
+												id="sdButtonDate" locale="tr" navigator="true"
+												pattern="dd.MM.yyyy" required="true" requiredMessage=""
+												autocomplete="off" />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column style="width:25px" headerText="Düzenle">
+									<p:rowEditor />
 								</p:column>
 
 							</p:dataTable>
 						</h:form>
 					</h:panelGrid>
 				</p:dialog>
-
 			</p:panel>
 		</p:panel>
 		<p:dialog modal="true" resizable="false" header="Values"
