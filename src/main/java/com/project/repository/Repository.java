@@ -18,6 +18,10 @@ public interface Repository {
 	
 	List<Personnel> getPersonnels();
 	
+	List<Number> getPersonnelGenderData();
+	
+	List<Number> getPersonnelAgeData();
+	
 	void createChildren(Children children);
 
 	void deleteChildren(Children children);

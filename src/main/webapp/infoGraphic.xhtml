@@ -39,8 +39,16 @@
 							<p:outputLabel value="3 consoles" style="font-weight:bold;" />
 						</f:facet>
 					</p:selectOneMenu>
+					<p:panelGrid id="graphic" columns="2">
+						<p:pieChart model="#{bean.prsGenderPieModel}"
+							style="width: 80%; height: 400px;" id="genderPieModel"
+							widgetVar="as" />
+						<p:pieChart model="#{bean.prsAgePieModel}"
+							style="width: 80%; height: 400px;" id="agePieModel"
+							widgetVar="ab" />
+					</p:panelGrid>
+
 				</h:panelGrid>
-				<p:graphicImage style="width:200px;height:300px"></p:graphicImage>
 			</h:panelGrid>
 		</h:form>
 	</div>

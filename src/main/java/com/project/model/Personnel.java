@@ -25,7 +25,7 @@ public class Personnel implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int prsId;
-	@Column(unique = true)
+	@Column(unique = true, length = 11)
 	private String prsIDNumber;
 	private String prsName;
 	private String prsSurname;

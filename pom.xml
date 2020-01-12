@@ -15,7 +15,7 @@
 
 		<servlet.version>3.1.0</servlet.version>
 		<jsf.version>2.2.15</jsf.version>
-		<primefaces.version>6.2</primefaces.version>
+		<primefaces.version>7.0</primefaces.version>
 
 		<maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 		<tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
@@ -103,7 +103,7 @@
 			<artifactId>axis</artifactId>
 			<version>1.4</version>
 		</dependency>
-
+	
 	</dependencies>
 
 

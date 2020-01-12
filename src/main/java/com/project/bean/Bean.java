@@ -13,6 +13,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.charts.ChartDataSet;
+import org.primefaces.model.charts.pie.PieChartDataSet;
+import org.primefaces.model.charts.pie.PieChartModel;
 
 import com.project.model.Children;
 import com.project.model.EducationStatus;
@@ -72,39 +75,44 @@ public class Bean implements Serializable {
 	private Date newESStartDate;
 	private Date newESGraduatedDate;
 
+	private PieChartModel prsGenderPieModel;
+	private PieChartModel prsAgePieModel;
+
 	@PostConstruct
 	public void init() {
 		readPersonnelsFromDB();
+		createPrsGenderPieModel();
+		createPrsAgePieModel();
 
 	}
 
 	public void creatorNewPersonnel() {
+//		try {
+//			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
+//			long idNumber = Long.parseLong(newPrsIDNumber);
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(newPrsDateOfBirth);
+//			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
+//					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
+//
+//			if (result) {
 		try {
-			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
-			long idNumber = Long.parseLong(newPrsIDNumber);
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(newPrsDateOfBirth);
-			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
-					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
-
-			if (result) {
-				try {
-					newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender,
-							newPrsDateOfBirth, newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus,
-							newPrsChildren, newPrsIsMarried, newPrsPhoto);
-					repository.createPersonnel(newPersonnel);
-					clearTempPrsDatas();
-					message = "Ekleme işlemi Başarılı";
-				} catch (Exception e) {
-					message = "Ekleme işlemi Başarısız";
-				}
-			} else {
-				message = "TC Kimlik No Doğrulama Başarısız!";
-			}
-		} catch (Exception ex) {
-			message = ex.getMessage();
-			System.out.println(ex.getMessage());
+			newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender, newPrsDateOfBirth,
+					newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus, newPrsChildren,
+					newPrsIsMarried, newPrsPhoto);
+			repository.createPersonnel(newPersonnel);
+			clearTempPrsDatas();
+			message = "Ekleme işlemi Başarılı";
+		} catch (Exception e) {
+			message = "Ekleme işlemi Başarısız. Personel zaten var!";
 		}
+//			} else {
+//				message = "TC Kimlik No Doğrulama Başarısız!";
+//			}
+//		} catch (Exception ex) {
+//			message = ex.getMessage();
+//			System.out.println(ex.getMessage());
+//		}
 		saveMessage(message);
 	}
 
@@ -129,7 +137,7 @@ public class Bean implements Serializable {
 					message = "Ekleme işlemi Başarılı";
 					renderFlag = true;
 				} catch (Exception e) {
-					message = "Ekleme işlemi Başarısız";
+					message = "Ekleme işlemi Başarısız. Personel zaten var!";
 				}
 			} else {
 				message = "TC Kimlik No Doğrulama Başarısız!";
@@ -342,6 +350,54 @@ public class Bean implements Serializable {
 
 	public void changeFlag() {
 		this.renderFlag = !renderFlag;
+	}
+
+	public void createPrsGenderPieModel() {
+		prsGenderPieModel = new PieChartModel();
+		org.primefaces.model.charts.ChartData chartData = new org.primefaces.model.charts.ChartData();
+		PieChartDataSet dataSet = new PieChartDataSet();
+		dataSet.setData(repository.getPersonnelGenderData());
+
+		List<String> bgColors = new ArrayList<>();
+		bgColors.add("rgb(54, 162, 235)");
+		bgColors.add("rgb(255, 99, 132)");
+		dataSet.setBackgroundColor(bgColors);
+
+		chartData.addChartDataSet(dataSet);
+
+		List<String> labels = new ArrayList<>();
+		labels.add("Erkek");
+		labels.add("Kadın");
+		chartData.setLabels(labels);
+
+		prsGenderPieModel.setData(chartData);
+	}
+
+	public void createPrsAgePieModel() {
+		prsAgePieModel = new PieChartModel();
+		org.primefaces.model.charts.ChartData chartData = new org.primefaces.model.charts.ChartData();
+		PieChartDataSet dataSet = new PieChartDataSet();
+		dataSet.setData(repository.getPersonnelAgeData());
+
+		List<String> bgColors = new ArrayList<>();
+		bgColors.add("rgb(54, 162, 235)");
+		bgColors.add("rgb(255, 99, 132)");
+		bgColors.add("rgb(255, 99, 255)");
+		bgColors.add("rgb(54, 255, 235)");
+
+		dataSet.setBackgroundColor(bgColors);
+
+		chartData.addChartDataSet(dataSet);
+
+		List<String> labels = new ArrayList<>();
+		labels.add("0-18 Yaş");
+		labels.add("18-30 Yaş");
+		labels.add("30-50 Yaş");
+		labels.add("50+ Yaş");
+
+		chartData.setLabels(labels);
+
+		prsAgePieModel.setData(chartData);
 	}
 
 	public String navigateToNewPersonnelAdd() {
@@ -659,6 +715,22 @@ public class Bean implements Serializable {
 
 	public void setRenderFlag(boolean renderFlag) {
 		this.renderFlag = renderFlag;
+	}
+
+	public PieChartModel getPrsGenderPieModel() {
+		return prsGenderPieModel;
+	}
+
+	public void setPrsGenderPieModel(PieChartModel prsGenderPieModel) {
+		this.prsGenderPieModel = prsGenderPieModel;
+	}
+
+	public PieChartModel getPrsAgePieModel() {
+		return prsAgePieModel;
+	}
+
+	public void setPrsAgePieModel(PieChartModel prsAgePieModel) {
+		this.prsAgePieModel = prsAgePieModel;
 	}
 
 }

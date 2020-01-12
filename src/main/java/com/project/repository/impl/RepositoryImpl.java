@@ -1,5 +1,8 @@
 package com.project.repository.impl;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,8 +10,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+
+import org.hibernate.Criteria;
 
 import com.project.factory.impl.FactoryImpl;
 import com.project.model.Children;
@@ -110,13 +116,54 @@ public class RepositoryImpl implements Repository {
 		TypedQuery<Personnel> allQuery = entityManager.createQuery(all);
 		return allQuery.getResultList();
 	}
-	
+
 	public List<Number> getPersonnelGenderData() {
+		List<Number> numbers = new ArrayList<Number>();
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		 CriteriaQuery<Personnel> q = cb.createQuery(Personnel.class);
-		  Root<Personnel> c = q.from(Personnel.class);
-		  q.select(c);
-		  ParameterExpression<Integer> p = cb.parameter(Integer.class);
-		  q.where(cb.gt(c.get("population"), p));
+		CriteriaQuery<Personnel> cq = cb.createQuery(Personnel.class);
+		Root<Personnel> r = cq.from(Personnel.class);
+		CriteriaQuery<Personnel> male = cq.select(r).where(cb.equal(r.get("prsGender"), "Erkek"));
+		TypedQuery<Personnel> result = entityManager.createQuery(male);
+		numbers.add(result.getResultList().size());
+		CriteriaQuery<Personnel> female = cq.select(r).where(cb.equal(r.get("prsGender"), "Kadın"));
+		TypedQuery<Personnel> result2 = entityManager.createQuery(female);
+		numbers.add(result2.getResultList().size());
+		return numbers;
+	}
+
+	public List<Number> getPersonnelAgeData() {
+		Calendar cal;
+		List<Number> numbers = new ArrayList<Number>();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Personnel> cq = cb.createQuery(Personnel.class);
+		Root<Personnel> r = cq.from(Personnel.class);
+
+		cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -18);
+		Date date18 = cal.getTime();
+		CriteriaQuery<Personnel> child = cq.select(r).where(cb.between(r.get("prsDateOfBirth"), date18, new Date()));
+		TypedQuery<Personnel> result = entityManager.createQuery(child);
+		int childNum = result.getResultList().size();
+		numbers.add(childNum);
+
+		cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -30);
+		Date date30 = cal.getTime();
+		CriteriaQuery<Personnel> young = cq.select(r).where(cb.between(r.get("prsDateOfBirth"), date30, date18));
+		TypedQuery<Personnel> result2 = entityManager.createQuery(young);
+		int youngNum = result2.getResultList().size();
+		numbers.add(youngNum);
+
+		cal = Calendar.getInstance();
+		cal.add(Calendar.YEAR, -50);
+		Date date50 = cal.getTime();
+		CriteriaQuery<Personnel> middleAged = cq.select(r).where(cb.between(r.get("prsDateOfBirth"), date50, date30));
+		TypedQuery<Personnel> result3 = entityManager.createQuery(middleAged);
+		int middleAgedNum = result3.getResultList().size();
+		numbers.add(middleAgedNum);
+
+		int old = getPersonnels().size() - (childNum + youngNum + middleAgedNum);
+		numbers.add(old);
+		return numbers;
 	}
 }
