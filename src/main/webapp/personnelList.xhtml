@@ -122,8 +122,8 @@
 									<h:outputText value="#{personnel.prsSurname}" />
 								</p:column>
 
-								<p:column headerText="Cinsiyet" filterBy="#{personnel.prsGender}"
-									filterMatchMode="contains">
+								<p:column headerText="Cinsiyet"
+									filterBy="#{personnel.prsGender}" filterMatchMode="contains">
 									<f:facet name="filter">
 										<p:selectOneButton onchange="PF('personnelTableWV').filter()"
 											styleClass="custom-filter">
@@ -736,8 +736,9 @@
 											<h:outputText value="#{children.chdGender}" />
 										</f:facet>
 										<f:facet name="input">
-											<p:selectOneMenu value="#{children.chdGender}" style="width:84%"
-												id="console" required="true" requiredMessage="">
+											<p:selectOneMenu value="#{children.chdGender}"
+												style="width:84%" id="console" required="true"
+												requiredMessage="">
 												<f:selectItem itemLabel="Seçiniz" itemValue="" />
 												<f:selectItem itemLabel="Erkek" itemValue="Erkek" />
 												<f:selectItem itemLabel="Kadın" itemValue="Kadın" />

@@ -87,32 +87,32 @@ public class Bean implements Serializable {
 	}
 
 	public void creatorNewPersonnel() {
-//		try {
-//			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
-//			long idNumber = Long.parseLong(newPrsIDNumber);
-//			Calendar calendar = Calendar.getInstance();
-//			calendar.setTime(newPrsDateOfBirth);
-//			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
-//					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
-//
-//			if (result) {
 		try {
-			newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender, newPrsDateOfBirth,
-					newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus, newPrsChildren,
-					newPrsIsMarried, newPrsPhoto);
-			repository.createPersonnel(newPersonnel);
-			clearTempPrsDatas();
-			message = "Ekleme işlemi Başarılı";
-		} catch (Exception e) {
-			message = "Ekleme işlemi Başarısız. Personel zaten var!";
+			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
+			long idNumber = Long.parseLong(newPrsIDNumber);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(newPrsDateOfBirth);
+			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
+					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
+
+			if (result) {
+				try {
+					newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender,
+							newPrsDateOfBirth, newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus,
+							newPrsChildren, newPrsIsMarried, newPrsPhoto);
+					repository.createPersonnel(newPersonnel);
+					clearTempPrsDatas();
+					message = "Ekleme işlemi Başarılı";
+				} catch (Exception e) {
+					message = "Ekleme işlemi Başarısız. Personel zaten var!";
+				}
+			} else {
+				message = "TC Kimlik No Doğrulama Başarısız!";
+			}
+		} catch (Exception ex) {
+			message = ex.getMessage();
+			System.out.println(ex.getMessage());
 		}
-//			} else {
-//				message = "TC Kimlik No Doğrulama Başarısız!";
-//			}
-//		} catch (Exception ex) {
-//			message = ex.getMessage();
-//			System.out.println(ex.getMessage());
-//		}
 		saveMessage(message);
 	}
 
