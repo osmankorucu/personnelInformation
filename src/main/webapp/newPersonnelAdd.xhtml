@@ -195,10 +195,9 @@
 
 					<h:panelGrid columns="1">
 						<p:fileUpload id="fileUpload1" mode="advanced" skinSimple="true"
-							label="Fotoğraf Ekle"
-							fileUploadListener="#{bean.onUploadImage}" multiple="false"
-							fileLimit="1" auto="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-							update="imagePanel" />
+							label="Fotoğraf Ekle" fileUploadListener="#{bean.onUploadImage}"
+							multiple="false" fileLimit="1" auto="true"
+							allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="imagePanel" />
 					</h:panelGrid>
 
 				</h:panelGrid>
@@ -234,7 +233,7 @@
 						<p:inputText value="#{bean.newChdSurname}"
 							id="childSurnameInputText" required="true"
 							requiredMessage="Çocuk soyismi giriniz!">
-							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞiİöÖçÇ]/i" />
+							<p:keyFilter regEx="/[a-zA-ZğĞüÜşŞıİöÖçÇ]/i" />
 						</p:inputText>
 
 						<p:outputLabel for="@next" value="Cinsiyet:" />

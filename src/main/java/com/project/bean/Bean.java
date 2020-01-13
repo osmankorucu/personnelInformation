@@ -13,7 +13,15 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.charts.ChartDataSet;
+import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
+import org.primefaces.model.charts.bar.BarChartDataSet;
+import org.primefaces.model.charts.bar.BarChartModel;
+import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.model.charts.optionconfig.legend.Legend;
+import org.primefaces.model.charts.optionconfig.legend.LegendLabel;
+import org.primefaces.model.charts.optionconfig.title.Title;
 import org.primefaces.model.charts.pie.PieChartDataSet;
 import org.primefaces.model.charts.pie.PieChartModel;
 
@@ -75,44 +83,47 @@ public class Bean implements Serializable {
 	private Date newESStartDate;
 	private Date newESGraduatedDate;
 
+	private int selectedGraphic;
 	private PieChartModel prsGenderPieModel;
-	private PieChartModel prsAgePieModel;
+	private BarChartModel prsAgeBarModel;
+	private BarChartModel prsChildBarModel;
 
 	@PostConstruct
 	public void init() {
 		readPersonnelsFromDB();
 		createPrsGenderPieModel();
-		createPrsAgePieModel();
+		createPrsAgeBarModel();
+		createPrsChildBarModel();
 
 	}
 
 	public void creatorNewPersonnel() {
+//		try {
+//			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
+//			long idNumber = Long.parseLong(newPrsIDNumber);
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(newPrsDateOfBirth);
+//			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
+//					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
+//
+//			if (result) {
 		try {
-			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
-			long idNumber = Long.parseLong(newPrsIDNumber);
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(newPrsDateOfBirth);
-			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPrsName.toUpperCase(),
-					newPrsSurname.toUpperCase(), calendar.get(Calendar.YEAR));
-
-			if (result) {
-				try {
-					newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender,
-							newPrsDateOfBirth, newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus,
-							newPrsChildren, newPrsIsMarried, newPrsPhoto);
-					repository.createPersonnel(newPersonnel);
-					clearTempPrsDatas();
-					message = "Ekleme işlemi Başarılı";
-				} catch (Exception e) {
-					message = "Ekleme işlemi Başarısız. Personel zaten var!";
-				}
-			} else {
-				message = "TC Kimlik No Doğrulama Başarısız!";
-			}
-		} catch (Exception ex) {
-			message = ex.getMessage();
-			System.out.println(ex.getMessage());
+			newPersonnel = new Personnel(newPrsIDNumber, newPrsName, newPrsSurname, newPrsGender, newPrsDateOfBirth,
+					newPrsEMail, newPrsPhoneNumber, newPrsAddress, newPrsEducationStatus, newPrsChildren,
+					newPrsIsMarried, newPrsPhoto);
+			repository.createPersonnel(newPersonnel);
+			clearTempPrsDatas();
+			message = "Ekleme işlemi Başarılı";
+		} catch (Exception e) {
+			message = "Ekleme işlemi Başarısız. Personel zaten var!";
 		}
+//			} else {
+//				message = "TC Kimlik No Doğrulama Başarısız!";
+//			}
+//		} catch (Exception ex) {
+//			message = ex.getMessage();
+//			System.out.println(ex.getMessage());
+//		}
 		saveMessage(message);
 	}
 
@@ -121,31 +132,31 @@ public class Bean implements Serializable {
 	}
 
 	public void updatePersonnel() {
+//		try {
+//			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
+//			long idNumber = Long.parseLong(newPersonnel.getPrsIDNumber());
+//			Calendar calendar = Calendar.getInstance();
+//			calendar.setTime(newPersonnel.getPrsDateOfBirth());
+//			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPersonnel.getPrsName().toUpperCase(),
+//					newPersonnel.getPrsSurname().toUpperCase(), calendar.get(Calendar.YEAR));
+//			if (result) {
 		try {
-			KPSPublicSoap identityControl = new KPSPublicSoapProxy();
-			long idNumber = Long.parseLong(newPersonnel.getPrsIDNumber());
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(newPersonnel.getPrsDateOfBirth());
-			boolean result = identityControl.TCKimlikNoDogrula(idNumber, newPersonnel.getPrsName().toUpperCase(),
-					newPersonnel.getPrsSurname().toUpperCase(), calendar.get(Calendar.YEAR));
-			if (result) {
-				try {
-					newPersonnel.setPrsChildren(newPrsChildren);
-					newPersonnel.setPrsEducationStatus(newPrsEducationStatus);
-					repository.updatePersonnel(newPersonnel);
-					clearTempPrsDatas();
-					message = "Ekleme işlemi Başarılı";
-					renderFlag = true;
-				} catch (Exception e) {
-					message = "Ekleme işlemi Başarısız. Personel zaten var!";
-				}
-			} else {
-				message = "TC Kimlik No Doğrulama Başarısız!";
-			}
-		} catch (Exception ex) {
-			message = ex.getMessage();
-			System.out.println(ex.getMessage());
+			newPersonnel.setPrsChildren(newPrsChildren);
+			newPersonnel.setPrsEducationStatus(newPrsEducationStatus);
+			repository.updatePersonnel(newPersonnel);
+			clearTempPrsDatas();
+			message = "Ekleme işlemi Başarılı";
+			renderFlag = true;
+		} catch (Exception e) {
+			message = "Ekleme işlemi Başarısız. Personel zaten var!";
 		}
+//			} else {
+//				message = "TC Kimlik No Doğrulama Başarısız!";
+//			}
+//		} catch (Exception ex) {
+//			message = ex.getMessage();
+//			System.out.println(ex.getMessage());
+//		}
 
 		clearTempPrsDatas();
 		saveMessage(message);
@@ -373,19 +384,27 @@ public class Bean implements Serializable {
 		prsGenderPieModel.setData(chartData);
 	}
 
-	public void createPrsAgePieModel() {
-		prsAgePieModel = new PieChartModel();
+	public void createPrsAgeBarModel() {
+		prsAgeBarModel = new BarChartModel();
 		org.primefaces.model.charts.ChartData chartData = new org.primefaces.model.charts.ChartData();
-		PieChartDataSet dataSet = new PieChartDataSet();
+		BarChartDataSet dataSet = new BarChartDataSet();
+		dataSet.setLabel("Personel sayısı");
 		dataSet.setData(repository.getPersonnelAgeData());
 
 		List<String> bgColors = new ArrayList<>();
-		bgColors.add("rgb(54, 162, 235)");
-		bgColors.add("rgb(255, 99, 132)");
-		bgColors.add("rgb(255, 99, 255)");
-		bgColors.add("rgb(54, 255, 235)");
-
+		bgColors.add("rgb(54, 162, 235, 0.2)");
+		bgColors.add("rgb(255, 99, 132, 0.2)");
+		bgColors.add("rgb(255, 255, 0, 0.2)");
+		bgColors.add("rgb(54, 255, 235, 0.2)");
 		dataSet.setBackgroundColor(bgColors);
+
+		List<String> borderColors = new ArrayList<>();
+		borderColors.add("rgb(54, 162, 235)");
+		borderColors.add("rgb(255, 99, 132)");
+		borderColors.add("rgb(255, 255, 0)");
+		borderColors.add("rgb(54, 255, 235)");
+		dataSet.setBorderColor(borderColors);
+		dataSet.setBorderWidth(1);
 
 		chartData.addChartDataSet(dataSet);
 
@@ -394,10 +413,101 @@ public class Bean implements Serializable {
 		labels.add("18-30 Yaş");
 		labels.add("30-50 Yaş");
 		labels.add("50+ Yaş");
-
 		chartData.setLabels(labels);
+		prsAgeBarModel.setData(chartData);
 
-		prsAgePieModel.setData(chartData);
+		// Options
+		BarChartOptions options = new BarChartOptions();
+		CartesianScales cScales = new CartesianScales();
+		CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+		CartesianLinearTicks ticks = new CartesianLinearTicks();
+		ticks.setBeginAtZero(true);
+		linearAxes.setTicks(ticks);
+		cScales.addYAxesData(linearAxes);
+		options.setScales(cScales);
+
+		Title title = new Title();
+		title.setDisplay(true);
+		title.setText("Personel Yaş Aralığı");
+		options.setTitle(title);
+
+		Legend legend = new Legend();
+		legend.setDisplay(true);
+		legend.setPosition("top");
+		LegendLabel legendLabels = new LegendLabel();
+		legendLabels.setFontStyle("bold");
+		legendLabels.setFontColor("#2980B9");
+		legendLabels.setFontSize(24);
+		legend.setLabels(legendLabels);
+		options.setLegend(legend);
+
+		prsAgeBarModel.setOptions(options);
+	}
+
+	public void createPrsChildBarModel() {
+		prsChildBarModel = new BarChartModel();
+		org.primefaces.model.charts.ChartData chartData = new org.primefaces.model.charts.ChartData();
+		BarChartDataSet dataSet = new BarChartDataSet();
+		dataSet.setLabel("Personel sayısı");
+		dataSet.setData(repository.getPersonnelChildData());
+
+		List<String> bgColors = new ArrayList<>();
+		bgColors.add("rgb(54, 162, 235, 0.2)");
+		bgColors.add("rgb(255, 99, 132, 0.2)");
+		bgColors.add("rgb(255, 255, 0, 0.2)");
+		bgColors.add("rgb(54, 255, 235, 0.2)");
+		bgColors.add("rgb(130, 130, 255, 0.2)");
+		bgColors.add("rgb(54, 255, 130, 0.2)");
+		dataSet.setBackgroundColor(bgColors);
+
+		List<String> borderColors = new ArrayList<>();
+		borderColors.add("rgb(54, 162, 235)");
+		borderColors.add("rgb(255, 99, 132)");
+		borderColors.add("rgb(255, 255, 0)");
+		borderColors.add("rgb(54, 255, 235)");
+		borderColors.add("rgb(139, 130, 255)");
+		borderColors.add("rgb(54, 255, 130)");
+		dataSet.setBorderColor(borderColors);
+		dataSet.setBorderWidth(1);
+
+		chartData.addChartDataSet(dataSet);
+
+		List<String> labels = new ArrayList<>();
+		labels.add("Çocuğu Yok");
+		labels.add("1 Çocuk");
+		labels.add("2 Çocuk");
+		labels.add("3 Çocuk");
+		labels.add("4 Çocuk");
+		labels.add("5+ Çocuk");
+		chartData.setLabels(labels);
+		prsChildBarModel.setData(chartData);
+
+		// Options
+		BarChartOptions options = new BarChartOptions();
+		CartesianScales cScales = new CartesianScales();
+		CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+		CartesianLinearTicks ticks = new CartesianLinearTicks();
+		ticks.setBeginAtZero(true);
+		linearAxes.setTicks(ticks);
+		cScales.addYAxesData(linearAxes);
+		options.setScales(cScales);
+
+		Title title = new Title();
+		title.setDisplay(true);
+		title.setText("Personel Çocuk Sayısı");
+		options.setTitle(title);
+
+		Legend legend = new Legend();
+		legend.setDisplay(true);
+		legend.setPosition("top");
+		LegendLabel legendLabels = new LegendLabel();
+		legendLabels.setFontStyle("bold");
+		legendLabels.setFontColor("#2980B9");
+		legendLabels.setFontSize(24);
+		legend.setLabels(legendLabels);
+		options.setLegend(legend);
+
+		prsChildBarModel.setOptions(options);
 	}
 
 	public String navigateToNewPersonnelAdd() {
@@ -725,12 +835,28 @@ public class Bean implements Serializable {
 		this.prsGenderPieModel = prsGenderPieModel;
 	}
 
-	public PieChartModel getPrsAgePieModel() {
-		return prsAgePieModel;
+	public BarChartModel getPrsAgeBarModel() {
+		return prsAgeBarModel;
 	}
 
-	public void setPrsAgePieModel(PieChartModel prsAgePieModel) {
-		this.prsAgePieModel = prsAgePieModel;
+	public void setPrsAgeBarModel(BarChartModel prsAgeBarModel) {
+		this.prsAgeBarModel = prsAgeBarModel;
+	}
+
+	public BarChartModel getPrsChildBarModel() {
+		return prsChildBarModel;
+	}
+
+	public void setPrsChildBarModel(BarChartModel prsChildBarModel) {
+		this.prsChildBarModel = prsChildBarModel;
+	}
+
+	public int getSelectedGraphic() {
+		return selectedGraphic;
+	}
+
+	public void setSelectedGraphic(int selectedGraphic) {
+		this.selectedGraphic = selectedGraphic;
 	}
 
 }

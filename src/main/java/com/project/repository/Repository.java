@@ -15,13 +15,15 @@ public interface Repository {
 	Personnel updatePersonnel(Personnel personnel);
 
 	Personnel getPersonnel(int id);
-	
+
 	List<Personnel> getPersonnels();
-	
+
 	List<Number> getPersonnelGenderData();
-	
+
 	List<Number> getPersonnelAgeData();
-	
+
+	List<Number> getPersonnelChildData();
+
 	void createChildren(Children children);
 
 	void deleteChildren(Children children);
@@ -29,7 +31,7 @@ public interface Repository {
 	Children updateChildren(Children children);
 
 	Children getChildren(int id);
-	
+
 	void createEducationStatus(EducationStatus educationStatus);
 
 	void deleteEducationStatus(EducationStatus educationStatus);

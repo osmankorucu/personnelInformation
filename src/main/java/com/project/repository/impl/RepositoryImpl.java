@@ -166,4 +166,35 @@ public class RepositoryImpl implements Repository {
 		numbers.add(old);
 		return numbers;
 	}
+
+	public List<Number> getPersonnelChildData() {
+		int zero = 0, one = 0, two = 0, three = 0, four = 0, fiveAndMore = 0;
+		List<Number> numbers = new ArrayList<Number>();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Personnel> cq = cb.createQuery(Personnel.class);
+		Root<Personnel> r = cq.from(Personnel.class);
+		CriteriaQuery<Personnel> personnels = cq.select(r);
+		TypedQuery<Personnel> result = entityManager.createQuery(personnels);
+		for (int i = 0; i < result.getResultList().size(); i++) {
+			if (result.getResultList().get(i).getPrsChildren().size() == 0)
+				zero++;
+			else if (result.getResultList().get(i).getPrsChildren().size() == 1)
+				one++;
+			else if (result.getResultList().get(i).getPrsChildren().size() == 2)
+				two++;
+			else if (result.getResultList().get(i).getPrsChildren().size() == 3)
+				three++;
+			else if (result.getResultList().get(i).getPrsChildren().size() == 4)
+				four++;
+			else
+				fiveAndMore++;
+		}
+		numbers.add(zero);
+		numbers.add(one);
+		numbers.add(two);
+		numbers.add(three);
+		numbers.add(four);
+		numbers.add(fiveAndMore);
+		return numbers;
+	}
 }
