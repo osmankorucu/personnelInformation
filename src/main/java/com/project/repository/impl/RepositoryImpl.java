@@ -10,11 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-
-import org.hibernate.Criteria;
 
 import com.project.factory.impl.FactoryImpl;
 import com.project.model.Children;

@@ -31,9 +31,6 @@ import com.project.model.Personnel;
 import com.project.repository.Repository;
 import com.project.repository.impl.RepositoryImpl;
 
-import tr.gov.nvi.tckimlik.WS.KPSPublicSoap;
-import tr.gov.nvi.tckimlik.WS.KPSPublicSoapProxy;
-
 @ManagedBean
 @ViewScoped
 public class Bean implements Serializable {
