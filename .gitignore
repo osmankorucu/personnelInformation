@@ -1,1 +1,10 @@
 /target/
+node_modules
+venv
+dist
+build
+target
+.idea
+__pycache__
+*.pyc
+.git
